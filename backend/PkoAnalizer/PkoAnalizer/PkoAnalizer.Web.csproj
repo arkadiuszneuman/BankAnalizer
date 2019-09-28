@@ -18,6 +18,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PkoAnalizer.Core\PkoAnalizer.Core.csproj" />
+    <ProjectReference Include="..\PkoAnalizer.Logic\PkoAnalizer.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="pko_history.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

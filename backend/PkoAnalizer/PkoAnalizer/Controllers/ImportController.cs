@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using PkoAnalizer.Core.Commands.Import;
+using PkoAnalizer.Core.Cqrs.Command;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,10 +11,19 @@ namespace PkoAnalizer.Controllers
     [ApiController]
     public class ImportController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<int> ImportAll()
+        private readonly ICommandsBus bus;
+
+        public ImportController(ICommandsBus bus)
         {
-            return new[] { 1, 2, 4 };
+            this.bus = bus;
+        }
+
+        [HttpGet]
+        public ActionResult ImportAll()
+        {
+            var command = new ImportCommand();
+            bus.Send(command);
+            return Accepted(command);
         }
     }
 }

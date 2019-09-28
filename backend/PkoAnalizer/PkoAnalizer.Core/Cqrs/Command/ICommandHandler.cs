@@ -4,12 +4,12 @@ using System.Text;
 
 namespace PkoAnalizer.Core.Cqrs.Command
 {
-    public interface IHandleCommand
+    public interface ICommandHandler
     {
 
     }
 
-    public interface IHandleCommand<TCommand> : IHandleCommand
+    public interface ICommandHandler<TCommand> : ICommandHandler
         where TCommand : ICommand
     {
         void Handle(TCommand command);
