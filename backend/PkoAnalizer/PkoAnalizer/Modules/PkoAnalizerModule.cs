@@ -14,7 +14,8 @@ namespace PkoAnalizer.Web.Modules
             base.Load(builder);
 
             builder.RegisterAssemblyTypes(typeof(IAnalizerLogic).Assembly)
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .AsSelf();
         }
     }
 }
