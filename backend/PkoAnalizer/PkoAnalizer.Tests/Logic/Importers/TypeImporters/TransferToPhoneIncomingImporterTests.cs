@@ -23,6 +23,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Nazwa nadawcy: SNAME SSURNAME","Tytuł: PRZELEW NA TELEFON +48XXXXXX123 BOLT DLA RNAME RSURNAME OD SNAME SSURNAME","","","",""
             });
 
+            //assert
             result.Should().BeEquivalentTo(new PkoTransaction
             {
                 OperationDate = new DateTime(2019, 3, 26),
@@ -48,6 +49,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Nazwa nadawcy: SNAME SSURNAME","Tytuł: PRZELEW NA TELEFON +48XXXXXX123 BOLT DLA RNAME RSURNAME OD SNAME SSURNAME","","","",""
             });
 
+            //assert
             result.Should().BeNull();
         }
     }

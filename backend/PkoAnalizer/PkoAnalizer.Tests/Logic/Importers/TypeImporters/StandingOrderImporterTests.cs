@@ -25,6 +25,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Tytuł: NAME SURNAMESTREET 32/441-506 CHORZÓW","","",""
             });
 
+            //assert
             result.Should().BeEquivalentTo(new PkoTransaction
             {
                 OperationDate = new DateTime(2019, 3, 1),
@@ -53,6 +54,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Tytuł: NAME SURNAMESTREET 32/441-506 CHORZÓW","","",""
             });
 
+            //assert
             result.Should().BeNull();
         }
     }

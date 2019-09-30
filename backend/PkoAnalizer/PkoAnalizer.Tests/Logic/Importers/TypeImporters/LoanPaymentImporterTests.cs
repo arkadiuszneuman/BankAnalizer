@@ -23,6 +23,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Tytuł: KAPITAŁ: 123,48 ODSETKI: 0,00 ODSETKI SKAPIT.: 0,00 ODSETKI KARNE: 0,00 321232123","","","","","",""
             });
 
+            //assert
             result.Should().BeEquivalentTo(new PkoTransaction
             {
                 OperationDate = new DateTime(2019, 2, 15),
@@ -45,6 +46,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "-123.48","PLN","+2342.21",
                 "Tytuł: KAPITAŁ: 123,48 ODSETKI: 0,00 ODSETKI SKAPIT.: 0,00 ODSETKI KARNE: 0,00 321232123","","","","","","" });
 
+            //assert
             result.Should().BeNull();
         }
     }

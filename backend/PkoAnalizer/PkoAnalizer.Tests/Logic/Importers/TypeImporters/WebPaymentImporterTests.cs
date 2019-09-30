@@ -10,7 +10,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
     public class WebPaymentImporterTests
     {
         [Fact]
-        public void Should_import_valid_card_transactions()
+        public void Should_import_web_payment_transactions()
         {
             //arrange
             var sut = new AutoSubstitute().Resolve<WebPaymentImporter>();
@@ -21,6 +21,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Data i czas operacji: 2019-04-17 17:16:10","Numer referencyjny: 5458568544654","","",""
             });
 
+            //assert
             result.Should().BeEquivalentTo(new PkoTransaction
             {
                 OperationDate = new DateTime(2019, 4, 18),

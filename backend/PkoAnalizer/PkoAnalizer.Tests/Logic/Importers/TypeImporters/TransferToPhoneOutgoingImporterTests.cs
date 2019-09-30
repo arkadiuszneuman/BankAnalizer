@@ -23,6 +23,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Nazwa odbiorcy: NAME SURNAME","Tytuł: PRZELEW NA TELEFON OD: 48930293023 DO: 48950495023","","","",""
             });
 
+            //assert
             result.Should().BeEquivalentTo(new PkoTransaction
             {
                 OperationDate = new DateTime(2019, 3, 25),
@@ -48,6 +49,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Nazwa odbiorcy: NAME SURNAME","Tytuł: PRZELEW NA TELEFON OD: 48930293023 DO: 48950495023","","","",""
             });
 
+            //assert
             result.Should().BeNull();
         }
     }

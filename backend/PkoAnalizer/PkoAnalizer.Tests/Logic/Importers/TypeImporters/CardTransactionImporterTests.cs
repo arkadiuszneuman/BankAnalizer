@@ -24,6 +24,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Data i czas operacji: 2019-02-05", "Oryginalna kwota operacji: 13,00 PLN",
                 "Numer karty: 123456******7589", "", "" });
 
+            //assert
             result.Should().BeEquivalentTo(new PkoTransaction
             {
                 OperationDate = new DateTime(2019, 9, 19),
@@ -49,6 +50,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Data i czas operacji: 2019-02-05", "Oryginalna kwota operacji: 13,00 PLN",
                 "Numer karty: 123456******7589", "", "" });
 
+            //assert
             result.Should().BeNull();
         }
     }

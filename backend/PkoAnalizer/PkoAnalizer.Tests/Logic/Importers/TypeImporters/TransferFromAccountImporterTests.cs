@@ -12,7 +12,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
     public class TransferFromAccountImporterTests
     {
         [Fact]
-        public void Should_import_valid_loan_payment_transactions()
+        public void Should_import_valid_transfer_from_account_transactions()
         {
             //arrange
             var sut = new AutoSubstitute().Resolve<TransferFromAccountImporter>();
@@ -52,6 +52,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Tytuł: SOME TITLE","","",""
             });
 
+            //assert
             result.Should().BeNull();
         }
     }
