@@ -19,5 +19,6 @@ namespace PkoAnalizer.Logic.Import.Models
         public string RecipientAddress { get; set; }
         public string SenderReceipt { get; set; }
         public string SenderName { get; set; }
+        public string SenderAddress { get; set; }
     }
 }
