@@ -12,7 +12,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
     public class TransferToPhoneIncomingImporterTests
     {
         [Fact]
-        public void Should_import_valid_card_transactions()
+        public void Should_import_valid_transfer_to_phone_incoming_transactions()
         {
             //arrange
             var sut = new AutoSubstitute().Resolve<TransferToPhoneIncomingImporter>();
