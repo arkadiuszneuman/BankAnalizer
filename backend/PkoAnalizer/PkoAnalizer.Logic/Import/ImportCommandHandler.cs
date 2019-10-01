@@ -23,7 +23,7 @@ namespace PkoAnalizer.Logic.Import
 
         public void Handle(ImportCommand command)
         {
-            var transactions = importers.Select(i => i.ImportTransactions()).ToList();
+            var transactions = importers.Select(i => i.ImportTransactions().ToList()).ToList();
         }
     }
 }
