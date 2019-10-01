@@ -16,13 +16,24 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
         {
             //arrange
             var sut = new AutoSubstitute().Resolve<WithdrawalFromAtm>();
-            (var splittedLine, var transaction) = new ImportersFixture().GetTransaction<WithdrawalFromAtm>();
 
             //act
-            var result = sut.Import(splittedLine);
+            var result = sut.Import(new[] { "2019-02-09", "2019-02-08", "Wypłata z bankomatu", "-321.32", "PLN", "+32.73",
+                    "Tytuł: PKO BP 123123123", "Lokalizacja: Kraj: POLSKA Miasto: SOMECITY Adres: UL. SOMNEADDRESS 45",
+                    "Data i czas operacji: 2019-02-08 11:34:51", "Oryginalna kwota operacji: 32,73 PLN", "Numer karty: 425125******4284", "", ""
+            });
 
             //assert
-            result.Should().BeEquivalentTo(transaction);
+            result.Should().BeEquivalentTo(new PkoTransaction
+            {
+                OperationDate = new DateTime(2019, 2, 9),
+                TransactionDate = new DateTime(2019, 2, 8),
+                TransactionType = "Wypłata z bankomatu",
+                Amount = -321.32M,
+                Currency = "PLN",
+                Title = "Tytuł: PKO BP 123123123",
+                Location = "Lokalizacja: Kraj: POLSKA Miasto: SOMECITY Adres: UL. SOMNEADDRESS 45",
+            });
         }
 
         [Fact]
