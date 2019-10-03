@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
@@ -11,8 +12,9 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
     {
         public PkoTransaction Import(string[] splittedLine)
         {
+            var supportedTypes = new[] { "Płatność web - kod mobilny", "Wypłata w bankomacie - kod mobilny" };
             var type = splittedLine.Index(2);
-            if (type == "Płatność web - kod mobilny")
+            if (supportedTypes.Contains(type))
             {
                 return new PkoTransaction
                 {
