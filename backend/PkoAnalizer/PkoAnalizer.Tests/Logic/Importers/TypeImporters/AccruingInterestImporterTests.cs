@@ -43,6 +43,22 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                         Title = "OPŁATA PROP. ZA KARTĘ 123123123*****323, 19.06-05.07",
                     }
                 };
+                yield return new object[] {
+                    new[] {
+                        "2018-02-22","2018-02-20","Prowizja","-32.21","PLN","+412.34",
+                        "Tytuł: 32523523324234234","","","","","",""
+
+                    },
+                    new PkoTransaction
+                    {
+                        OperationDate = new DateTime(2018, 2, 22),
+                        TransactionDate = new DateTime(2018, 2, 20),
+                        TransactionType = "Prowizja",
+                        Amount = -32.21M,
+                        Currency = "PLN",
+                        Title = "32523523324234234",
+                    }
+                };
             }
         }
 

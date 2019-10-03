@@ -9,7 +9,7 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
     {
         public PkoTransaction Import(string[] splittedLine)
         {
-            var supportedTypes = new[] { "Naliczenie odsetek", "Opłata za użytkowanie karty" };
+            var supportedTypes = new[] { "Naliczenie odsetek", "Opłata za użytkowanie karty", "Prowizja" };
             var type = splittedLine.Index(2);
             if (supportedTypes.Contains(type))
             {
