@@ -1,6 +1,8 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
+using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 using System;
 using System.Collections.Generic;
@@ -31,8 +33,10 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Przelew na telefon wychodzący zew.",
                 Amount = -32.12M,
                 Currency = "PLN",
-                RecipientReceipt = "Rachunek odbiorcy: 44 5555 7777 1111 3333 6666 7777",
-                RecipientName = "Nazwa odbiorcy: NAME SURNAME",
+                Extensions = new RecipientReceiptNameExtension {
+                    RecipientReceipt = "Rachunek odbiorcy: 44 5555 7777 1111 3333 6666 7777",
+                    RecipientName = "Nazwa odbiorcy: NAME SURNAME",
+                }.ToJson(),
                 Title = "Tytuł: PRZELEW NA TELEFON OD: 48930293023 DO: 48950495023",
             });
         }

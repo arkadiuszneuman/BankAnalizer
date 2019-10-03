@@ -1,6 +1,8 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
+using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 using System;
 using Xunit;
@@ -29,8 +31,10 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Płatność web - kod mobilny",
                 Amount = -10.19M,
                 Currency = "PLN",
-                Location = "Lokalizacja: Adres: www.skycash.com",
-                PhoneNumber = "Numer telefonu: +48 568 457 587 ",
+                Extensions = new PhoneNumberLocationExtension {
+                    Location = "Lokalizacja: Adres: www.skycash.com",
+                    PhoneNumber = "Numer telefonu: +48 568 457 587 ",
+                }.ToJson()
             });
         }
 

@@ -1,6 +1,8 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
+using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
             //act
             var result = sut.Import(new[] {
                 "2019-03-23","2019-03-24","Przelew Natychmiastowy na rachunek","+123.12","PLN","+32.06",
-                "Rachunek nadawcy: 44 2222 5555 1111 7777 4444 3333","Nazwa nadawcy: ARKADIUSZ NEUMAN",
+                "Rachunek nadawcy: 44 2222 5555 1111 7777 4444 3333","Nazwa nadawcy: SOME RECIPIENT",
                 "Tytuł: PRZELEW ŚRODKÓW","","","",""
             });
 
@@ -32,8 +34,10 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Przelew Natychmiastowy na rachunek",
                 Amount = 123.12M,
                 Currency = "PLN",
-                RecipientReceipt = "Rachunek nadawcy: 44 2222 5555 1111 7777 4444 3333",
-                RecipientName = "Nazwa nadawcy: ARKADIUSZ NEUMAN",
+                 Extensions = new RecipientReceiptNameExtension {
+                     RecipientReceipt = "Rachunek nadawcy: 44 2222 5555 1111 7777 4444 3333",
+                     RecipientName = "Nazwa nadawcy: SOME RECIPIENT"
+                 }.ToJson(),
                 Title = "Tytuł: PRZELEW ŚRODKÓW",
             });
         }
@@ -42,7 +46,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
         public void Should_not_import_different_type()
         {
             //arrange
-            var sut = new AutoSubstitute().Resolve<WebPaymentImporter>();
+            var sut = new AutoSubstitute().Resolve<InstantTransferToAccountImporter>();
 
             //act
             var result = sut.Import(new[] { "2019-03-23","2019-03-24","Other type","+9.72","PLN","+22.54","Tytuł: 5425465 55487541",

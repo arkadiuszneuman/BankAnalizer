@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PkoAnalizer.Core.ExtensionMethods;
+using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 
 namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
@@ -19,9 +21,11 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     TransactionType = splittedLine.Index(2),
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
-                    RecipientReceipt = splittedLine.Index(6),
-                    RecipientName = splittedLine.Index(7),
-                    RecipientAddress = splittedLine.Index(8),
+                    Extensions = new RecipientExtension {
+                        RecipientReceipt = splittedLine.Index(6),
+                        RecipientName = splittedLine.Index(7),
+                        RecipientAddress = splittedLine.Index(8),
+                    }.ToJson(),
                     Title = splittedLine.Index(9)
                 };
             }

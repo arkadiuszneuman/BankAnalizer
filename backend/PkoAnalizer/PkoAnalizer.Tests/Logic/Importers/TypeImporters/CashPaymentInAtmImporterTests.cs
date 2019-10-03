@@ -1,6 +1,8 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
+using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 using System;
 using System.Collections.Generic;
@@ -35,7 +37,9 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Amount = 11.21M,
                 Currency = "PLN",
                 Title = "Tytuł: PKO BP 123123123123",
-                Location = "Lokalizacja: Kraj: COUNTRY Miasto: CITY Adres: STREET"
+                Extensions = new LocationExtension { 
+                        Location = "Lokalizacja: Kraj: COUNTRY Miasto: CITY Adres: STREET"
+                }.ToJson()
             });
         }
 
@@ -43,7 +47,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
         public void Should_not_import_different_type()
         {
             //arrange
-            var sut = new AutoSubstitute().Resolve<WebPaymentImporter>();
+            var sut = new AutoSubstitute().Resolve<CashPaymentInAtmImporter>();
 
             //act
             var result = sut.Import(new[] { "2018-03-23","2018-03-24","Other type","+11.21","PLN","+32.22",

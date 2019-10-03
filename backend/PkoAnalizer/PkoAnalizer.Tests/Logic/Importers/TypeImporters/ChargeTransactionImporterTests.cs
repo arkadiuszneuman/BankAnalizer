@@ -41,7 +41,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
         public void Should_not_import_different_type()
         {
             //arrange
-            var sut = new AutoSubstitute().Resolve<WebPaymentImporter>();
+            var sut = new AutoSubstitute().Resolve<ChargeTransactionImporter>();
 
             //act
             var result = sut.Import(new[] { "2019-01-11","2019-01-12","Some other transaction","-11.32","PLN","+21.83",

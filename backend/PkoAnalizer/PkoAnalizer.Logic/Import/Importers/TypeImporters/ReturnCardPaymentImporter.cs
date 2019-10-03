@@ -1,4 +1,6 @@
-﻿using PkoAnalizer.Logic.Import.Models;
+﻿using PkoAnalizer.Core.ExtensionMethods;
+using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
+using PkoAnalizer.Logic.Import.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +22,9 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
                     Title = splittedLine.Index(6),
-                    RecipientAddress = splittedLine.Index(7)
+                    Extensions = new RecipientAddresExtension {
+                        RecipientAddress = splittedLine.Index(7).Replace("Lokalizacja:", "").Trim()
+                    }.ToJson()
                 };
             }
 

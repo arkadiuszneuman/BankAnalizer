@@ -1,6 +1,8 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
+using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,9 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Amount = -13.00M,
                 Currency = "PLN",
                 Title = "Tytuł: Some transaction title",
-                Location = "Lokalizacja: Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA"
+                 Extensions = new LocationExtension {
+                     Location = "Lokalizacja: Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA"
+                 }.ToJson()
             });
         }
 

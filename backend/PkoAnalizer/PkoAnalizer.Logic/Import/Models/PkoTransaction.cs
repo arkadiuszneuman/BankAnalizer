@@ -12,13 +12,15 @@ namespace PkoAnalizer.Logic.Import.Models
         public decimal Amount { get; set; }
         public string Currency { get; set; }
         public string Title { get; set; }
-        public string Location { get; set; }
-        public string PhoneNumber { get; set; }
-        public string RecipientReceipt { get; set; }
-        public string RecipientName { get; set; }
-        public string RecipientAddress { get; set; }
-        public string SenderReceipt { get; set; }
-        public string SenderName { get; set; }
-        public string SenderAddress { get; set; }
+        public string Extensions { get; set; }
+
+        //public string Location { get; set; }
+        //public string PhoneNumber { get; set; }
+        //public string RecipientReceipt { get; set; }
+        //public string RecipientName { get; set; }
+        //public string RecipientAddress { get; set; }
+        //public string SenderReceipt { get; set; }
+        //public string SenderName { get; set; }
+        //public string SenderAddress { get; set; }
     }
 }
