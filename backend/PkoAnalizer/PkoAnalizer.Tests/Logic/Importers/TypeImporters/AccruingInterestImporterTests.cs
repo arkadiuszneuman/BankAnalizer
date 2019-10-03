@@ -59,6 +59,21 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                         Title = "32523523324234234",
                     }
                 };
+                yield return new object[] {
+                    new[] {
+                        "2013-11-12","2013-11-10","Opłata składki ubezpieczeniowej",
+                        "-412.32","PLN","+123.66","465345346ISAFIGASI4365345","","","","","",""
+                    },
+                    new PkoTransaction
+                    {
+                        OperationDate = new DateTime(2013, 11, 12),
+                        TransactionDate = new DateTime(2013, 11, 10),
+                        TransactionType = "Opłata składki ubezpieczeniowej",
+                        Amount = -412.32M,
+                        Currency = "PLN",
+                        Title = "465345346ISAFIGASI4365345",
+                    }
+                };
             }
         }
 
