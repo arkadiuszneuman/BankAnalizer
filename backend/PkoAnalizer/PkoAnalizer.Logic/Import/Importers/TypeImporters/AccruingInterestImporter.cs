@@ -1,7 +1,7 @@
-﻿using PkoAnalizer.Logic.Import.Models;
+﻿using PkoAnalizer.Core.ExtensionMethods;
+using PkoAnalizer.Logic.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
 {
@@ -9,8 +9,9 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
     {
         public PkoTransaction Import(string[] splittedLine)
         {
+            var supportedTypes = new[] { "Naliczenie odsetek", "Opłata za użytkowanie karty" };
             var type = splittedLine.Index(2);
-            if (type == "Naliczenie odsetek")
+            if (supportedTypes.Contains(type))
             {
                 return new PkoTransaction
                 {
@@ -19,7 +20,7 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     TransactionType = splittedLine.Index(2),
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
-                    Title = splittedLine.Index(6)
+                    Title = splittedLine.Index(6).RemoveSubstring("Tytuł:").Trim()
                 };
             }
 
