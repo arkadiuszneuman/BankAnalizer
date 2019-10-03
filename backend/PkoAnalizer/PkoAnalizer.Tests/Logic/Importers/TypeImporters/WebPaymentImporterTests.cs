@@ -57,6 +57,29 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                         }.ToJson()
                     }
                 };
+
+                yield return new object[] {
+                    new[] {
+                        "2014-11-15","2014-11-14","Anulowanie wypłaty w bankomacie - kod mobilny",
+                        "+12.32","PLN","+54.43","Numer telefonu: +48 435 542 543 ",
+                        "Lokalizacja: Kraj: COUNTRY Miasto: CITY Adres: UL. STREET 45",
+                        "Data i czas operacji: 2014-11-07 03:21:21","Bankomat: 123125412",
+                        "Numer referencyjny: 5325346346345345364","",""
+
+                    },
+                    new PkoTransaction
+                    {
+                        OperationDate = new DateTime(2014, 11, 15),
+                        TransactionDate = new DateTime(2014, 11, 14),
+                        TransactionType = "Anulowanie wypłaty w bankomacie - kod mobilny",
+                        Amount = 12.32M,
+                        Currency = "PLN",
+                        Extensions = new PhoneNumberLocationExtension {
+                            Location = "Kraj: COUNTRY Miasto: CITY Adres: UL. STREET 45",
+                            PhoneNumber = "+48 435 542 543",
+                        }.ToJson()
+                    }
+                };
             }
         }
 
