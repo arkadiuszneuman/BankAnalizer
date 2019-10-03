@@ -13,7 +13,7 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
         public PkoTransaction Import(string[] splittedLine)
         {
             var supportedTypes = new[] { "Płatność web - kod mobilny", "Wypłata w bankomacie - kod mobilny",
-                "Anulowanie wypłaty w bankomacie - kod mobilny"};
+                "Anulowanie wypłaty w bankomacie - kod mobilny", "Zakup w terminalu - kod mobilny"};
             var type = splittedLine.Index(2);
             if (supportedTypes.Contains(type))
             {

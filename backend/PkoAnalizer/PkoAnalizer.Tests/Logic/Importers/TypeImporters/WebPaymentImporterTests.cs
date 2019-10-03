@@ -80,6 +80,28 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                         }.ToJson()
                     }
                 };
+
+                yield return new object[] {
+                    new[] {
+                        "2018-12-06","2018-12-05","Zakup w terminalu - kod mobilny",
+                        "-23.32","PLN","+1111.50","Numer telefonu: +48 423 425 423 ",
+                        "Lokalizacja: Kraj: COUNTRY Miasto: CITY Adres: UL. STREET 45",
+                        "Data i czas operacji: 2018-32-23 22:26:51",
+                        "Numer referencyjny: 1423125124","","",""
+                    },
+                    new PkoTransaction
+                    {
+                        OperationDate = new DateTime(2018, 12, 06),
+                        TransactionDate = new DateTime(2018, 12, 05),
+                        TransactionType = "Zakup w terminalu - kod mobilny",
+                        Amount = -23.32M,
+                        Currency = "PLN",
+                        Extensions = new PhoneNumberLocationExtension {
+                            Location = "Kraj: COUNTRY Miasto: CITY Adres: UL. STREET 45",
+                            PhoneNumber = "+48 423 425 423",
+                        }.ToJson()
+                    }
+                };
             }
         }
 
