@@ -74,6 +74,22 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                         Title = "465345346ISAFIGASI4365345",
                     }
                 };
+                yield return new object[] {
+                    new[] {
+                        "2018-12-05","2018-12-04","Uznanie","+123.28","PLN","+42.47",
+                        "45345347345346435346","","","","","",""
+
+                    },
+                    new PkoTransaction
+                    {
+                        OperationDate = new DateTime(2018, 12, 5),
+                        TransactionDate = new DateTime(2018, 12, 4),
+                        TransactionType = "Uznanie",
+                        Amount = 123.28M,
+                        Currency = "PLN",
+                        Title = "45345347345346435346",
+                    }
+                };
             }
         }
 
