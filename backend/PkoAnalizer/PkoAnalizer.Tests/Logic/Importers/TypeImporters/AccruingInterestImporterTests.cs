@@ -90,6 +90,21 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                         Title = "45345347345346435346",
                     }
                 };
+                yield return new object[] {
+                    new[] {
+                        "2018-04-30","2018-05-01","Podatek od odsetek","-0.01","PLN",
+                        "+4345.54","PODATEK OD ODSETEK KAPITAŁOWYCH","","","","","",""
+                    },
+                    new PkoTransaction
+                    {
+                        OperationDate = new DateTime(2018, 4, 30),
+                        TransactionDate = new DateTime(2018, 5, 1),
+                        TransactionType = "Podatek od odsetek",
+                        Amount = -0.01M,
+                        Currency = "PLN",
+                        Title = "PODATEK OD ODSETEK KAPITAŁOWYCH",
+                    }
+                };
             }
         }
 
