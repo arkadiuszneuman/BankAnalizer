@@ -9,13 +9,13 @@ using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
 {
-    public class CashPaymentInAtmTests
+    public class CashPaymentInAtmImporterTests
     {
         [Fact]
         public void Should_import_cash_payment_in_atc_transactions()
         {
             //arrange
-            var sut = new AutoSubstitute().Resolve<CashPaymentInAtm>();
+            var sut = new AutoSubstitute().Resolve<CashPaymentInAtmImporter>();
 
             //act
             var result = sut.Import(new[] {
