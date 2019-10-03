@@ -21,9 +21,9 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     TransactionType = splittedLine.Index(2),
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
-                    Title = splittedLine.Index(6),
+                    Title = splittedLine.Index(6).RemoveSubstring("Tytuł: "),
                     Extensions = new LocationExtension {
-                        Location = splittedLine.Index(7)
+                        Location = splittedLine.Index(7).RemoveSubstring("Lokalizacja: ")
                     }.ToJson()
                 };
             }

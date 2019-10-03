@@ -23,7 +23,7 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     Currency = splittedLine.Index(4),
                     Title = splittedLine.Index(6),
                     Extensions = new RecipientAddresExtension {
-                        RecipientAddress = splittedLine.Index(7).Replace("Lokalizacja:", "").Trim()
+                        RecipientAddress = splittedLine.Index(7).RemoveSubstring("Lokalizacja:").Trim()
                     }.ToJson()
                 };
             }

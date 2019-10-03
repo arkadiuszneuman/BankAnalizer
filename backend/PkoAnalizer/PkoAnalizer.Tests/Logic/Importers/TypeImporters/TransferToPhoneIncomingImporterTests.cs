@@ -34,10 +34,10 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Amount = 11.73M,
                 Currency = "PLN",
                  Extensions = new SenderReceiptNameExtension {
-                     SenderReceipt = "Rachunek nadawcy: 11 3333 6666 2222 1111 8888 6666",
-                     SenderName = "Nazwa nadawcy: SNAME SSURNAME",
+                     SenderReceipt = "11 3333 6666 2222 1111 8888 6666",
+                     SenderName = "SNAME SSURNAME",
                  }.ToJson(),
-                Title = "Tytuł: PRZELEW NA TELEFON +48XXXXXX123 BOLT DLA RNAME RSURNAME OD SNAME SSURNAME",
+                Title = "PRZELEW NA TELEFON +48XXXXXX123 BOLT DLA RNAME RSURNAME OD SNAME SSURNAME",
             });
         }
 

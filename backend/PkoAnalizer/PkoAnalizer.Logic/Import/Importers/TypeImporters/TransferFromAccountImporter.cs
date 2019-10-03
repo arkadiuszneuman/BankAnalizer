@@ -21,12 +21,13 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     TransactionType = splittedLine.Index(2),
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
-                    Extensions = new RecipientExtension {
-                        RecipientReceipt = splittedLine.Index(6),
-                        RecipientName = splittedLine.Index(7),
-                        RecipientAddress = splittedLine.Index(8),
+                    Extensions = new RecipientExtension
+                    {
+                        RecipientReceipt = splittedLine.Index(6).RemoveSubstring("Rachunek odbiorcy:").Trim(),
+                        RecipientName = splittedLine.Index(7).RemoveSubstring("Nazwa odbiorcy:").Trim(),
+                        RecipientAddress = splittedLine.Index(8).RemoveSubstring("Adres odbiorcy:").Trim(),
                     }.ToJson(),
-                    Title = splittedLine.Index(9)
+                    Title = splittedLine.Index(9).RemoveSubstring("Tytuł:").Trim()
                 };
             }
 

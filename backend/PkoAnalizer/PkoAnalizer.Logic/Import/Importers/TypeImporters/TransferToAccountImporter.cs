@@ -22,11 +22,11 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
                     Extensions = new SenderExtension {
-                        SenderReceipt = splittedLine.Index(6),
-                        SenderName = splittedLine.Index(7),
-                        SenderAddress = splittedLine.Index(8)
+                        SenderReceipt = splittedLine.Index(6).RemoveSubstring("Rachunek nadawcy:").Trim(),
+                        SenderName = splittedLine.Index(7).RemoveSubstring("Nazwa nadawcy:").Trim(),
+                        SenderAddress = splittedLine.Index(8).RemoveSubstring("Adres nadawcy:").Trim()
                     }.ToJson(),
-                    Title = splittedLine.Index(9)
+                    Title = splittedLine.Index(9).RemoveSubstring("Tytuł:").Trim()
                 };
             }
 

@@ -32,8 +32,8 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Amount = -10.19M,
                 Currency = "PLN",
                 Extensions = new PhoneNumberLocationExtension {
-                    Location = "Lokalizacja: Adres: www.skycash.com",
-                    PhoneNumber = "Numer telefonu: +48 568 457 587 ",
+                    Location = "Adres: www.skycash.com",
+                    PhoneNumber = "+48 568 457 587",
                 }.ToJson()
             });
         }

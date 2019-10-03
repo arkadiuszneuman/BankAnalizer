@@ -22,8 +22,8 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
                     Extensions = new PhoneNumberLocationExtension {
-                        PhoneNumber = splittedLine.Index(6),
-                        Location = splittedLine.Index(7),
+                        PhoneNumber = splittedLine.Index(6).RemoveSubstring("Numer telefonu:").Trim(),
+                        Location = splittedLine.Index(7).RemoveSubstring("Lokalizacja:").Trim(),
                     }.ToJson()
                 };
             }

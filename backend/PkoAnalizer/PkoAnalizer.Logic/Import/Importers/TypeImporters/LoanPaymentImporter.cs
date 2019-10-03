@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Import.Models;
 
 namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
@@ -19,7 +20,7 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     TransactionType = splittedLine.Index(2),
                     Amount = splittedLine.Index(3).ConvertToDecimal(),
                     Currency = splittedLine.Index(4),
-                    Title = splittedLine.Index(6)
+                    Title = splittedLine.Index(6).RemoveSubstring("Tytuł:").Trim()
                 };
             }
 

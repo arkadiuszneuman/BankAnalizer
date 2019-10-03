@@ -31,7 +31,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Spłata kredytu",
                 Amount = -123.48M,
                 Currency = "PLN",
-                Title = "Tytuł: KAPITAŁ: 123,48 ODSETKI: 0,00 ODSETKI SKAPIT.: 0,00 ODSETKI KARNE: 0,00 321232123",
+                Title = "KAPITAŁ: 123,48 ODSETKI: 0,00 ODSETKI SKAPIT.: 0,00 ODSETKI KARNE: 0,00 321232123",
             });
         }
 

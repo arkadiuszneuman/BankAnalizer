@@ -34,9 +34,9 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Płatność kartą",
                 Amount = -13.00M,
                 Currency = "PLN",
-                Title = "Tytuł: Some transaction title",
+                Title = "Some transaction title",
                  Extensions = new LocationExtension {
-                     Location = "Lokalizacja: Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA"
+                     Location = "Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA"
                  }.ToJson()
             });
         }

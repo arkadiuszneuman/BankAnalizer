@@ -35,7 +35,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Currency = "PLN",
                 Title = "Tytuł: PKO BP 123123123",
                 Extensions = new LocationExtension { 
-                        Location = "Lokalizacja: Kraj: POLSKA Miasto: SOMECITY Adres: UL. SOMNEADDRESS 45"
+                        Location = "Kraj: POLSKA Miasto: SOMECITY Adres: UL. SOMNEADDRESS 45"
                 }.ToJson()
             });
         }

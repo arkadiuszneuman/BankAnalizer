@@ -36,9 +36,9 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Wpłata gotówki we wpłatomacie",
                 Amount = 11.21M,
                 Currency = "PLN",
-                Title = "Tytuł: PKO BP 123123123123",
+                Title = "PKO BP 123123123123",
                 Extensions = new LocationExtension { 
-                        Location = "Lokalizacja: Kraj: COUNTRY Miasto: CITY Adres: STREET"
+                        Location = "Kraj: COUNTRY Miasto: CITY Adres: STREET"
                 }.ToJson()
             });
         }

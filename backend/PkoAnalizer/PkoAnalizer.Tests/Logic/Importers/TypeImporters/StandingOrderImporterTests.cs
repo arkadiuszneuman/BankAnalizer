@@ -36,11 +36,11 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Amount = -73.21M,
                 Currency = "PLN",
                 Extensions = new RecipientExtension {
-                    RecipientReceipt = "Rachunek odbiorcy: 11 2222 3333 0000 9999 8888 7777",
-                    RecipientName = "Nazwa odbiorcy: SOME RECIPIENT NAME",
-                    RecipientAddress = "Adres odbiorcy: SOME ADDRESS 32/45 CITY",
+                    RecipientReceipt = "11 2222 3333 0000 9999 8888 7777",
+                    RecipientName = "SOME RECIPIENT NAME",
+                    RecipientAddress = "SOME ADDRESS 32/45 CITY",
                 }.ToJson(),
-                Title = "Tytuł: NAME SURNAMESTREET 32/441-506 CHORZÓW",
+                Title = "NAME SURNAMESTREET 32/441-506 CHORZÓW",
             });
         }
 
