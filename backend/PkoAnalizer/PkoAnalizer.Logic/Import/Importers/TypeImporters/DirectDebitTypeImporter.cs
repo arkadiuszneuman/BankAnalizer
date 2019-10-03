@@ -3,6 +3,7 @@ using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
@@ -11,8 +12,9 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
     {
         public PkoTransaction Import(string[] splittedLine)
         {
+            var supportedTypes = new[] { "Polecenie Zapłaty", "Przelew podatkowy" };
             var type = splittedLine.Index(2);
-            if (type == "Polecenie Zapłaty")
+            if (supportedTypes.Contains(type))
             {
                 return new PkoTransaction
                 {

@@ -39,6 +39,32 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                         Title = "SOME TITLE",
                     }
                 };
+
+                yield return new object[] {
+                    new[] {
+                        "2016-12-23","2016-12-22","Przelew podatkowy","-231.32","PLN","+12.34",
+                        "Rachunek odbiorcy: 44 5555 3333 2222 5555 4444 3333",
+                        "Nazwa odbiorcy: PIERWSZY URZĄD SKARBOWY","Adres odbiorcy: OPOLE",
+                        "Nazwa i nr identyfikatora: PESEL, 44345434456",
+                        "Symbol formularza: MANDATY","Identyfikator zobowiązania: AB 21523432",
+                        "Okres płatności: 0"
+
+                    },
+                    new PkoTransaction
+                    {
+                        OperationDate = new DateTime(2016, 12, 23),
+                        TransactionDate = new DateTime(2016, 12, 22),
+                        TransactionType = "Przelew podatkowy",
+                        Amount = -231.32M,
+                        Currency = "PLN",
+                        Extensions = new RecipientExtension {
+                            RecipientReceipt = "44 5555 3333 2222 5555 4444 3333",
+                            RecipientName = "PIERWSZY URZĄD SKARBOWY",
+                            RecipientAddress = "OPOLE"
+                        }.ToJson(),
+                        Title = "Nazwa i nr identyfikatora: PESEL, 44345434456",
+                    }
+                };
             }
         }
 
