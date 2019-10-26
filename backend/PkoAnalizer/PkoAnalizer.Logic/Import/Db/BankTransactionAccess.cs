@@ -5,7 +5,6 @@ using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Import.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -61,6 +60,36 @@ namespace PkoAnalizer.Logic.Import.Db
             logger.LogInformation("Finish adding transactions to database");
         }
 
+
+        public async Task<bool> AddToDatabase(PkoTransaction transaction)
+        {
+            var isAdded = false;
+            var groupDbModel = MapGroup(transaction.TransactionType);
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                using (var context = new PkoContext())
+                {
+                    var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
+                    var group = existingGroup ?? groupDbModel;
+
+                    var groupTransaction = MapTransaction(transaction);
+                    groupTransaction.BankTransactionType = group;
+                    if (!ContainsTransaction(context, groupTransaction, existingGroup))
+                    {
+                        await context.AddAsync(groupTransaction);
+                        isAdded = true;
+                        await context.SaveChangesAsync();
+                        logger.LogDebug("Added transaction {transaction} to database", transaction.Title);
+                    }
+                }
+
+                scope.Complete();
+            }
+
+            return isAdded;
+        }
+
         private bool ContainsTransaction(PkoContext context, BankTransaction groupTransaction, BankTransactionType existingGroup)
         {
             return existingGroup != null && context.BankTransactions.Where(t => t.BankTransactionType.Name == existingGroup.Name &&
@@ -82,6 +111,14 @@ namespace PkoAnalizer.Logic.Import.Db
                     Name = groupName
                 };
             }
+        }
+
+        private BankTransactionType MapGroup(string groupName)
+        {
+            return new BankTransactionType
+            {
+                Name = groupName
+            };
         }
 
         private BankTransaction MapTransaction(PkoTransaction transaction)

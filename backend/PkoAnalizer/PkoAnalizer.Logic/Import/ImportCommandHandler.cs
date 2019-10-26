@@ -34,7 +34,14 @@ namespace PkoAnalizer.Logic.Import
         {
             var lastOrder = await bankTransactionAccess.GetLastTransactionOrder();
             var transactions = importers.SelectMany(i => i.ImportTransactions(lastOrder).ToList()).ToList();
-            await bankTransactionAccess.AddToDatabase(transactions);
+
+            foreach (var transaction in transactions)
+            {
+                transaction.Order = ++lastOrder;
+
+                if (!await bankTransactionAccess.AddToDatabase(transaction))
+                    --lastOrder;
+            }
         }
     }
 }
