@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Import.Models;
@@ -19,10 +20,10 @@ namespace PkoAnalizer.Logic.Import.Db
             this.logger = logger;
         }
 
-        public int GetLastTransactionOrder()
+        public async Task<int> GetLastTransactionOrder()
         {
             using var context = new PkoContext();
-            return context.BankTransactions.Max(x => (int?)x.Order).GetValueOrDefault();
+            return (await context.BankTransactions.MaxAsync(t => (int?)t.Order)) ?? 0;
         }
 
         public async Task AddToDatabase(List<PkoTransaction> transactions)
