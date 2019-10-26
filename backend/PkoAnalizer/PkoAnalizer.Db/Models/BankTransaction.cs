@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PkoAnalizer.Logic.Import.Models
+namespace PkoAnalizer.Db.Models
 {
-    public class PkoTransaction
+    public class BankTransaction
     {
+        public Guid Id { get; set; }
+        public int Order { get; set; }
+        public BankTransactionType BankTransactionType { get; set; }
         public DateTime OperationDate { get; set; }
         public DateTime TransactionDate { get; set; }
-        public string TransactionType { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; }
         public string Title { get; set; }
         public string Extensions { get; set; }
-        public int Order { get; set; }
     }
 }

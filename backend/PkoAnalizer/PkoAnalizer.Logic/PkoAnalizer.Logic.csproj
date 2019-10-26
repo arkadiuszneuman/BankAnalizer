@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PkoAnalizer.Core\PkoAnalizer.Core.csproj" />
+    <ProjectReference Include="..\PkoAnalizer.Db\PkoAnalizer.Db.csproj" />
   </ItemGroup>
 
 </Project>

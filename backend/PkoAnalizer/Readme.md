@@ -1,0 +1,1 @@
+docker run --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=1Secure*Password1' -e 'MSSQL_PID=Express' -p 1433:1433 microsoft/mssql-server-linux:2017-latest

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PkoAnalizer.Core.Cqrs.Command
 {
     public interface ICommandsBus
     {
-        void Send<TCommand>(TCommand command) where TCommand : ICommand;
+        Task Send<TCommand>(TCommand command) where TCommand : ICommand;
     }
 }

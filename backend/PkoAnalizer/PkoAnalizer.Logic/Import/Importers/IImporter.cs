@@ -7,6 +7,6 @@ namespace PkoAnalizer.Logic.Import.Importers
 {
     public interface IImporter
     {
-        IEnumerable<PkoTransaction> ImportTransactions();
+        IEnumerable<PkoTransaction> ImportTransactions(int lastOrder);
     }
 }

@@ -7,6 +7,10 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -18,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PkoAnalizer.Core\PkoAnalizer.Core.csproj" />
+    <ProjectReference Include="..\PkoAnalizer.Db\PkoAnalizer.Db.csproj" />
     <ProjectReference Include="..\PkoAnalizer.Logic\PkoAnalizer.Logic.csproj" />
   </ItemGroup>
 

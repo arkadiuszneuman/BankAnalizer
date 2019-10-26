@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PkoAnalizer.Core.Cqrs.Command
 {
@@ -12,6 +13,6 @@ namespace PkoAnalizer.Core.Cqrs.Command
     public interface ICommandHandler<TCommand> : ICommandHandler
         where TCommand : ICommand
     {
-        void Handle(TCommand command);
+        Task Handle(TCommand command);
     }
 }

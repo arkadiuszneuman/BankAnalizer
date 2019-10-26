@@ -2,8 +2,11 @@
 using Microsoft.Extensions.Logging;
 using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Cqrs.Command;
+using PkoAnalizer.Db;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PkoAnalizer.Controllers
 {
@@ -19,10 +22,10 @@ namespace PkoAnalizer.Controllers
         }
 
         [HttpGet]
-        public ActionResult ImportAll()
+        public async Task<ActionResult> ImportAll()
         {
             var command = new ImportCommand();
-            bus.Send(command);
+            await bus.Send(command);
             return Accepted(command);
         }
     }

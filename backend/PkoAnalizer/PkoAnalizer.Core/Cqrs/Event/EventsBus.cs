@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PkoAnalizer.Core.Cqrs.Event
 {
@@ -13,14 +14,14 @@ namespace PkoAnalizer.Core.Cqrs.Event
             _handlersFactory = handlersFactory;
         }
 
-        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
+        public async Task Publish<TEvent>(TEvent @event) where TEvent : IEvent
         {
             var handlers = _handlersFactory(typeof(TEvent))
                 .Cast<IHandleEvent<TEvent>>();
 
             foreach (var handler in handlers)
             {
-                handler.Handle(@event);
+                await Task.Factory.StartNew(async () => await handler.Handle(@event));
             }
         }
     }

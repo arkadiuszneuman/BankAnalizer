@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using PkoAnalizer.Logic.Import.Importers;
+using PkoAnalizer.Logic.Import.Db;
+using System.Threading.Tasks;
+using PkoAnalizer.Core.Cqrs.Event;
 
 namespace PkoAnalizer.Logic.Import
 {
@@ -13,17 +16,25 @@ namespace PkoAnalizer.Logic.Import
     {
         private readonly ILogger<ImportCommandHandler> logger;
         private readonly IEnumerable<IImporter> importers;
+        private readonly BankTransactionAccess bankTransactionAccess;
+        private readonly IEventsBus eventsBus;
 
         public ImportCommandHandler(ILogger<ImportCommandHandler> logger,
-            IEnumerable<IImporter> importers)
+            IEnumerable<IImporter> importers,
+            BankTransactionAccess bankTransactionAccess,
+            IEventsBus eventsBus)
         {
             this.logger = logger;
             this.importers = importers;
+            this.bankTransactionAccess = bankTransactionAccess;
+            this.eventsBus = eventsBus;
         }
 
-        public void Handle(ImportCommand command)
+        public async Task Handle(ImportCommand command)
         {
-            var transactions = importers.Select(i => i.ImportTransactions().ToList()).ToList();
+            var lastOrder = bankTransactionAccess.GetLastTransactionOrder();
+            var transactions = importers.SelectMany(i => i.ImportTransactions(lastOrder).ToList()).ToList();
+            await bankTransactionAccess.AddToDatabase(transactions);
         }
     }
 }

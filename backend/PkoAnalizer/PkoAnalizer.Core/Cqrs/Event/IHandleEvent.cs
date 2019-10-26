@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PkoAnalizer.Core.Cqrs.Event
 {
@@ -11,6 +12,6 @@ namespace PkoAnalizer.Core.Cqrs.Event
     public interface IHandleEvent<TEvent> : IHandleEvent
     where TEvent : IEvent
     {
-        void Handle(TEvent @event);
+        Task Handle(TEvent @event);
     }
 }

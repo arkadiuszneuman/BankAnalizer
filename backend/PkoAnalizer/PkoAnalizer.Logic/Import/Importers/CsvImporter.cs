@@ -24,7 +24,7 @@ namespace PkoAnalizer.Logic.Import.Importers
             this.typeImporters = typeImporters;
         }
 
-        public IEnumerable<PkoTransaction> ImportTransactions()
+        public IEnumerable<PkoTransaction> ImportTransactions(int lastOrder)
         {
             logger.LogInformation("Loading transactions from csv file");
 
@@ -36,7 +36,8 @@ namespace PkoAnalizer.Logic.Import.Importers
                         .RemoveWhitespacesAndQuotes()
                         .ToArray())
                 .Select(Import)
-                .OnlyExistsingTransactions();
+                .OnlyExistsingTransactions()
+                .AssignOrder(lastOrder);
         }
 
         private PkoTransaction Import(string[] splittedLine)
@@ -84,6 +85,17 @@ namespace PkoAnalizer.Logic.Import.Importers
         public static IEnumerable<string> GetAllLinesExceptFirst(this IEnumerable<string> lines)
         {
             return lines.Skip(1);
+        }
+
+        public static IEnumerable<PkoTransaction> AssignOrder(this IEnumerable<PkoTransaction> transactions, int lastOrder)
+        {
+            var transactionsCreated = transactions.ToList();
+            foreach (var transaction in transactionsCreated)
+            {
+                transaction.Order = ++lastOrder;
+            }
+
+            return transactionsCreated;
         }
     }
 }

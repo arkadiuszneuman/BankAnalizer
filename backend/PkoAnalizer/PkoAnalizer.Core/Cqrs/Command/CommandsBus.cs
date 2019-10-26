@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PkoAnalizer.Core.Cqrs.Command
 {
@@ -12,10 +13,10 @@ namespace PkoAnalizer.Core.Cqrs.Command
             _handlersFactory = handlersFactory;
         }
 
-        public void Send<TCommand>(TCommand command) where TCommand : ICommand
+        public async Task Send<TCommand>(TCommand command) where TCommand : ICommand
         {
             var handler = (ICommandHandler<TCommand>)_handlersFactory(typeof(TCommand));
-            handler.Handle(command);
+            await handler.Handle(command);
         }
     }
 }

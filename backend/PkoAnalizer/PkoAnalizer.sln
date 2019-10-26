@@ -5,13 +5,20 @@ VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PkoAnalizer.Web", "PkoAnalizer\PkoAnalizer.Web.csproj", "{69B09FB1-012B-4026-8B40-6150A2E7D2EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PkoAnalizer.Core", "PkoAnalizer.Core\PkoAnalizer.Core.csproj", "{817E2785-0DBF-4154-B648-A12DAF7C6ABA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PkoAnalizer.Core", "PkoAnalizer.Core\PkoAnalizer.Core.csproj", "{817E2785-0DBF-4154-B648-A12DAF7C6ABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PkoAnalizer.Logic", "PkoAnalizer.Logic\PkoAnalizer.Logic.csproj", "{F6C11421-C587-4D65-8090-D033C7D7BD4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PkoAnalizer.Logic", "PkoAnalizer.Logic\PkoAnalizer.Logic.csproj", "{F6C11421-C587-4D65-8090-D033C7D7BD4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PkoAnalizer.Tests", "PkoAnalizer.Tests\PkoAnalizer.Tests.csproj", "{8903052A-6EE6-4A9C-B270-C840E7542607}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PkoAnalizer.Tests", "PkoAnalizer.Tests\PkoAnalizer.Tests.csproj", "{8903052A-6EE6-4A9C-B270-C840E7542607}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C5F20669-95CE-41E6-9C07-B0D8DA896A35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PkoAnalizer.Db", "PkoAnalizer.Db\PkoAnalizer.Db.csproj", "{F989289C-65A8-49C3-BE08-4BC67851BC89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{00F7BFC2-6E72-4218-9400-694D5604A89E}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.md = Readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +42,10 @@ Global
 		{8903052A-6EE6-4A9C-B270-C840E7542607}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8903052A-6EE6-4A9C-B270-C840E7542607}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8903052A-6EE6-4A9C-B270-C840E7542607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F989289C-65A8-49C3-BE08-4BC67851BC89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F989289C-65A8-49C3-BE08-4BC67851BC89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F989289C-65A8-49C3-BE08-4BC67851BC89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F989289C-65A8-49C3-BE08-4BC67851BC89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
