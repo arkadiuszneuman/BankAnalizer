@@ -19,6 +19,7 @@ namespace PkoAnalizer.Db
 
         public DbSet<BankTransaction> BankTransactions { get; set; }
         public DbSet<BankTransactionType> BankTransactionTypes { get; set; }
+        public DbSet<Rule> Rules { get; set; }
 
         public async Task LockTableAsync<T>(T table)
         {
@@ -45,6 +46,7 @@ namespace PkoAnalizer.Db
 
             modelBuilder.ApplyConfiguration(new BankTransactionConfiguration());
             modelBuilder.ApplyConfiguration(new BankTransactionTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new RuleConfiguration());
         }
     }
 }
