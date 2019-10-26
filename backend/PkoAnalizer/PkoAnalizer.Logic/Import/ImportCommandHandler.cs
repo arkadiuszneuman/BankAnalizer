@@ -9,6 +9,7 @@ using PkoAnalizer.Logic.Import.Importers;
 using PkoAnalizer.Logic.Import.Db;
 using System.Threading.Tasks;
 using PkoAnalizer.Core.Cqrs.Event;
+using PkoAnalizer.Logic.Import.Events;
 
 namespace PkoAnalizer.Logic.Import
 {
@@ -32,6 +33,8 @@ namespace PkoAnalizer.Logic.Import
 
         public async Task Handle(ImportCommand command)
         {
+            logger.LogInformation("Importing transactions from file");
+
             var lastOrder = await bankTransactionAccess.GetLastTransactionOrder();
             var transactions = importers.SelectMany(i => i.ImportTransactions(lastOrder).ToList()).ToList();
 
@@ -39,9 +42,15 @@ namespace PkoAnalizer.Logic.Import
             {
                 transaction.Order = ++lastOrder;
 
-                if (!await bankTransactionAccess.AddToDatabase(transaction))
+                var databaseTransaction = await bankTransactionAccess.AddToDatabase(transaction);
+
+                if (databaseTransaction != null)
+                    await eventsBus.Publish(new TransactionSavedEvent(transaction, databaseTransaction));
+                else
                     --lastOrder;
             }
+
+            logger.LogInformation("Transactions from file imported");
         }
     }
 }

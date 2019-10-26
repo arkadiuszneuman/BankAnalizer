@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Import.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,33 +62,30 @@ namespace PkoAnalizer.Logic.Import.Db
         }
 
 
-        public async Task<bool> AddToDatabase(PkoTransaction transaction)
+        public async Task<BankTransaction> AddToDatabase(PkoTransaction transaction)
         {
-            var isAdded = false;
+            BankTransaction databaseTransaction = null;
             var groupDbModel = MapGroup(transaction.TransactionType);
 
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            using var context = new PkoContext();
+
+            var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
+            var group = existingGroup ?? groupDbModel;
+
+            databaseTransaction = MapTransaction(transaction);
+            databaseTransaction.BankTransactionType = group;
+            if (!ContainsTransaction(context, databaseTransaction, existingGroup))
             {
-                using (var context = new PkoContext())
-                {
-                    var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
-                    var group = existingGroup ?? groupDbModel;
-
-                    var groupTransaction = MapTransaction(transaction);
-                    groupTransaction.BankTransactionType = group;
-                    if (!ContainsTransaction(context, groupTransaction, existingGroup))
-                    {
-                        await context.AddAsync(groupTransaction);
-                        isAdded = true;
-                        await context.SaveChangesAsync();
-                        logger.LogDebug("Added transaction {transaction} to database", transaction.Title);
-                    }
-                }
-
-                scope.Complete();
+                await context.AddAsync(databaseTransaction);
+                await context.SaveChangesAsync();
+                logger.LogDebug("Added transaction {transaction} to database", transaction.Title);
             }
 
-            return isAdded;
+
+            scope.Complete();
+
+            return databaseTransaction;
         }
 
         private bool ContainsTransaction(PkoContext context, BankTransaction groupTransaction, BankTransactionType existingGroup)
@@ -117,6 +115,7 @@ namespace PkoAnalizer.Logic.Import.Db
         {
             return new BankTransactionType
             {
+                Id = Guid.NewGuid(),
                 Name = groupName
             };
         }
@@ -125,6 +124,7 @@ namespace PkoAnalizer.Logic.Import.Db
         {
             return new BankTransaction
             {
+                Id = Guid.NewGuid(),
                 Amount = transaction.Amount,
                 Currency = transaction.Currency,
                 Extensions = transaction.Extensions,

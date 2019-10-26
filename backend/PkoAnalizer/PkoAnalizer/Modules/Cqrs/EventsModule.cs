@@ -3,7 +3,6 @@ using PkoAnalizer.Core.Cqrs.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Modules.Cqrs
 {
@@ -26,7 +25,7 @@ namespace PkoAnalizer.Web.Modules.Cqrs
                     var handlersCollectionType = typeof(IEnumerable<>).MakeGenericType(handlerType);
                     return (IEnumerable<IHandleEvent>)ctx.Resolve(handlersCollectionType);
                 };
-            });
+            }).SingleInstance();
 
             builder.RegisterType<EventsBus>()
                 .AsImplementedInterfaces();

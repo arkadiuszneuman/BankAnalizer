@@ -21,7 +21,7 @@ namespace PkoAnalizer.Core.Cqrs.Event
 
             foreach (var handler in handlers)
             {
-                await Task.Factory.StartNew(async () => await handler.Handle(@event));
+                await handler.Handle(@event);
             }
         }
     }

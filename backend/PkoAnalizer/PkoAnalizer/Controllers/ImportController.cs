@@ -25,7 +25,7 @@ namespace PkoAnalizer.Controllers
         public async Task<ActionResult> ImportAll()
         {
             var command = new ImportCommand();
-            await bus.Send(command);
+            _ = bus.Send(command);
             return Accepted(command);
         }
     }
