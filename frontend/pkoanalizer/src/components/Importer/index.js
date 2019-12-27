@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 
 class Importer extends Component {
   import = () => {
-    alert("asd")
+    fetch("https://localhost:5001/api/import")
+      .then(response => response.json())
+      .then(json => console.log(json));
   }
 
   render() {
     return (
       <div>
-        <input type="text" />
-        <button onClick={this.import}>Add</button>
+        <button onClick={this.import}>Import</button>
       </div>
     )
   }
