@@ -21,8 +21,13 @@ namespace PkoAnalizer.Logic.Rules
             string columnValue = null;
             if (rule.IsColumnInExtensions)
             {
-                var extensions = JToken.Parse(pkoTransaction.Extensions);
-                columnValue = extensions[rule.Column].Value<string>();
+                if (pkoTransaction.Extensions != null)
+                {
+                    var extensions = JToken.Parse(pkoTransaction.Extensions);
+                    var column = extensions[rule.Column];
+                    if (column != null)
+                        columnValue = column.Value<string>();
+                }
             }
             else
             {
