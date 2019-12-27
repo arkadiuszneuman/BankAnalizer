@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PkoAnalizer.Core\PkoAnalizer.Core.csproj" />
     <ProjectReference Include="..\PkoAnalizer.Logic\PkoAnalizer.Logic.csproj" />
   </ItemGroup>
 
