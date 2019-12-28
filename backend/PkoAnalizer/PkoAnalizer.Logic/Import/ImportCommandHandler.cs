@@ -54,6 +54,8 @@ namespace PkoAnalizer.Logic.Import
 
             Task.WaitAll(transactionSavedEventTasks.ToArray());
 
+            await eventsBus.Publish(new SignalRTransactionsImported(command.ConnectionId, command.Id));
+
             logger.LogInformation("Transactions from file imported");
         }
     }

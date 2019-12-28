@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PkoAnalizer.Logic.Import.Hubs;
 
 namespace PkoAnalizer
 {
@@ -28,9 +29,19 @@ namespace PkoAnalizer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+
             services.AddControllers();
             services.AddOptions();
+            services.AddSignalR();
+
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -43,17 +54,12 @@ namespace PkoAnalizer
         {
             this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
+            app.UseCors("CorsPolicy");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseCors(
-                options => options
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-            );
 
             app.UseHttpsRedirection();
 
@@ -64,6 +70,7 @@ namespace PkoAnalizer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<SendSignalRAnswerHub>("/hub");
             });
         }
     }

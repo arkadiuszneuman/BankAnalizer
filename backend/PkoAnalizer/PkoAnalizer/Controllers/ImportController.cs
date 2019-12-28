@@ -22,9 +22,9 @@ namespace PkoAnalizer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ImportAll()
+        public async Task<ActionResult> ImportAll([FromHeader]string connectionId)
         {
-            var command = new ImportCommand();
+            var command = new ImportCommand(connectionId);
             _ = bus.Send(command);
             return Accepted(command);
         }
