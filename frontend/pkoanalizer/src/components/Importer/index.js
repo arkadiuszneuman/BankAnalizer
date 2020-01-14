@@ -34,7 +34,7 @@ class Importer extends Component {
   import = () => {
     this.setState({isLoading: true})
 
-    fetch("https://localhost:5001/api/import", { 
+    fetch("https://localhost:5001/api/transaction/import", { 
       method: 'get', 
       headers: new Headers({
         'connectionId': this.state.connId
