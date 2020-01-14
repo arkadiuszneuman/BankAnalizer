@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { HubConnectionBuilder } from '@aspnet/signalr';
+import ApiConnector from '../../helpers/api/ApiConnector'
 
 class Importer extends Component {
+  connector = new ApiConnector()
+
   state = {
     isLoading: false,
     connId: ''
   }
-  
 
   componentDidMount = () => {
     const hubConnection = new HubConnectionBuilder()
@@ -31,17 +33,11 @@ class Importer extends Component {
     });
   }
 
-  import = () => {
+  import = async () => {
     this.setState({isLoading: true})
 
-    fetch("https://localhost:5001/api/transaction/import", { 
-      method: 'get', 
-      headers: new Headers({
-        'connectionId': this.state.connId
-      })
-    })
-      .then(response => response.json())
-      .then(json => console.log(json));
+    const result = await this.connector.get("transaction/import", { 'connectionId': this.state.connId });
+    console.log(result);
   }
 
   render() {
