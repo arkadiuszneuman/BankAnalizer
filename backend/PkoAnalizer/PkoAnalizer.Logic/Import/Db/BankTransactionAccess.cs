@@ -14,15 +14,18 @@ namespace PkoAnalizer.Logic.Import.Db
     public class BankTransactionAccess
     {
         private readonly ILogger<BankTransactionAccess> logger;
+        private readonly IContextFactory contextFactory;
 
-        public BankTransactionAccess(ILogger<BankTransactionAccess> logger)
+        public BankTransactionAccess(ILogger<BankTransactionAccess> logger,
+            IContextFactory contextFactory)
         {
             this.logger = logger;
+            this.contextFactory = contextFactory;
         }
 
         public async Task<int> GetLastTransactionOrder()
         {
-            using var context = new PkoContext();
+            using var context = contextFactory.GetContext();
             return (await context.BankTransactions.MaxAsync(t => (int?)t.Order)) ?? 0;
         }
 
@@ -35,7 +38,7 @@ namespace PkoAnalizer.Logic.Import.Db
             {
                 foreach (var groupDbModel in groupsDbModels)
                 {
-                    using (var context = new PkoContext())
+                    using (var context = contextFactory.GetContext())
                     {
                         var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
                         var group = existingGroup ?? groupDbModel;
@@ -68,7 +71,7 @@ namespace PkoAnalizer.Logic.Import.Db
             var groupDbModel = MapGroup(transaction.TransactionType);
 
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            using var context = new PkoContext();
+            using var context = contextFactory.GetContext();
 
             var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
             var group = existingGroup ?? groupDbModel;
@@ -88,7 +91,7 @@ namespace PkoAnalizer.Logic.Import.Db
             return databaseTransaction;
         }
 
-        private bool ContainsTransaction(PkoContext context, BankTransaction groupTransaction, BankTransactionType existingGroup)
+        private bool ContainsTransaction(IContext context, BankTransaction groupTransaction, BankTransactionType existingGroup)
         {
             return existingGroup != null && context.BankTransactions.Where(t => t.BankTransactionType.Name == existingGroup.Name &&
                 t.Amount == groupTransaction.Amount &&

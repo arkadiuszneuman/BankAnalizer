@@ -1,9 +1,5 @@
 ﻿using Autofac;
 using PkoAnalizer.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Modules
 {
@@ -15,6 +11,13 @@ namespace PkoAnalizer.Web.Modules
 
             builder.RegisterType<ConnectionFactory>()
                 .SingleInstance()
+                .AsSelf();
+
+            builder.RegisterType<ContextFactory>()
+                .As<IContextFactory>()
+                .SingleInstance();
+
+            builder.RegisterType<PkoContext>()
                 .AsSelf();
         }
     }

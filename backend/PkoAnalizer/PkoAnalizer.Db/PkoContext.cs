@@ -1,25 +1,41 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.Extensions.Options;
 using PkoAnalizer.Db.Configurations;
 using PkoAnalizer.Db.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Db
 {
-    public class PkoContext : DbContext
+    public interface IContext : IDisposable, IAsyncDisposable
     {
+        DbSet<BankTransaction> BankTransactions { get; set; }
+        DbSet<BankTransactionType> BankTransactionTypes { get; set; }
+        DbSet<Rule> Rules { get; set; }
+
+        Task LockTableAsync<T>(T table);
+        ValueTask<EntityEntry> AddAsync([NotNull] object entity, CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    }
+
+    public class PkoContext : DbContext, IContext
+    {
+        private readonly ConnectionFactory connectionFactory;
+
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
         public DbSet<BankTransaction> BankTransactions { get; set; }
         public DbSet<BankTransactionType> BankTransactionTypes { get; set; }
         public DbSet<Rule> Rules { get; set; }
+
+        public PkoContext(ConnectionFactory connectionFactory)
+        {
+            this.connectionFactory = connectionFactory;
+        }
 
         public async Task LockTableAsync<T>(T table)
         {
@@ -32,7 +48,7 @@ namespace PkoAnalizer.Db
             optionsBuilder
                 //.UseLoggerFactory(MyLoggerFactory)
                 .EnableSensitiveDataLogging()
-                .UseSqlServer(@"Server=192.168.99.104;Database=PkoAnalizer;Integrated Security=False;User Id=sa;Password=1Secure*Password1;MultipleActiveResultSets=true");
+                .UseSqlServer(connectionFactory.CreateConnectionString());
 
             optionsBuilder.EnableSensitiveDataLogging();
         }
