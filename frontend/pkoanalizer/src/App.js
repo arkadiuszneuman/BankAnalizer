@@ -1,10 +1,12 @@
 import React from 'react';
 import Importer from "./components/Importer"
+import TransactionList from "./components/Transactions"
 
 function App() {
   return (
     <div>
-      <Importer></Importer>
+      <Importer />
+      <TransactionList />
     </div>
   );
 }

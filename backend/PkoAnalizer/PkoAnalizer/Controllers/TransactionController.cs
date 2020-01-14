@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Cqrs.Command;
+using PkoAnalizer.Logic.Read.Transactions;
+using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Controllers
@@ -10,10 +14,13 @@ namespace PkoAnalizer.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ICommandsBus bus;
+        private readonly TransactionReader transactionReader;
 
-        public TransactionController(ICommandsBus bus)
+        public TransactionController(ICommandsBus bus,
+            TransactionReader transactionReader)
         {
             this.bus = bus;
+            this.transactionReader = transactionReader;
         }
 
         [HttpGet]
@@ -27,9 +34,9 @@ namespace PkoAnalizer.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult> Index()
+        public async Task<IEnumerable<TransactionViewModel>> Index()
         {
-            return Accepted();
+            return await transactionReader.ReadTransactions();
         }
     }
 }
