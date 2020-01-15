@@ -21,8 +21,9 @@ namespace PkoAnalizer.Logic.Read.Transactions
             using var connection = connectionFactory.CreateConnection();
 
             return await connection.QueryAsync<TransactionViewModel>(@"
-                SELECT bt.Title as Name, btt.Name as Type FROM BankTransactions bt
-                JOIN BankTransactionTypes btt ON bt.BankTransactionTypeId = btt.Id");
+                SELECT bt.Id as TransactionId, bt.Title as Name, btt.Name as Type FROM BankTransactions bt
+                JOIN BankTransactionTypes btt ON bt.BankTransactionTypeId = btt.Id
+                ORDER BY bt.[Order] desc");
         }
     }
 }

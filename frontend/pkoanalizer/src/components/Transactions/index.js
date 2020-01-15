@@ -16,9 +16,22 @@ class TransactionList extends Component {
     render() {
         return (
             <div>
-                {this.state.transactions.map(transaction => 
-                    <div>{transaction.name} {transaction.type}</div>
-                )}
+                <table className="ui very basic celled table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.transactions.map(transaction => 
+                        <tr key={transaction.transactionId}>
+                            <td>{transaction.name}</td>
+                            <td>{transaction.type}</td>
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
             </div>
         )
     }
