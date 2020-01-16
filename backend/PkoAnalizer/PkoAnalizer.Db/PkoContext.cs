@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
+using PkoAnalizer.Db.Config;
 using PkoAnalizer.Db.Configurations;
 using PkoAnalizer.Db.Models;
 using System;
@@ -15,10 +16,14 @@ namespace PkoAnalizer.Db
         DbSet<BankTransaction> BankTransactions { get; set; }
         DbSet<BankTransactionType> BankTransactionTypes { get; set; }
         DbSet<Rule> Rules { get; set; }
+        DbSet<Group> Groups { get; set; }
+        DbSet<BankTransactionGroup> BankTransactionGroups { get; set; }
 
         Task LockTableAsync<T>(T table);
         ValueTask<EntityEntry> AddAsync([NotNull] object entity, CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        EntityEntry Attach([NotNull] object entity);
+        void AttachRange([NotNull] params object[] entities);
     }
 
     public class PkoContext : DbContext, IContext
@@ -31,6 +36,19 @@ namespace PkoAnalizer.Db
         public DbSet<BankTransaction> BankTransactions { get; set; }
         public DbSet<BankTransactionType> BankTransactionTypes { get; set; }
         public DbSet<Rule> Rules { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<BankTransactionGroup> BankTransactionGroups { get; set; }
+
+        public PkoContext()
+        {
+            this.connectionFactory = new ConnectionFactory(new SqlServerConfig
+            {
+                Database = "PkoAnalizer",
+                Password = "1Secure*Password1",
+                UserId = "sa",
+                Server = "192.168.99.104"
+            });
+        }
 
         public PkoContext(ConnectionFactory connectionFactory)
         {
@@ -63,6 +81,8 @@ namespace PkoAnalizer.Db
             modelBuilder.ApplyConfiguration(new BankTransactionConfiguration());
             modelBuilder.ApplyConfiguration(new BankTransactionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new RuleConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupConfiguration());
+            modelBuilder.ApplyConfiguration(new BankTransactionGroupConfiguration());
         }
     }
 }
