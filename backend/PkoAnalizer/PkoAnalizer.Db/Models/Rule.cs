@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PkoAnalizer.Db.Models
 {
@@ -9,5 +7,6 @@ namespace PkoAnalizer.Db.Models
         public Guid Id { get; set; }
         public BankTransactionType BankTransactionType { get; set; }
         public string RuleDefinition { get; set; }
+        public string GroupName { get; set; }
     }
 }

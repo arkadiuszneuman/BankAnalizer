@@ -19,7 +19,8 @@ namespace PkoAnalizer.Tests.Logic.Rules
             var sut = new AutoSubstitute().Resolve<RuleParser>();
             var ruleViewModel = new RuleViewModel
             {
-                RuleDefinition = "Title Contains TESCO"
+                RuleDefinition = "Title Contains TESCO",
+                GroupName = "Some Group"
             };
 
             //act
@@ -32,7 +33,8 @@ namespace PkoAnalizer.Tests.Logic.Rules
                 Column = "Title",
                 IsColumnInExtensions = false,
                 RuleType = RuleType.Contains,
-                Value = "TESCO"
+                Value = "TESCO",
+                GroupName = "Some Group"
             });
         }
 

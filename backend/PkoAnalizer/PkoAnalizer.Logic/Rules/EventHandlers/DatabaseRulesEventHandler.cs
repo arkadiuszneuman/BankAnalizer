@@ -1,17 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
+using PkoAnalizer.Core.Commands.Group;
+using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
-using PkoAnalizer.Logic.Import.Db;
 using PkoAnalizer.Logic.Import.Events;
-using PkoAnalizer.Logic.Import.Models;
 using PkoAnalizer.Logic.Rules.Db;
-using PkoAnalizer.Logic.Rules.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Authentication.ExtendedProtection;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Logic.Rules.EventHandlers
@@ -22,16 +14,19 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
         private readonly RuleAccess ruleAccess;
         private readonly RuleParser ruleParser;
         private readonly RuleMatchChecker ruleMatchChecker;
+        private readonly ICommandsBus bus;
 
         public DatabaseRulesEventHandler(ILogger<DatabaseRulesEventHandler> logger,
             RuleAccess ruleAccess,
             RuleParser ruleParser,
-            RuleMatchChecker ruleMatchChecker)
+            RuleMatchChecker ruleMatchChecker,
+            ICommandsBus bus)
         {
             this.logger = logger;
             this.ruleAccess = ruleAccess;
             this.ruleParser = ruleParser;
             this.ruleMatchChecker = ruleMatchChecker;
+            this.bus = bus;
         }
 
         public async Task Handle(TransactionSavedEvent @event)
@@ -43,11 +38,9 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
             {
                 if (ruleMatchChecker.IsRuleMatch(rule, @event.Transaction))
                 {
-
+                    await bus.Send(new AddGroupCommand(@event.DatabaseTransaction.Id, rule.GroupName));
                 }
             }
         }
-
-        
     }
 }

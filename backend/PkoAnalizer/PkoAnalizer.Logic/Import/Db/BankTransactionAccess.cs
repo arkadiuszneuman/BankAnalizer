@@ -29,78 +29,52 @@ namespace PkoAnalizer.Logic.Import.Db
             return (await context.BankTransactions.MaxAsync(t => (int?)t.Order)) ?? 0;
         }
 
-        public async Task AddToDatabase(List<PkoTransaction> transactions)
-        {
-            logger.LogInformation("Starting add transactions to database");
-            var groupsDbModels = MapGroups(transactions.Select(t => t.TransactionType).Distinct()).ToList();
-
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                foreach (var groupDbModel in groupsDbModels)
-                {
-                    using (var context = contextFactory.GetContext())
-                    {
-                        var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
-                        var group = existingGroup ?? groupDbModel;
-
-                        foreach (var transaction in transactions.Where(x => x.TransactionType == group.Name))
-                        {
-                            var groupTransaction = MapTransaction(transaction);
-                            groupTransaction.BankTransactionType = group;
-                            if (!ContainsTransaction(context, groupTransaction, existingGroup))
-                            {
-                                await context.AddAsync(groupTransaction);
-                                logger.LogDebug("Add transactions {transaction} to database", groupTransaction.Title);
-                            }
-                        }
-
-                        await context.SaveChangesAsync();
-                    }
-                }
-
-                scope.Complete();
-            }
-
-            logger.LogInformation("Finish adding transactions to database");
-        }
-
-
         public async Task<BankTransaction> AddToDatabase(PkoTransaction transaction)
         {
             BankTransaction databaseTransaction = null;
             var groupDbModel = MapGroup(transaction.TransactionType);
 
-            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            using var context = contextFactory.GetContext();
-
-            var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
-            var group = existingGroup ?? groupDbModel;
-
-            databaseTransaction = MapTransaction(transaction);
-            databaseTransaction.BankTransactionType = group;
-            if (!ContainsTransaction(context, databaseTransaction, existingGroup))
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await context.AddAsync(databaseTransaction);
-                await context.SaveChangesAsync();
-                logger.LogDebug("Added transaction {transaction} to database", transaction.Title);
+                using var context = contextFactory.GetContext();
+
+                var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
+                var group = existingGroup ?? groupDbModel;
+
+                databaseTransaction = MapTransaction(transaction);
+                databaseTransaction.BankTransactionType = group;
+
+                var existingTransaction = await ExistingTransaction(context, databaseTransaction, existingGroup);
+                if (existingTransaction == null)
+                {
+                    await context.AddAsync(databaseTransaction);
+                    await context.SaveChangesAsync();
+                    logger.LogDebug("Added transaction {transaction} to database", transaction.Title);
+                }
+                else
+                {
+                    return existingTransaction;
+                }
+
+                scope.Complete();
             }
-
-
-            scope.Complete();
 
             return databaseTransaction;
         }
 
-        private bool ContainsTransaction(IContext context, BankTransaction groupTransaction, BankTransactionType existingGroup)
+        private async Task<BankTransaction> ExistingTransaction(IContext context, BankTransaction groupTransaction, BankTransactionType existingGroup)
         {
-            return existingGroup != null && context.BankTransactions.Where(t => t.BankTransactionType.Name == existingGroup.Name &&
+            if (existingGroup == null)
+                return null;
+
+            return await context.BankTransactions.Where(t => t.BankTransactionType.Name == existingGroup.Name &&
                 t.Amount == groupTransaction.Amount &&
                 t.Currency == groupTransaction.Currency &&
                 t.Extensions == groupTransaction.Extensions &&
                 t.OperationDate == groupTransaction.OperationDate &&
                 t.Title == groupTransaction.Title &&
                 t.TransactionDate == groupTransaction.TransactionDate)
-                .Any();
+                .SingleOrDefaultAsync();
         }
 
         private IEnumerable<BankTransactionType> MapGroups(IEnumerable<string> groups)

@@ -19,6 +19,7 @@ namespace PkoAnalizer.Logic.Rules
         public RuleType RuleType { get; set; }
         public string Value { get; set; }
         public bool IsColumnInExtensions { get; set; }
+        public string GroupName { get; set; }
     }
 
     public class RuleParser
@@ -55,7 +56,8 @@ namespace PkoAnalizer.Logic.Rules
                 Column = splittedString[0].Replace("Extensions.", "").Trim(),
                 IsColumnInExtensions = splittedString[0].StartsWith("Extensions."),
                 RuleType = Enum.Parse<RuleType>(splittedString[1].Trim()),
-                Value = splittedString[2].Trim()
+                Value = splittedString[2].Trim(),
+                GroupName = rule.GroupName
             };
 
             return parsedRule;
