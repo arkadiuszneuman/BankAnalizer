@@ -13,6 +13,10 @@ namespace PkoAnalizer.Db.Configurations
         {
             builder.Property(p => p.RuleDefinition)
                 .IsRequired();
+
+            builder.Property(p => p.RuleName)
+                .IsRequired()
+                .HasMaxLength(100);
         }
     }
 }
