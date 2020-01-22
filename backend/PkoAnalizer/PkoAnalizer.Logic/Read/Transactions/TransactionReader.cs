@@ -1,14 +1,19 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using PkoAnalizer.Db;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Logic.Read.Transactions
 {
-    public class TransactionReader
+    public interface ITransactionReader
+    {
+        Task<IEnumerable<string>> ReadAllExtensionColumns();
+        Task<IEnumerable<TransactionViewModel>> ReadTransactions();
+        Task<IEnumerable<TransactionTypeViewModel>> ReadTransactionTypes();
+    }
+
+    public class TransactionReader : ITransactionReader
     {
         private readonly ConnectionFactory connectionFactory;
 
@@ -32,6 +37,13 @@ namespace PkoAnalizer.Logic.Read.Transactions
             using var connection = connectionFactory.CreateConnection();
 
             return await connection.QueryAsync<TransactionTypeViewModel>(@"SELECT Id, Name FROM BankTransactionTypes");
+        }
+
+        public async Task<IEnumerable<string>> ReadAllExtensionColumns()
+        {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.QueryAsync<string>(@"SELECT DISTINCT Extensions FROM BankTransactions 
+                WHERE Extensions IS NOT NULL");
         }
     }
 }

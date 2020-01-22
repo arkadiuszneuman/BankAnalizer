@@ -15,12 +15,15 @@ namespace PkoAnalizer.Web.Controllers.Transaction
     {
         private readonly ICommandsBus bus;
         private readonly TransactionReader transactionReader;
+        private readonly ColumnFinder columnFinder;
 
         public TransactionController(ICommandsBus bus,
-            TransactionReader transactionReader)
+            TransactionReader transactionReader,
+            ColumnFinder columnFinder)
         {
             this.bus = bus;
             this.transactionReader = transactionReader;
+            this.columnFinder = columnFinder;
         }
 
         [HttpGet]
@@ -36,5 +39,10 @@ namespace PkoAnalizer.Web.Controllers.Transaction
         [Route("")]
         public async Task<IEnumerable<TransactionViewModel>> Index() => 
             await transactionReader.ReadTransactions();
+
+        [HttpGet]
+        [Route("transaction-columns")]
+        public async Task<IEnumerable<ColumnViewModel>> GetTransactionColumns() =>
+            await columnFinder.FindColumns();
     }
 }

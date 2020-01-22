@@ -4,7 +4,13 @@ using System.Data;
 
 namespace PkoAnalizer.Db
 {
-    public class ConnectionFactory
+    public interface IConnectionFactory
+    {
+        IDbConnection CreateConnection();
+        string CreateConnectionString();
+    }
+
+    public class ConnectionFactory : IConnectionFactory
     {
         private readonly SqlServerConfig sqlServerConfig;
 
