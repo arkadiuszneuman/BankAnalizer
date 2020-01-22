@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Web.Controllers.Groups.ViewModels
+namespace PkoAnalizer.Web.Controllers.Group.ViewModels
 {
     public class AddGroupViewModel
     {

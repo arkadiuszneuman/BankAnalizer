@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Core.Commands.Group;
 using PkoAnalizer.Core.Cqrs.Command;
-using PkoAnalizer.Web.Controllers.Groups.ViewModels;
+using PkoAnalizer.Web.Controllers.Group.ViewModels;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Web.Controllers.Groups
+namespace PkoAnalizer.Web.Controllers.Group
 {
     [Route("api/transaction/[controller]")]
     [ApiController]

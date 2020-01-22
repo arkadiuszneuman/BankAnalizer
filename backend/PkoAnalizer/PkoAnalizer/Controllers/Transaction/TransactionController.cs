@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Controllers
+namespace PkoAnalizer.Web.Controllers.Transaction
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -34,9 +34,7 @@ namespace PkoAnalizer.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<TransactionViewModel>> Index()
-        {
-            return await transactionReader.ReadTransactions();
-        }
+        public async Task<IEnumerable<TransactionViewModel>> Index() => 
+            await transactionReader.ReadTransactions();
     }
 }
