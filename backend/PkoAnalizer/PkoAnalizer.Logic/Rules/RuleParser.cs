@@ -14,12 +14,14 @@ namespace PkoAnalizer.Logic.Rules
 
     public class ParsedRule
     {
+        public Guid Id { get; set; }
         public Guid? BankTransactionTypeId { get; set; }
         public string Column { get; set; }
         public RuleType RuleType { get; set; }
         public string Value { get; set; }
         public bool IsColumnInExtensions { get; set; }
         public string GroupName { get; set; }
+        public string RuleName { get; set; }
     }
 
     public class RuleParser
@@ -52,12 +54,14 @@ namespace PkoAnalizer.Logic.Rules
 
             var parsedRule = new ParsedRule
             {
+                Id = rule.Id,
                 BankTransactionTypeId = rule.BankTransactionTypeId,
                 Column = splittedString[0].Replace("Extensions.", "").Trim(),
                 IsColumnInExtensions = splittedString[0].StartsWith("Extensions."),
                 RuleType = Enum.Parse<RuleType>(splittedString[1].Trim()),
                 Value = splittedString[2].Trim(),
-                GroupName = rule.GroupName
+                GroupName = rule.GroupName,
+                RuleName = rule.RuleName
             };
 
             return parsedRule;

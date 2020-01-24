@@ -1,12 +1,10 @@
 ﻿using AutofacContrib.NSubstitute;
+using FluentAssertions;
+using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Logic.Rules;
 using PkoAnalizer.Logic.Rules.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
-using PkoAnalizer.Core.ExtensionMethods;
-using FluentAssertions;
 
 namespace PkoAnalizer.Tests.Logic.Rules
 {
@@ -19,8 +17,10 @@ namespace PkoAnalizer.Tests.Logic.Rules
             var sut = new AutoSubstitute().Resolve<RuleParser>();
             var ruleViewModel = new RuleViewModel
             {
+                Id = Guid.Parse("C61308F9-AB25-4123-9084-BCDA14F2540F"),
                 RuleDefinition = "Title Contains TESCO",
-                GroupName = "Some Group"
+                GroupName = "Some Group",
+                RuleName = "Some rule name"
             };
 
             //act
@@ -29,12 +29,14 @@ namespace PkoAnalizer.Tests.Logic.Rules
             //assert
             result.Should().BeEquivalentTo(new ParsedRule
             {
+                Id = Guid.Parse("C61308F9-AB25-4123-9084-BCDA14F2540F"),
                 BankTransactionTypeId = null,
                 Column = "Title",
                 IsColumnInExtensions = false,
                 RuleType = RuleType.Contains,
                 Value = "TESCO",
-                GroupName = "Some Group"
+                GroupName = "Some Group",
+                RuleName = "Some rule name"
             });
         }
 
@@ -43,7 +45,8 @@ namespace PkoAnalizer.Tests.Logic.Rules
         {
             // arrange
             var sut = new AutoSubstitute().Resolve<RuleParser>();
-            var ruleViewModel = new RuleViewModel {
+            var ruleViewModel = new RuleViewModel
+            {
                 BankTransactionTypeId = Guid.NewGuid(),
                 RuleDefinition = "Extensions.Location Contains TESCO"
             };

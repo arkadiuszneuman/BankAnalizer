@@ -10,5 +10,6 @@ namespace PkoAnalizer.Logic.Rules.ViewModels
         public Guid? BankTransactionTypeId { get; set; }
         public string RuleDefinition { get; set; }
         public string GroupName { get; set; }
+        public string RuleName { get; set; }
     }
 }
