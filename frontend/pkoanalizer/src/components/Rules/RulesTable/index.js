@@ -24,8 +24,8 @@ class Rules extends Component {
     this.setState({rules: rules});
   }
 
-  import = async () => {
-    this.setState({currentRule: {}})
+  setCurrentRule = async(rule) => {
+    this.setState({currentRule: rule})
   }
 
   render() {
@@ -35,7 +35,7 @@ class Rules extends Component {
       <div>
         <Switch>
         <Route exact path={path}>
-          <Link onClick={this.import} to={`${url}/edit`}>Add</Link>
+          <Link onClick={e => this.setCurrentRule({})} to={`${url}/edit`}>Add</Link>
           <div className="ui relaxed divided list">
           {this.state.rules.map(rule => 
             <div className="item" key={rule.id}>
@@ -46,7 +46,7 @@ class Rules extends Component {
               </div>
               <i className="large handshake middle aligned icon"></i>
               <div className="content">
-                <a className="header">{rule.ruleName}</a>
+                <Link onClick={e => this.setCurrentRule(rule)} className="header" to={`${url}/edit`}>{rule.ruleName}</Link>
                 <div className="description">{rule.groupName}</div>
               </div>
             </div>

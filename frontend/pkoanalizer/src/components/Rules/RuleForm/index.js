@@ -30,23 +30,24 @@ class RuleForm extends Component {
         this.setState({transactionTypes: result[0], transactionColumns: result[1]});
     }
 
-    import = async () => {
-        
+    handleChange(event) {
+        this.setState({value: event.target.value});
     }
 
     render() {
+        const rule = this.props.rule
         return (
         <div>
-            {this.props.rule.name}
+            {rule.ruleName}
             <form className="ui form">
                 <div className="field">
                     <label>Rule name</label>
-                    <input type="text" name="rule-name" placeholder="Rule name" />
+                    <input type="text" value={rule.ruleName} name="rule-name" placeholder="Rule name" />
                 </div>
                 <div className="three fields">
                     <div className="field">
                         <label>Column</label>
-                        <select className="ui fluid dropdown">
+                        <select className="ui fluid dropdown" value={rule.columnId}>
                         {this.state.transactionColumns.map(transactionColumn => 
                             <option key={transactionColumn.id} value={transactionColumn.id}>{transactionColumn.name}</option>
                         )}
@@ -54,23 +55,23 @@ class RuleForm extends Component {
                     </div>
                     <div className="field">
                         <label>Type</label>
-                        <select className="ui fluid dropdown">
+                        <select className="ui fluid dropdown" value={rule.type}>
                             <option value="contains">Contains</option>
                         </select>
                     </div>
                     <div className="field">
                         <label>Text</label>
-                        <input type="text" name="text" placeholder="Text" />
+                        <input type="text" name="text" placeholder="Text" value={rule.text} />
                     </div>
                 </div>
                 <div className="two fields">
                     <div className="field">
                         <label>Group name</label>
-                        <input type="text" name="group-name" placeholder="Group name" />
+                        <input type="text" name="group-name" placeholder="Group name" value={rule.groupName} />
                     </div>
                     <div className="field">
                         <label>Transaction type</label>
-                        <select className="ui fluid dropdown clearable">
+                        <select className="ui fluid dropdown clearable" value={rule.bankTransactionTypeId}>
                             <option value="">All transactions types</option>
                         {this.state.transactionTypes.map(transactionType => 
                             <option key={transactionType.id} value={transactionType.id}>{transactionType.name}</option>
