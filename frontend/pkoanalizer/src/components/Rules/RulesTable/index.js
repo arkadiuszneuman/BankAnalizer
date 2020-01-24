@@ -14,7 +14,7 @@ import RuleForm from '../RuleForm'
 class Rules extends Component {
   state = {
     isLoading: false,
-    connId: ''
+    currentRule: {}
   }
 
   componentDidMount() {
@@ -22,7 +22,7 @@ class Rules extends Component {
   }
 
   import = async () => {
-    
+    this.setState({currentRule: {}})
   }
 
   render() {
@@ -32,10 +32,10 @@ class Rules extends Component {
       <div>
         <Switch>
         <Route exact path={path}>
-          <Link to={`${url}/add`}>Add</Link>
+          <Link onClick={this.import} to={`${url}/edit`}>Add</Link>
         </Route>
-          <Route path={`${path}/:topicId`}>
-            <RuleForm />
+          <Route path={`${path}/edit`}>
+            <RuleForm rule={this.state.currentRule} />
           </Route>
         </Switch>
       </div>
