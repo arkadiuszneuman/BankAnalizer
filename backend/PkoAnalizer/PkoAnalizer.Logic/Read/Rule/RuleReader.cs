@@ -1,8 +1,7 @@
-﻿using PkoAnalizer.Logic.Read.Rule.ViewModels;
+﻿using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Rules;
 using PkoAnalizer.Logic.Rules.Db;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 

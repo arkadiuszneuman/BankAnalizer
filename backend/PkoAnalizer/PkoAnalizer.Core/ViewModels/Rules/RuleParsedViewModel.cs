@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PkoAnalizer.Logic.Read.Rule.ViewModels
+namespace PkoAnalizer.Core.ViewModels.Rules
 {
     public class RuleParsedViewModel
     {

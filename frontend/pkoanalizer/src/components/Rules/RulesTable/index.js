@@ -7,9 +7,9 @@ import {
     useParams,
     withRouter
   } from "react-router-dom";
-import { HubConnectionBuilder } from '@aspnet/signalr';
 import ApiConnector from '../../../helpers/api/ApiConnector'
 import RuleForm from '../RuleForm'
+import uuid from 'uuid/v4'
 
 class Rules extends Component {
   connector = new ApiConnector()
@@ -19,13 +19,30 @@ class Rules extends Component {
     currentRule: {}
   }
 
+  constructor() {
+    super()
+    this.ruleAccepted = this.ruleAccepted.bind(this)
+  }
+
   async componentDidMount() {
     var rules = await this.connector.get("rule")
     this.setState({rules: rules});
   }
 
-  setCurrentRule = async(rule) => {
+  setCurrentRule = (rule) => {
     this.setState({currentRule: rule})
+  }
+
+  ruleAccepted(rule) {
+    if (rule.id) {
+      const originalRule = Object.assign(this.state.currentRule, rule);
+      this.setState({ rules: this.state.rules});
+    } else {
+      const rules = this.state.rules;
+      rule.id = uuid()
+      rules.push(rule)
+      this.setState({rules: rules})
+    }
   }
 
   render() {
@@ -54,7 +71,7 @@ class Rules extends Component {
           </div>
         </Route>
           <Route path={`${path}/edit`}>
-            <RuleForm rule={this.state.currentRule} />
+            <RuleForm rule={this.state.currentRule} onAccept={this.ruleAccepted} />
           </Route>
         </Switch>
       </div>

@@ -12,7 +12,7 @@ class Importer extends Component {
   import = async () => {
     this.setState({isLoading: true})
 
-    const result = await this.connector.get("transaction/import", { 'connectionId': HubConnector.getConnectionId() });
+    const result = await this.connector.get("transaction/import");
     HubConnector.waitForEventResult(result.id, () => {
       this.setState({isLoading: false})
     });
