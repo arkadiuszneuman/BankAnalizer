@@ -1,43 +1,21 @@
 import React, { Component } from 'react';
-import { HubConnectionBuilder } from '@aspnet/signalr';
 import ApiConnector from '../../helpers/api/ApiConnector'
+import HubConnector from '../../helpers/api/HubConnector'
 
 class Importer extends Component {
   connector = new ApiConnector()
 
   state = {
     isLoading: false,
-    connId: ''
-  }
-
-  componentDidMount = () => {
-    const hubConnection = new HubConnectionBuilder()
-      .withUrl('https://localhost:5001/hub')
-      .build()
-    
-    
-
-    hubConnection
-        .start()
-        .then(() => {
-          hubConnection.invoke('getConnectionId')
-            .then(connectionId => {
-                console.log("connectionID: " + connectionId);
-                this.setState({connId: connectionId});
-            })
-        })
-        .catch(err => console.log('Error while establishing connection :('))
-
-    hubConnection.on('transaction-imported', (event) => {
-      this.setState({isLoading: false})
-    });
   }
 
   import = async () => {
     this.setState({isLoading: true})
 
-    const result = await this.connector.get("transaction/import", { 'connectionId': this.state.connId });
-    console.log(result);
+    const result = await this.connector.get("transaction/import", { 'connectionId': HubConnector.getConnectionId() });
+    HubConnector.waitForEventResult(result.id, () => {
+      this.setState({isLoading: false})
+    });
   }
 
   render() {

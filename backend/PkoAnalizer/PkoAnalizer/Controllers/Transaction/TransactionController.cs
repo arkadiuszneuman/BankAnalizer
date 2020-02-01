@@ -28,7 +28,7 @@ namespace PkoAnalizer.Web.Controllers.Transaction
 
         [HttpGet]
         [Route("import")]
-        public async Task<ActionResult> Import([FromHeader]string connectionId)
+        public ActionResult Import([FromHeader]string connectionId)
         {
             var command = new ImportCommand(connectionId);
             _ = bus.Send(command);

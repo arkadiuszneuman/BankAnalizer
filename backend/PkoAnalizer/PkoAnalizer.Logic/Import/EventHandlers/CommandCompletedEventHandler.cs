@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace PkoAnalizer.Logic.Import.EventHandlers
 {
-    public class SendSignalRAnswerEventHandler : IHandleEvent<SignalRTransactionsImported>
+    public class CommandCompletedEventHandler : IHandleEvent<CommandCompletedEvent>
     {
         private readonly IHubContext<SendSignalRAnswerHub> context;
 
-        public SendSignalRAnswerEventHandler(IHubContext<SendSignalRAnswerHub> context)
+        public CommandCompletedEventHandler(IHubContext<SendSignalRAnswerHub> context)
         {
             this.context = context;
         }
 
-        public async Task Handle(SignalRTransactionsImported @event)
+        public async Task Handle(CommandCompletedEvent @event)
         {
-            await context.Clients.Client(@event.ConnectionId).SendAsync("transaction-imported", @event);
+            await context.Clients.Client(@event.ConnectionId).SendAsync("command-completed", @event);
         }
     }
 }

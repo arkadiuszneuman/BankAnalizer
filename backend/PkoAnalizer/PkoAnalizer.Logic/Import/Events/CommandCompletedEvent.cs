@@ -1,20 +1,19 @@
 ﻿using PkoAnalizer.Core.Cqrs.Event;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PkoAnalizer.Logic.Import.Events
 {
-    public class SignalRTransactionsImported : IEvent
+    public class CommandCompletedEvent : IEvent
     {
         public string ConnectionId { get; }
         public Guid Id { get; }
+        public object Object { get; }
 
-        public SignalRTransactionsImported(string connectionId, Guid id)
+        public CommandCompletedEvent(string connectionId, Guid id, object @object = null)
         {
             ConnectionId = connectionId;
             Id = id;
+            Object = @object;
         }
-
     }
 }
