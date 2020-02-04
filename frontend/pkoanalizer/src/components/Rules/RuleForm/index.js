@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import ApiConnector from '../../../helpers/api/ApiConnector'
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useParams,
-    withRouter,
     NavLink
   } from "react-router-dom";
 
