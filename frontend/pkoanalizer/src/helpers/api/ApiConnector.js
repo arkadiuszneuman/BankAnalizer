@@ -3,7 +3,7 @@ import HubConnector from './HubConnector'
 export default class ApiConnector {
     _apiAddress = "https://localhost:5001/api/"
     
-    _executeMethod = async (methodName, methodType, headers, body) => {
+    _executeMethod = async (methodName, methodType, body) => {
         var result = await fetch(this._apiAddress + methodName, { 
             method: methodType, 
             headers: {
@@ -16,19 +16,19 @@ export default class ApiConnector {
         return result.json();
     }
 
-    get = async (methodName, headers) => {
-        return await this._executeMethod(methodName, 'get', headers)
+    get = async (methodName) => {
+        return await this._executeMethod(methodName, 'get')
     }
 
-    put = async (methodName, headers) => {
-        return await this._executeMethod(methodName, 'put', headers)
+    put = async (methodName) => {
+        return await this._executeMethod(methodName, 'put')
     }
 
     post = async (methodName, body, headers) => {
-        return await this._executeMethod(methodName, 'post', headers, body)
+        return await this._executeMethod(methodName, 'post', body)
     }
 
-    delete = async (methodName, headers) => {
-        return await this._executeMethod(methodName, 'delete', headers)
+    delete = async (methodName, body) => {
+        return await this._executeMethod(methodName, 'delete')
     }
 }

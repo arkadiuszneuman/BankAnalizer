@@ -10,6 +10,7 @@ import {
 import ApiConnector from '../../../helpers/api/ApiConnector'
 import RuleForm from '../RuleForm'
 import uuid from 'uuid/v4'
+import _ from 'lodash'
 
 class Rules extends Component {
   connector = new ApiConnector()
@@ -35,14 +36,21 @@ class Rules extends Component {
 
   ruleAccepted(rule) {
     if (rule.id) {
-      const originalRule = Object.assign(this.state.currentRule, rule);
+      Object.assign(this.state.currentRule, rule);
       this.setState({ rules: this.state.rules});
     } else {
       const rules = this.state.rules;
       rule.id = uuid()
-      rules.push(rule)
+      rules.unshift(rule)
       this.setState({rules: rules})
     }
+  }
+
+  deleteRule(rule) {
+      this.connector.delete(`rule/${rule.id}`);
+      const rules = this.state.rules;
+      _.remove(rules, el => el.id === rule.id);
+      this.setState({rules: rules})
   }
 
   render() {
@@ -58,7 +66,7 @@ class Rules extends Component {
             <div className="item" key={rule.id}>
               <div className="right floated content">
                 <div className="ui icon buttons">
-                  <div className="ui red button"><i className="trash icon"></i></div>
+                  <div onClick={e => this.deleteRule(rule)} className="ui red button"><i className="trash icon"></i></div>
                 </div>
               </div>
               <i className="large handshake middle aligned icon"></i>

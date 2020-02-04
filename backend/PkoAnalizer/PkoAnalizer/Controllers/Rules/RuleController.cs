@@ -3,7 +3,9 @@ using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Read.Rule;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Controllers.Rules
@@ -32,6 +34,15 @@ namespace PkoAnalizer.Web.Controllers.Rules
         public async Task<ActionResult> Save([FromHeader]string connectionId, RuleParsedViewModel rule)
         {
             var command = new SaveRuleCommand(connectionId, rule);
+            _ = bus.Send(command);
+            return Accepted(command);
+        }
+
+        [HttpDelete]
+        [Route("{ruleId:Guid}")]
+        public async Task<ActionResult> Delete([FromHeader]string connectionId, Guid ruleId)
+        {
+            var command = new DeleteRuleCommand(connectionId, ruleId);
             _ = bus.Send(command);
             return Accepted(command);
         }
