@@ -37,8 +37,8 @@ namespace PkoAnalizer.Web.Controllers.Transaction
 
         [HttpGet]
         [Route("")]
-        public async Task<IEnumerable<TransactionViewModel>> Index() => 
-            await transactionReader.ReadTransactions();
+        public IAsyncEnumerable<TransactionViewModel> Index() => 
+            transactionReader.ReadTransactions();
 
         [HttpGet]
         [Route("transaction-columns")]

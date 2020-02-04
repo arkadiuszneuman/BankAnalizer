@@ -21,6 +21,7 @@ class TransactionList extends Component {
                         <tr>
                             <th>Name</th>
                             <th>Type</th>
+                            <th>Groups</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,7 @@ class TransactionList extends Component {
                         <tr key={transaction.transactionId}>
                             <td>{transaction.name}</td>
                             <td>{transaction.type}</td>
+                            <td>{transaction.groups.join(", ")}</td>
                         </tr>
                     )}
                     </tbody>

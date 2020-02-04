@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace PkoAnalizer.Logic.Read.Transactions.ViewModels
+namespace PkoAnalizer.Logic.Read.Transactions.Containers
 {
-    public class TransactionViewModel
+    public class TransactionGroupsContainer
     {
         public Guid TransactionId { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public IReadOnlyCollection<string> Groups { get; set; } = new List<string>();
+        public string GroupName { get; set; }
     }
 }
