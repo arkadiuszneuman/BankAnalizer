@@ -1,5 +1,6 @@
 ﻿using Dapper.Contrib.Extensions;
 using PkoAnalizer.Db;
+using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Rules.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,6 +20,12 @@ namespace PkoAnalizer.Logic.Rules.Db
         {
             using var connection = connectionFactory.CreateConnection();
             return await connection.GetAllAsync<RuleViewModel>();
+        }
+
+        public async Task<IEnumerable<BankTransaction>> GetBankTransactions()
+        {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.GetAllAsync<BankTransaction>();
         }
     }
 }

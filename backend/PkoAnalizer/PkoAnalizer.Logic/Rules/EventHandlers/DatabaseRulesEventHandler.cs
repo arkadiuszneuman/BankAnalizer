@@ -36,7 +36,7 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
 
             foreach (var rule in parsedRules)
             {
-                if (ruleMatchChecker.IsRuleMatch(rule, @event.Transaction))
+                if (ruleMatchChecker.IsRuleMatch(rule, @event.DatabaseTransaction))
                 {
                     await bus.Send(new AddGroupCommand(@event.DatabaseTransaction.Id, rule.GroupName));
                 }

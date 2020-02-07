@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
+using PkoAnalizer.Core.Cqrs.Event;
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
+using PkoAnalizer.Logic.Rules.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +19,20 @@ namespace PkoAnalizer.Logic.Rules
     public class SaveRuleCommandHandler : ICommandHandler<SaveRuleCommand>
     {
         private readonly IContextFactory contextFactory;
+        private readonly IMapper mapper;
+        private readonly IEventsBus eventsBus;
 
-        public SaveRuleCommandHandler(IContextFactory contextFactory)
+        public SaveRuleCommandHandler(IContextFactory contextFactory,
+            IMapper mapper,
+            IEventsBus eventsBus)
         {
             this.contextFactory = contextFactory;
+            this.mapper = mapper;
+            this.eventsBus = eventsBus;
         }
 
         public async Task Handle(SaveRuleCommand command)
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<RuleParsedViewModel, Rule>());
-            var mapper = config.CreateMapper();
-
             using var context = contextFactory.GetContext();
             Rule rule;
             if (command.Rule.Id != Guid.Empty)
@@ -50,6 +55,7 @@ namespace PkoAnalizer.Logic.Rules
                 rule.BankTransactionType = null;
 
             await context.SaveChangesAsync();
+            await eventsBus.Publish(new RuleSavedEvent(rule));
         }
     }
 }

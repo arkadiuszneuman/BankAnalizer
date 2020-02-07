@@ -77,17 +77,6 @@ namespace PkoAnalizer.Logic.Import.Db
                 .SingleOrDefaultAsync();
         }
 
-        private IEnumerable<BankTransactionType> MapGroups(IEnumerable<string> groups)
-        {
-            foreach (var groupName in groups)
-            {
-                yield return new BankTransactionType
-                {
-                    Name = groupName
-                };
-            }
-        }
-
         private BankTransactionType MapGroup(string groupName)
         {
             return new BankTransactionType

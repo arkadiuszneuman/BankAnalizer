@@ -37,13 +37,13 @@ namespace PkoAnalizer.Logic.Rules
         {
             foreach (var rule in rules)
             {
-                var parsedRule = ParseRule(rule);
+                var parsedRule = Parse(rule);
                 if (parsedRule != null)
                     yield return parsedRule;
             }
         }
 
-        private ParsedRule ParseRule(RuleViewModel rule)
+        public ParsedRule Parse(RuleViewModel rule)
         {
             var splittedString = rule.RuleDefinition.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             if (splittedString.Length < 3)

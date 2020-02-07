@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
-using PkoAnalizer.Logic.Import.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PkoAnalizer.Db.Models;
 
 namespace PkoAnalizer.Logic.Rules
 {
@@ -16,14 +13,14 @@ namespace PkoAnalizer.Logic.Rules
             this.logger = logger;
         }
 
-        public bool IsRuleMatch(ParsedRule rule, PkoTransaction pkoTransaction)
+        public bool IsRuleMatch(ParsedRule rule, BankTransaction bankTransaction)
         {
             string columnValue = null;
             if (rule.IsColumnInExtensions)
             {
-                if (pkoTransaction.Extensions != null)
+                if (bankTransaction.Extensions != null)
                 {
-                    var extensions = JToken.Parse(pkoTransaction.Extensions);
+                    var extensions = JToken.Parse(bankTransaction.Extensions);
                     var column = extensions[rule.Column];
                     if (column != null)
                         columnValue = column.Value<string>();
@@ -31,7 +28,7 @@ namespace PkoAnalizer.Logic.Rules
             }
             else
             {
-                columnValue = GetStaticColumnValue(rule.Column, pkoTransaction);
+                columnValue = GetStaticColumnValue(rule.Column, bankTransaction);
             }
 
             if (columnValue != null)
@@ -40,7 +37,7 @@ namespace PkoAnalizer.Logic.Rules
                 {
                     if (columnValue.Contains(rule.Value))
                     {
-                        logger.LogInformation("Found rule for event {0} (Order: {1})", pkoTransaction.Title, pkoTransaction.Order);
+                        logger.LogInformation("Found rule for event {0} (Order: {1})", bankTransaction.Title, bankTransaction.Order);
                         return true;
                     }
                 }
@@ -49,7 +46,7 @@ namespace PkoAnalizer.Logic.Rules
             return false;
         }
 
-        private string GetStaticColumnValue(string columnName, PkoTransaction transaction)
+        private string GetStaticColumnValue(string columnName, BankTransaction transaction)
         {
             return columnName switch
             {
