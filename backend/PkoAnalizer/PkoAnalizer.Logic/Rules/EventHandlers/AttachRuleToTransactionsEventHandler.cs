@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PkoAnalizer.Core.Commands.Group;
+using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
 using PkoAnalizer.Logic.Import.Models;
@@ -42,6 +43,9 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
         public async Task Handle(RuleSavedEvent @event)
         {
             var rule = mapper.Map<RuleViewModel>(@event.Rule);
+
+            await bus.Send(new DeleteTransactionsAndGroupsAssignedToRuleCommand(@event.Rule));
+
             var parsedRule = ruleParser.Parse(rule);
             var bankTransactions = await ruleAccess.GetBankTransactions();
 
@@ -51,7 +55,7 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
                 {
                     logger.LogInformation("Found transaction {transaction} for rule {rule}", bankTransaction.Id, rule.RuleName);
 
-                    _ = bus.Send(new AddGroupCommand(bankTransaction.Id, rule.GroupName));
+                    await bus.Send(new AddGroupCommand(bankTransaction.Id, rule.GroupName));
                 }
             }
         }
