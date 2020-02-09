@@ -1,6 +1,7 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
+using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
 using PkoAnalizer.Logic.Import.Models;
 using PkoAnalizer.Logic.Rules;
@@ -25,7 +26,7 @@ namespace PkoAnalizer.Tests.Logic.Rules
                 RuleType = RuleType.Contains,
                 Value = "Test value"
             };
-            var transaction = new PkoTransaction
+            var transaction = new BankTransaction
             {
                 Extensions = new LocationExtension
                 {
