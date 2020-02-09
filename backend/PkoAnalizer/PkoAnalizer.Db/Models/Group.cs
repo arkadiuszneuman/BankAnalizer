@@ -7,6 +7,7 @@ namespace PkoAnalizer.Db.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public Rule Rule { get; set; }
         public ICollection<BankTransactionGroup> BankTransactionGroups { get; set; }
     }
 }

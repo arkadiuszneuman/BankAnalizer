@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace PkoAnalizer.Logic.Rules
 {
@@ -35,17 +36,14 @@ namespace PkoAnalizer.Logic.Rules
         {
             using var context = contextFactory.GetContext();
             Rule rule;
-            if (command.Rule.Id != Guid.Empty)
-            {
-                rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.Rule.Id);
-                mapper.Map(command.Rule, rule);
-            }
+            if (command.Rule.Id != default)
+                rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.Rule.Id) ?? new Rule();
             else
-            {
                 rule = new Rule();
-                mapper.Map(command.Rule, rule);
+
+            if (rule.Id == default)
                 await context.AddAsync(rule);
-            }
+            mapper.Map(command.Rule, rule);
 
             rule.RuleDefinition = $"{command.Rule.ColumnId} {command.Rule.Type} {command.Rule.Text}";
 
@@ -54,8 +52,13 @@ namespace PkoAnalizer.Logic.Rules
             else
                 rule.BankTransactionType = null;
 
-            await context.SaveChangesAsync();
-            await eventsBus.Publish(new RuleSavedEvent(rule));
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await context.SaveChangesAsync();
+                await eventsBus.Publish(new RuleSavedEvent(rule));
+
+                scope.Complete();
+            }
         }
     }
 }

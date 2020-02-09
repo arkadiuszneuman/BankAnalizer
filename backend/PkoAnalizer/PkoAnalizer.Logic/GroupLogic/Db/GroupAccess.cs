@@ -2,6 +2,7 @@
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -27,6 +28,12 @@ namespace PkoAnalizer.Logic.GroupLogic.Db
             using var context = contextFactory.GetContext();
             context.BankTransactionGroups.Add(bankTransactionGroup);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<Group> GetGroupByNameAndRuleId(string groupName, Guid ruleId)
+        {
+            using var context = contextFactory.GetContext();
+            return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName && b.Rule.Id == ruleId);
         }
 
         public async Task<Group> GetGroupByName(string groupName)

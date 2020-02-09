@@ -8,7 +8,6 @@ namespace PkoAnalizer.Db.Configurations
     {
         public void Configure(EntityTypeBuilder<Group> builder)
         {
-            builder.HasAlternateKey(x => x.Name);
         }
     }
 }

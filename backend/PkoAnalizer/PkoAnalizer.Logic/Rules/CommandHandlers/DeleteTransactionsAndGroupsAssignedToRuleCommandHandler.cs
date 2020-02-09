@@ -28,7 +28,7 @@ namespace PkoAnalizer.Logic.Rules.CommandHandlers
             using var context = contextFactory.GetContext();
 
             var group = await context.Groups
-                .Where(g => g.Name == command.Rule.GroupName)
+                .Where(g => g.Rule.Id == command.Rule.Id)
                 .SingleOrDefaultAsync();
 
             if (group == null)
