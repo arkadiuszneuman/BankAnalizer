@@ -30,7 +30,8 @@ namespace PkoAnalizer.Web.Modules.Cqrs
             });
 
             builder.RegisterType<CommandsBus>()
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .SingleInstance();
         }
     }
 }

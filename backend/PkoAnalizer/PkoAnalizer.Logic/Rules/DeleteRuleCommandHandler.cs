@@ -4,16 +4,20 @@ using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace PkoAnalizer.Logic.Rules
 {
     public class DeleteRuleCommandHandler : ICommandHandler<DeleteRuleCommand>
     {
         private readonly IContextFactory contextFactory;
+        private readonly ICommandsBus commandsBus;
 
-        public DeleteRuleCommandHandler(IContextFactory contextFactory)
+        public DeleteRuleCommandHandler(IContextFactory contextFactory,
+            ICommandsBus commandsBus)
         {
             this.contextFactory = contextFactory;
+            this.commandsBus = commandsBus;
         }
 
         public async Task Handle(DeleteRuleCommand command)
@@ -23,9 +27,14 @@ namespace PkoAnalizer.Logic.Rules
             if (rule == null)
                 throw new PkoAnalizerException($"Invalid rule id {command.RuleId}");
 
-            context.Rules.Remove(rule);
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await commandsBus.Send(new DeleteTransactionsAndGroupsAssignedToRuleCommand(rule));
+                context.Rules.Remove(rule);
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
+                scope.Complete();
+            }
         }
     }
 }

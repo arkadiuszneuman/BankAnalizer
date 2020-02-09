@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PkoAnalizer.Core;
 using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using Z.EntityFramework.Plus;
