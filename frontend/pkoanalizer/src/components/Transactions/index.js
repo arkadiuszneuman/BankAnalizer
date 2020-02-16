@@ -14,11 +14,14 @@ class TransactionList extends Component {
             element.extensions = JSON.parse(element.extensions) ?? ""
             element.currentGroup = ""
         });
-        this.setState({transactions: transactions})
+        this.setState({transactions: transactions.slice(0, 10)})
     }
 
     addGroup(transaction) {
         const currentTransaction = this.state.transactions.filter(t => t.transactionId === transaction.transactionId)[0]
+
+        this.connector.post(`transaction/group`, { bankTransactionId: transaction.transactionId, groupName: currentTransaction.currentGroup });
+
         currentTransaction.groups.push({ groupName: currentTransaction.currentGroup, manualGroup: true })
         currentTransaction.currentGroup = ""
         this.setState({transactions: this.state.transactions})
@@ -39,6 +42,9 @@ class TransactionList extends Component {
     removeGroup(group, transaction) {
         const currentTransaction = this.state.transactions.filter(t => t.transactionId === transaction.transactionId)[0]
         const groupToRemove = currentTransaction.groups.filter(g => g.groupName === group.groupName)[0]
+
+        this.connector.delete(`transaction/group`, { bankTransactionId: transaction.transactionId, groupName: groupToRemove.groupName });
+
         currentTransaction.groups.splice(currentTransaction.groups.indexOf(groupToRemove), 1)
         this.setState({transactions: this.state.transactions})
     }

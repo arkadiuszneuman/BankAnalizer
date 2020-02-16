@@ -10,5 +10,6 @@ namespace PkoAnalizer.Logic.Read.Transactions.Containers
         public string GroupName { get; set; }
         public string Extensions { get; set; }
         public decimal Amount { get; set; }
+        public Guid? RuleId { get; set; }
     }
 }

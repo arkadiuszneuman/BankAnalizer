@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
+using Z.EntityFramework.Plus;
 
 namespace PkoAnalizer.Logic.GroupLogic.Db
 {
@@ -42,7 +45,7 @@ namespace PkoAnalizer.Logic.GroupLogic.Db
             return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName);
         }
 
-        public async Task AddBankTransactionGroup(BankTransaction bankTransaction, Group group)
+        public async Task AddBankTransactionToGroup(BankTransaction bankTransaction, Group group)
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -57,6 +60,22 @@ namespace PkoAnalizer.Logic.GroupLogic.Db
                 await context.SaveChangesAsync();
                 scope.Complete();
             }
+        }
+
+        public async Task RemoveBankTransactionsFromGroup(Guid bankTransactionId, Guid groupId)
+        {
+            using var context = contextFactory.GetContext();
+            await context.BankTransactionGroups
+                .Where(b => b.BankTransactionId == bankTransactionId && b.GroupId == groupId)
+                .DeleteAsync();
+        }
+
+        public async Task RemoveGroupIfBankTransactionsDoNotExist(Guid groupId)
+        {
+            using var context = contextFactory.GetContext();
+            var anyBankTransactionExists = await context.BankTransactionGroups.AnyAsync(b => b.GroupId == groupId);
+            if (!anyBankTransactionExists)
+                await context.Groups.Where(g => g.Id == groupId).DeleteAsync();
         }
     }
 }

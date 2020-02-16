@@ -33,7 +33,7 @@ namespace PkoAnalizer.Logic.GroupLogic
                     group.Rule = new Rule { Id = command.RuleId };
             }
 
-            await groupAccess.AddBankTransactionGroup(bankTransaction, group);
+            await groupAccess.AddBankTransactionToGroup(bankTransaction, group);
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Controllers.Group.ViewModels
 {
-    public class AddGroupViewModel
+    public class BankTransactionGroupViewModel
     {
         public Guid BankTransactionId { get; set; }
-        public string Name { get; set; }
+        public string GroupName { get; set; }
     }
 }

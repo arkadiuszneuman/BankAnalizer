@@ -10,9 +10,10 @@ namespace PkoAnalizer.Logic.Read.Transactions.ViewModels
             public string GroupName { get; set; }
             public bool ManualGroup { get; set; }
 
-            public TransactionGroupViewModel(string groupName)
+            public TransactionGroupViewModel(string groupName, bool isManualGroup)
             {
                 GroupName = groupName;
+                ManualGroup = isManualGroup;
             }
         }
 

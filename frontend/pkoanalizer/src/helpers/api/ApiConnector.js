@@ -29,6 +29,6 @@ export default class ApiConnector {
     }
 
     delete = async (methodName, body) => {
-        return await this._executeMethod(methodName, 'delete')
+        return await this._executeMethod(methodName, 'delete', body)
     }
 }

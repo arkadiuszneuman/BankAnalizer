@@ -33,7 +33,7 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			using var connection = connectionFactory.CreateConnection();
 
 			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(@"
-				SELECT bt.Id as TransactionId, bt.Title as Name, btt.Name as Type, g.Name as GroupName, bt.Extensions as Extensions, bt.Amount FROM BankTransactions bt
+				SELECT bt.Id as TransactionId, bt.Title as Name, btt.Name as Type, g.Name as GroupName, g.RuleId as RuleId, bt.Extensions as Extensions, bt.Amount FROM BankTransactions bt
 				JOIN BankTransactionTypes btt ON bt.BankTransactionTypeId = btt.Id
 				LEFT JOIN BankTransactionGroups btg ON bt.Id = btg.BankTransactionId
 				LEFT JOIN Groups g ON btg.GroupId = g.Id
@@ -44,7 +44,7 @@ namespace PkoAnalizer.Logic.Read.Transactions
 				var transactionGroup = transactionGroups.First();
 				var viewModel = mapper.Map<TransactionViewModel>(transactionGroup);
 				viewModel.Groups = transactionGroups.Where(t => t.GroupName != null).Select(t => 
-					new TransactionViewModel.TransactionGroupViewModel(t.GroupName)).ToList();
+					new TransactionViewModel.TransactionGroupViewModel(t.GroupName, t.RuleId == null)).ToList();
 				yield return viewModel;
 			}
 		}
