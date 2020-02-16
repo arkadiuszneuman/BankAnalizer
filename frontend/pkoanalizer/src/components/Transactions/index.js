@@ -19,17 +19,22 @@ class TransactionList extends Component {
     render() {
         return (
             <div>
-                <div className="ui relaxed divided list">
+                <div className="ui relaxed celled list">
                     {this.state.transactions.map(transaction => 
-                        <div className="item" key={transaction.transactionId}>
-                            <i className="large github middle aligned icon"></i>
+                        <div className="item ui red segment" key={transaction.transactionId}>
+                            <i className="large money bill alternate middle aligned icon"></i>
                             <div className="content">
                                 <div className="header">{transaction.name}</div>
+                                <div className="description">{transaction.amount} zł</div>
                                 <div className="description">{transaction.type}</div>
-                                <div className="description">{transaction.groups.join(", ")}</div>
-                                {Object.keys(transaction.extensions).map((key, index) => 
-                                    <div className="description" key={index}>{key}: {transaction.extensions[key]}</div>
-                                )}
+                                {transaction.groups.length > 0 &&
+                                    <div className="description">Groups: {transaction.groups.join(", ")}</div>
+                                }
+                                <div className="list">
+                                    {Object.keys(transaction.extensions).map((key, index) => 
+                                        <div className="item" key={index}>{key}: <b>{transaction.extensions[key]}</b></div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}

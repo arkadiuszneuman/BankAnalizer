@@ -9,6 +9,7 @@ namespace PkoAnalizer.Logic.Read.Transactions.ViewModels
         public string Name { get; set; }
         public string Type { get; set; }
         public string Extensions { get; set; }
+        public decimal Amount { get; set; }
         public IReadOnlyCollection<string> Groups { get; set; } = new List<string>();
     }
 }
