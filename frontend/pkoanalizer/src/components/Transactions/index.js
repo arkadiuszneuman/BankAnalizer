@@ -14,7 +14,7 @@ class TransactionList extends Component {
             element.extensions = JSON.parse(element.extensions) ?? ""
             element.currentGroup = ""
         });
-        this.setState({transactions: transactions.slice(0, 10)})
+        this.setState({transactions: transactions})
     }
 
     addGroup(transaction) {
@@ -55,7 +55,7 @@ class TransactionList extends Component {
                                 <div className="description">{transaction.amount} zł</div>
                                 <div className="description">{transaction.type}</div>
                                 {transaction.groups.length > 0 &&
-                                    <div className="description">Groups: {transaction.groups.filter(g => !g.manualGroup).join(", ")}</div>
+                                    <div className="description">Groups: {transaction.groups.filter(g => !g.manualGroup).map(g => g.groupName).join(", ")}</div>
                                 }
                                 {transaction.groups.filter(g => g.manualGroup).map((group, index) =>
                                     <div className="ui label" key={index}>

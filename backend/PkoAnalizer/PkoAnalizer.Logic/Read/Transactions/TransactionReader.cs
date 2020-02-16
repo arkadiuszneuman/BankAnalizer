@@ -43,7 +43,8 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			{
 				var transactionGroup = transactionGroups.First();
 				var viewModel = mapper.Map<TransactionViewModel>(transactionGroup);
-				viewModel.Groups = transactionGroups.Where(t => t.GroupName != null).Select(t => t.GroupName).ToList();
+				viewModel.Groups = transactionGroups.Where(t => t.GroupName != null).Select(t => 
+					new TransactionViewModel.TransactionGroupViewModel(t.GroupName)).ToList();
 				yield return viewModel;
 			}
 		}
