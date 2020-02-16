@@ -33,7 +33,7 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			using var connection = connectionFactory.CreateConnection();
 
 			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(@"
-				SELECT bt.Id as TransactionId, bt.Title as Name, btt.Name as Type, g.Name as GroupName FROM BankTransactions bt
+				SELECT bt.Id as TransactionId, bt.Title as Name, btt.Name as Type, g.Name as GroupName, bt.Extensions as Extensions FROM BankTransactions bt
 				JOIN BankTransactionTypes btt ON bt.BankTransactionTypeId = btt.Id
 				LEFT JOIN BankTransactionGroups btg ON bt.Id = btg.BankTransactionId
 				LEFT JOIN Groups g ON btg.GroupId = g.Id

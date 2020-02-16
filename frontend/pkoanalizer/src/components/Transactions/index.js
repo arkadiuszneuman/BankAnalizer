@@ -10,30 +10,30 @@ class TransactionList extends Component {
 
     componentDidMount = async () => {
         const transactions = await this.connector.get("transaction")
-        this.setState({transactions: transactions});
+        transactions.forEach(element => {
+            element.extensions = JSON.parse(element.extensions) ?? ""
+        });
+        this.setState({transactions: transactions})
     }
 
     render() {
         return (
             <div>
-                <table className="ui very basic celled table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Groups</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div className="ui relaxed divided list">
                     {this.state.transactions.map(transaction => 
-                        <tr key={transaction.transactionId}>
-                            <td>{transaction.name}</td>
-                            <td>{transaction.type}</td>
-                            <td>{transaction.groups.join(", ")}</td>
-                        </tr>
+                        <div className="item" key={transaction.transactionId}>
+                            <i className="large github middle aligned icon"></i>
+                            <div className="content">
+                                <div className="header">{transaction.name}</div>
+                                <div className="description">{transaction.type}</div>
+                                <div className="description">{transaction.groups.join(", ")}</div>
+                                {Object.keys(transaction.extensions).map((key, index) => 
+                                    <div className="description" key={index}>{key}: {transaction.extensions[key]}</div>
+                                )}
+                            </div>
+                        </div>
                     )}
-                    </tbody>
-                </table>
+                    </div>
             </div>
         )
     }

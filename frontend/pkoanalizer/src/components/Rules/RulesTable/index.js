@@ -57,28 +57,28 @@ class Rules extends Component {
     return (
       <div>
         <Switch>
-        <Route exact path={path}>
-          <Link onClick={e => this.setCurrentRule({})} to={`${url}/edit`}>Add</Link>
-          <div className="ui relaxed divided list">
-          {this.state.rules.map(rule => 
-            <div className="item" key={rule.id}>
-              <div className="right floated content">
-                <div className="ui icon buttons">
-                  <div onClick={e => this.deleteRule(rule)} className="ui red button"><i className="trash icon"></i></div>
+          <Route exact path={path}>
+            <Link onClick={e => this.setCurrentRule({})} to={`${url}/edit`}>Add</Link>
+            <div className="ui relaxed divided list">
+            {this.state.rules.map(rule => 
+              <div className="item" key={rule.id}>
+                <div className="right floated content">
+                  <div className="ui icon buttons">
+                    <div onClick={e => this.deleteRule(rule)} className="ui red button"><i className="trash icon"></i></div>
+                  </div>
+                </div>
+                <i className="large handshake middle aligned icon"></i>
+                <div className="content">
+                  <Link onClick={e => this.setCurrentRule(rule)} className="header" to={`${url}/edit`}>{rule.ruleName}</Link>
+                  <div className="description">{rule.groupName}</div>
                 </div>
               </div>
-              <i className="large handshake middle aligned icon"></i>
-              <div className="content">
-                <Link onClick={e => this.setCurrentRule(rule)} className="header" to={`${url}/edit`}>{rule.ruleName}</Link>
-                <div className="description">{rule.groupName}</div>
-              </div>
+            )}
             </div>
-          )}
-          </div>
-        </Route>
-          <Route path={`${path}/edit`}>
-            <RuleForm rule={this.state.currentRule} onAccept={this.ruleAccepted} />
           </Route>
+            <Route path={`${path}/edit`}>
+              <RuleForm rule={this.state.currentRule} onAccept={this.ruleAccepted} />
+            </Route>
         </Switch>
       </div>
     )
