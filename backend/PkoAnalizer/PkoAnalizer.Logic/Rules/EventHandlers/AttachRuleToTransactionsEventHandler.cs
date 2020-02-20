@@ -4,13 +4,9 @@ using PkoAnalizer.Core.Commands.Group;
 using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
-using PkoAnalizer.Logic.Import.Models;
 using PkoAnalizer.Logic.Rules.Db;
 using PkoAnalizer.Logic.Rules.Events;
 using PkoAnalizer.Logic.Rules.ViewModels;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Logic.Rules.EventHandlers

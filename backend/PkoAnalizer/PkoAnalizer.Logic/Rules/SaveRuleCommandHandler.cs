@@ -39,11 +39,17 @@ namespace PkoAnalizer.Logic.Rules
             if (command.Rule.Id != default)
                 rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.Rule.Id) ?? new Rule();
             else
+            {
                 rule = new Rule();
+            }
+
+            mapper.Map(command.Rule, rule);
 
             if (rule.Id == default)
+            {
+                rule.Id = Guid.NewGuid();
                 await context.AddAsync(rule);
-            mapper.Map(command.Rule, rule);
+            }
 
             rule.RuleDefinition = $"{command.Rule.ColumnId} {command.Rule.Type} {command.Rule.Text}";
 
