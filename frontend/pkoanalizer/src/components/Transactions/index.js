@@ -5,16 +5,20 @@ class TransactionList extends Component {
     connector = new ApiConnector()
 
     state = {
-        transactions: []
+        transactions: [],
     }
 
     componentDidMount = async () => {
-        const transactions = await this.connector.get("transaction")
+        await this.loadTransactions(false)
+    }
+
+    loadTransactions = async (onlyWithoutGroup) => {
+        const transactions = await this.connector.get("transaction", { onlyWithoutGroup: onlyWithoutGroup })
         transactions.forEach(element => {
             element.extensions = JSON.parse(element.extensions) ?? ""
             element.currentGroup = ""
         });
-        this.setState({transactions: transactions.slice(0, 10)})
+        this.setState({transactions: transactions})
     }
 
     addGroup(transaction) {
@@ -49,9 +53,17 @@ class TransactionList extends Component {
         this.setState({transactions: this.state.transactions})
     }
 
+    toggleOnlyWithoutGroup = async (event) => {
+        await this.loadTransactions(event.target.checked);
+    }
+
     render() {
         return (
             <div>
+                <div className="ui checkbox">
+                    <input type="checkbox" onChange={this.toggleOnlyWithoutGroup} />
+                    <label>Only without group</label>
+                </div>
                 <div className="ui relaxed celled list">
                     {this.state.transactions.map(transaction => 
                         <div className="item ui red segment" key={transaction.transactionId}>

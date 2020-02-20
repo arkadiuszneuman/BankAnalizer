@@ -3,7 +3,6 @@ using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,8 +36,8 @@ namespace PkoAnalizer.Web.Controllers.Transaction
 
         [HttpGet]
         [Route("")]
-        public IAsyncEnumerable<TransactionViewModel> Index() => 
-            transactionReader.ReadTransactions();
+        public IAsyncEnumerable<TransactionViewModel> Index([FromQuery] TransactionsFilter filter) =>
+            transactionReader.ReadTransactions(filter);
 
         [HttpGet]
         [Route("transaction-columns")]

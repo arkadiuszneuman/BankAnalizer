@@ -12,38 +12,44 @@ namespace PkoAnalizer.Logic.Read.Transactions
 	public interface ITransactionReader
 	{
 		Task<IEnumerable<string>> ReadAllExtensionColumns();
-		IAsyncEnumerable<TransactionViewModel> ReadTransactions();
+		IAsyncEnumerable<TransactionViewModel> ReadTransactions(TransactionsFilter filter);
 		Task<IEnumerable<TransactionTypeViewModel>> ReadTransactionTypes();
 	}
-
 	public class TransactionReader : ITransactionReader
 	{
 		private readonly ConnectionFactory connectionFactory;
+		private readonly IMapper mapper;
 
-		public TransactionReader(ConnectionFactory connectionFactory)
+		public TransactionReader(ConnectionFactory connectionFactory,
+			IMapper mapper)
 		{
 			this.connectionFactory = connectionFactory;
+			this.mapper = mapper;
 		}
 
-		public async IAsyncEnumerable<TransactionViewModel> ReadTransactions()
+		public async IAsyncEnumerable<TransactionViewModel> ReadTransactions(TransactionsFilter filter)
 		{
-			var config = new MapperConfiguration(cfg => cfg.CreateMap<TransactionGroupsContainer, TransactionViewModel>());
-			var mapper = config.CreateMapper();
-
 			using var connection = connectionFactory.CreateConnection();
 
-			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(@"
-				SELECT bt.Id as TransactionId, bt.Title as Name, btt.Name as Type, g.Name as GroupName, g.RuleId as RuleId, bt.Extensions as Extensions, bt.Amount FROM BankTransactions bt
+			var builder = new SqlBuilder();
+			var selector = builder.AddTemplate(@"
+				SELECT top 100 bt.Id as TransactionId, bt.Title as Name, btt.Name as Type, g.Name as GroupName, g.RuleId as RuleId, bt.Extensions as Extensions, bt.Amount FROM BankTransactions bt
 				JOIN BankTransactionTypes btt ON bt.BankTransactionTypeId = btt.Id
 				LEFT JOIN BankTransactionGroups btg ON bt.Id = btg.BankTransactionId
 				LEFT JOIN Groups g ON btg.GroupId = g.Id
+				/**where**/
 				ORDER BY bt.[Order] desc");
+
+			if (filter.OnlyWithoutGroup)
+				builder.Where("btg.BankTransactionId IS NULL");
+
+			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(selector.RawSql, selector.Parameters);
 
 			foreach (var transactionGroups in trasactionGroupsContainers.GroupBy(g => g.TransactionId))
 			{
 				var transactionGroup = transactionGroups.First();
 				var viewModel = mapper.Map<TransactionViewModel>(transactionGroup);
-				viewModel.Groups = transactionGroups.Where(t => t.GroupName != null).Select(t => 
+				viewModel.Groups = transactionGroups.Where(t => t.GroupName != null).Select(t =>
 					new TransactionViewModel.TransactionGroupViewModel(t.GroupName, t.RuleId == null)).ToList();
 				yield return viewModel;
 			}

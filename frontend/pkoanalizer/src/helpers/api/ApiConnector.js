@@ -16,8 +16,21 @@ export default class ApiConnector {
         return result.json();
     }
 
-    get = async (methodName) => {
-        return await this._executeMethod(methodName, 'get')
+    get = async (methodName, params) => {
+        let query = '?';
+        let isFirstQuery = true;
+
+        for (var param in params) {
+            if (isFirstQuery) {
+                isFirstQuery = false
+            } else {
+                query += '&'
+            }
+
+            query += param + "=" + params[param]
+        }
+
+        return await this._executeMethod(methodName + query, 'get')
     }
 
     put = async (methodName) => {
