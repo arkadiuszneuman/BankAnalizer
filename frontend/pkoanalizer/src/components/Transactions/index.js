@@ -1,6 +1,43 @@
 import React, { Component } from 'react';
 import ApiConnector from '../../helpers/api/ApiConnector'
 
+function TransactionRow(props) {
+    var transaction = props.transaction
+    return (
+        <div className="item ui red segment">
+            <i className="large money bill alternate middle aligned icon"></i>
+            <div className="content">
+                <div className="header">{transaction.name}</div>
+                <div className="description">{transaction.amount} zł</div>
+                <div className="description">{transaction.type}</div>
+                {transaction.groups.length > 0 &&
+                    <div className="description">Groups: {transaction.groups.filter(g => !g.manualGroup).map(g => g.groupName).join(", ")}</div>
+                }
+                {transaction.groups.filter(g => g.manualGroup).map((group, index) =>
+                    <div className="ui label" key={index}>
+                        {group.groupName}
+                        <i className="delete icon" onClick={e => this.removeGroup(group, transaction)}></i>
+                    </div>
+                )}
+                <div className="ui mini action input">
+                    <input type="text" placeholder="Group" 
+                            value={transaction.currentGroup} 
+                            onChange={e => this.updateCurrentGroup(e, transaction)}
+                            onKeyDown={e => this.addGroupByEnter(e, transaction)} />
+                    <button className="ui mini teal icon button" onClick={e => this.addGroup(transaction)}>
+                        <i className="add icon"></i>
+                    </button>
+                </div>
+                <div className="list">
+                    {Object.keys(transaction.extensions).map((key, index) => 
+                        <div className="item" key={index}>{key}: <b>{transaction.extensions[key]}</b></div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 class TransactionList extends Component {
     connector = new ApiConnector()
 
@@ -66,37 +103,7 @@ class TransactionList extends Component {
                 </div>
                 <div className="ui relaxed celled list">
                     {this.state.transactions.map(transaction => 
-                        <div className="item ui red segment" key={transaction.transactionId}>
-                            <i className="large money bill alternate middle aligned icon"></i>
-                            <div className="content">
-                                <div className="header">{transaction.name}</div>
-                                <div className="description">{transaction.amount} zł</div>
-                                <div className="description">{transaction.type}</div>
-                                {transaction.groups.length > 0 &&
-                                    <div className="description">Groups: {transaction.groups.filter(g => !g.manualGroup).map(g => g.groupName).join(", ")}</div>
-                                }
-                                {transaction.groups.filter(g => g.manualGroup).map((group, index) =>
-                                    <div className="ui label" key={index}>
-                                        {group.groupName}
-                                        <i className="delete icon" onClick={e => this.removeGroup(group, transaction)}></i>
-                                    </div>
-                                )}
-                                <div className="ui mini action input">
-                                    <input type="text" placeholder="Group" 
-                                            value={transaction.currentGroup} 
-                                            onChange={e => this.updateCurrentGroup(e, transaction)}
-                                            onKeyDown={e => this.addGroupByEnter(e, transaction)} />
-                                    <button className="ui mini teal icon button" onClick={e => this.addGroup(transaction)}>
-                                        <i className="add icon"></i>
-                                    </button>
-                                </div>
-                                <div className="list">
-                                    {Object.keys(transaction.extensions).map((key, index) => 
-                                        <div className="item" key={index}>{key}: <b>{transaction.extensions[key]}</b></div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+                        <TransactionRow key={transaction.transactionId} transaction={transaction} />
                     )}
                     </div>
             </div>
