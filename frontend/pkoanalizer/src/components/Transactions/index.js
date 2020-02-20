@@ -38,7 +38,18 @@ function TransactionRow(props) {
     );
 }
 
-class TransactionList extends Component {
+function TransactionList(props) {
+    var transactions = props.transactions
+    return (
+        <div className="ui relaxed celled list">
+            {transactions.map(transaction => 
+                <TransactionRow key={transaction.transactionId} transaction={transaction} />
+            )}
+        </div>
+    );
+}
+
+export default class TransactionView extends Component {
     connector = new ApiConnector()
 
     state = {
@@ -101,14 +112,8 @@ class TransactionList extends Component {
                     <input type="checkbox" onChange={this.toggleOnlyWithoutGroup} />
                     <label>Only without group</label>
                 </div>
-                <div className="ui relaxed celled list">
-                    {this.state.transactions.map(transaction => 
-                        <TransactionRow key={transaction.transactionId} transaction={transaction} />
-                    )}
-                    </div>
+                <TransactionList transactions={this.state.transactions} />
             </div>
         )
     }
 }
-
-export default TransactionList

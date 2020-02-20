@@ -1,6 +1,6 @@
 import React from 'react';
 import Importer from "./components/Importer"
-import TransactionList from "./components/Transactions"
+import TransactionView from "./components/Transactions"
 import Menu from "./components/Menu"
 import Rules from "./components/Rules/RulesTable"
 import {
@@ -17,7 +17,7 @@ function App() {
       <Switch>
         <Route exact path="/">
           <Importer />
-          <TransactionList />
+          <TransactionView />
         </Route>
         <Route path="/rules">
           <Rules />
