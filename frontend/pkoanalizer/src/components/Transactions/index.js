@@ -79,11 +79,6 @@ class TransactionGroups extends Component {
                     </div>
                 )}
                 <TransactionGroupInput onAddGroup={this.addGroup} />
-                <div className="list">
-                    {Object.keys(transaction.extensions).map((key, index) => 
-                        <div className="item" key={index}>{key}: <b>{transaction.extensions[key]}</b></div>
-                    )}
-                </div>
             </div>
         )
     }
@@ -92,6 +87,7 @@ class TransactionGroups extends Component {
 class TransactionRow extends Component {
     render() {
         var transaction = this.props.transaction
+        var showGroups = this.props.showGroups ?? true
 
         return (
             <div className="item ui red segment">
@@ -100,7 +96,12 @@ class TransactionRow extends Component {
                     <div className="header">{transaction.name}</div>
                     <div className="description">{transaction.amount} zł</div>
                     <div className="description">{transaction.type}</div>
-                    <TransactionGroups transaction={transaction} />
+                    {showGroups && <TransactionGroups transaction={transaction} /> }
+                    <div className="list">
+                        {Object.keys(transaction.extensions).map((key, index) => 
+                            <div className="item" key={index}>{key}: <b>{transaction.extensions[key]}</b></div>
+                        )}
+                    </div>
                 </div>
             </div>
         )
@@ -109,10 +110,11 @@ class TransactionRow extends Component {
 
 function TransactionList(props) {
     var transactions = props.transactions
+    var showGroups = props.showGroups ?? true
     return (
         <div className="ui relaxed celled list">
             {transactions.map(transaction => 
-                <TransactionRow key={transaction.transactionId} transaction={transaction} />
+                <TransactionRow key={transaction.transactionId} transaction={transaction} showGroups={showGroups} />
             )}
         </div>
     )
