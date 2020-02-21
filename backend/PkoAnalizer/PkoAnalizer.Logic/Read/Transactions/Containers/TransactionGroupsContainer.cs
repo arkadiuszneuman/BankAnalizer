@@ -11,5 +11,6 @@ namespace PkoAnalizer.Logic.Read.Transactions.Containers
         public string Extensions { get; set; }
         public decimal Amount { get; set; }
         public Guid? RuleId { get; set; }
+        public DateTime TransactionDate { get; set; }
     }
 }

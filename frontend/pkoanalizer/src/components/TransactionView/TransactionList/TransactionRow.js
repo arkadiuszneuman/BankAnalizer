@@ -5,6 +5,11 @@ export default function TransactionRow(props) {
     var transaction = props.transaction
     var showGroups = props.showGroups ?? true
 
+    const parseDate = (unparsedDate) => {
+        const date = new Date(unparsedDate)
+        return new Date(date.getFullYear(), date.getMonth() , date.getDate()).toLocaleDateString()
+    }
+
     return (
         <div className="item ui red segment">
             <i className="large money bill alternate middle aligned icon"></i>
@@ -12,6 +17,7 @@ export default function TransactionRow(props) {
                 <div className="header">{transaction.name}</div>
                 <div className="description">{transaction.amount} zł</div>
                 <div className="description">{transaction.type}</div>
+                <div className="description">{parseDate(transaction.transactionDate)}</div>
                 {showGroups && <TransactionGroups transaction={transaction} /> }
                 <div className="list">
                     {Object.keys(transaction.extensions).map((key, index) => 

@@ -33,7 +33,7 @@ namespace PkoAnalizer.Logic.Read.Transactions
 
 			var builder = new SqlBuilder();
 			var selector = builder.AddTemplate(@"
-				SELECT top 100 bt.Id as TransactionId, bt.Title as Name, btt.Name as Type, g.Name as GroupName, g.RuleId as RuleId, bt.Extensions as Extensions, bt.Amount FROM BankTransactions bt
+				SELECT top 100 bt.Id as TransactionId, bt.Title as Name, bt.TransactionDate, btt.Name as Type, g.Name as GroupName, g.RuleId as RuleId, bt.Extensions as Extensions, bt.Amount FROM BankTransactions bt
 				JOIN BankTransactionTypes btt ON bt.BankTransactionTypeId = btt.Id
 				LEFT JOIN BankTransactionGroups btg ON bt.Id = btg.BankTransactionId
 				LEFT JOIN Groups g ON btg.GroupId = g.Id
