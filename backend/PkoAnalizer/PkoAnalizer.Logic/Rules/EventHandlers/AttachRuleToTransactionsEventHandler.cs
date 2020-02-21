@@ -4,7 +4,6 @@ using PkoAnalizer.Core.Commands.Group;
 using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
-using PkoAnalizer.Logic.Rules.Db;
 using PkoAnalizer.Logic.Rules.Events;
 using PkoAnalizer.Logic.Rules.Logic;
 using PkoAnalizer.Logic.Rules.ViewModels;
@@ -37,7 +36,7 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
 
             await bus.Send(new DeleteTransactionsAndGroupsAssignedToRuleCommand(@event.Rule));
 
-            await foreach (var bankTransaction in bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule))
+            foreach (var bankTransaction in await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule))
             {
                 logger.LogInformation("Found transaction {transaction} for rule {rule}", bankTransaction.Id, rule.RuleName);
 

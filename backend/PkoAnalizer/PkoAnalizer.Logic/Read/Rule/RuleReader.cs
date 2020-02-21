@@ -1,4 +1,5 @@
-﻿using PkoAnalizer.Core.ViewModels.Rules;
+﻿using AutoMapper;
+using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Rules;
 using PkoAnalizer.Logic.Rules.Db;
 using System.Collections.Generic;
@@ -11,28 +12,21 @@ namespace PkoAnalizer.Logic.Read.Rule
     {
         private readonly RuleAccess ruleAccess;
         private readonly RuleParser ruleParser;
+        private readonly IMapper mapper;
 
         public RuleReader(RuleAccess ruleAccess,
-            RuleParser ruleParser)
+            RuleParser ruleParser,
+            IMapper mapper)
         {
             this.ruleAccess = ruleAccess;
             this.ruleParser = ruleParser;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<RuleParsedViewModel>> ReadRules()
         {
             var rules = await ruleAccess.GetRules();
-            return ruleParser.Parse(rules)
-                .Select(r => new RuleParsedViewModel
-                {
-                    Id = r.Id,
-                    BankTransactionTypeId = r.BankTransactionTypeId,
-                    ColumnId = r.IsColumnInExtensions ? "Extensions." + r.Column : r.Column,
-                    GroupName = r.GroupName,
-                    RuleName = r.RuleName,
-                    Text = r.Value,
-                    Type = r.RuleType.ToString()
-                });
+            return mapper.Map<IEnumerable<RuleParsedViewModel>>(ruleParser.Parse(rules));
         }
     }
 }

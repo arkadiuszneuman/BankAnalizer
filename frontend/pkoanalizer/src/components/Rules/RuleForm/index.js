@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ApiConnector from '../../../helpers/api/ApiConnector'
+import TransactionList from '../../TransactionView/TransactionList'
 import {
     NavLink
   } from "react-router-dom";
@@ -10,16 +11,9 @@ class RuleForm extends Component {
     state = {
         transactionTypes: [],
         transactionColumns: [],
-        rule: {...this.props.rule}
+        rule: {...this.props.rule},
+        fitTransactions: []
     }
-
-    constructor(props) {
-        super(props)
-        this.save = this.save.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.save = this.save.bind(this)
-    }
-
     async componentDidMount() {
         window.$('.ui.dropdown.clearable').dropdown({ clearable: true })
         window.$('.ui.dropdown').dropdown()
@@ -37,13 +31,19 @@ class RuleForm extends Component {
         this.setState({transactionTypes: transactionTypes, transactionColumns: transactionColumns, rule: rule});
     }
 
-    handleChange(event) {
+    handleChange = async event => {
         const rule = this.state.rule
         rule[event.target.name] = event.target.value
         this.setState({ rule: rule });
+
+        const transactions = await this.connector.get('transaction/find-transactions-from-rule', rule);
+        transactions.forEach(element => {
+            element.extensions = JSON.parse(element.extensions) ?? ""
+        });
+        this.setState({fitTransactions: transactions});
     }
 
-    async save() {
+    save = async () => {
         await this.connector.post("rule", this.state.rule);
 
         if (this.props.onAccept) {
@@ -98,6 +98,7 @@ class RuleForm extends Component {
                 <NavLink className="ui primary button" onClick={this.save} to="/rules">Save</NavLink>
                 <NavLink className="ui button" to="/rules">Discard</NavLink>
             </form>
+            <TransactionList transactions={this.state.fitTransactions} showGroups={false} />
         </div>
         )
     }

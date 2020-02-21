@@ -51,8 +51,6 @@ namespace PkoAnalizer.Logic.Rules
                 await context.AddAsync(rule);
             }
 
-            rule.RuleDefinition = $"{command.Rule.ColumnId} {command.Rule.Type} {command.Rule.Text}";
-
             if (command.Rule.BankTransactionTypeId != null)
                 rule.BankTransactionType = await context.BankTransactionTypes.SingleAsync(b => b.Id == command.Rule.BankTransactionTypeId);
             else

@@ -17,7 +17,6 @@ export default class TransactionView extends Component {
         const transactions = await this.connector.get("transaction", { onlyWithoutGroup: onlyWithoutGroup })
         transactions.forEach(element => {
             element.extensions = JSON.parse(element.extensions) ?? ""
-            element.currentGroup = ""
         });
         this.setState({transactions: transactions})
     }
