@@ -1,6 +1,6 @@
 import React from 'react';
 import Importer from "./components/Importer"
-import TransactionView from "./components/Transactions"
+import TransactionView from "./components/TransactionView"
 import Menu from "./components/Menu"
 import Rules from "./components/Rules/RulesTable"
 import {
