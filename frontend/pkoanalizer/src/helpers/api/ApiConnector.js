@@ -13,7 +13,10 @@ export default class ApiConnector {
             body: JSON.stringify(body)
         })
 
-        return result.json();
+        if (!result.ok)
+            throw result;
+
+        return result.json()
     }
 
     get = async (methodName, params) => {
