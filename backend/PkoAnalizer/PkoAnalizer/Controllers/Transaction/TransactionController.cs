@@ -55,9 +55,9 @@ namespace PkoAnalizer.Web.Controllers.Transaction
         public async Task<IEnumerable<ColumnViewModel>> GetTransactionColumns() =>
             await columnFinder.FindColumns();
 
-        [HttpGet]
+        [HttpPost]
         [Route("find-transactions-from-rule")]
-        public async Task<IEnumerable<TransactionViewModel>> FindTransactionsFromRule([FromQuery] RuleParsedViewModel rule) =>
+        public async Task<IEnumerable<TransactionViewModel>> FindTransactionsFromRule(RuleParsedViewModel rule) =>
             mapper.Map<IEnumerable<TransactionViewModel>>(await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule));
     }
 }

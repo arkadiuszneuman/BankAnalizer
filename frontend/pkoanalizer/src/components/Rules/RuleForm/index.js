@@ -35,8 +35,8 @@ class RuleForm extends Component {
         const rule = this.state.rule
         rule[event.target.name] = event.target.value
         this.setState({ rule: rule });
-
-        const transactions = await this.connector.get('transaction/find-transactions-from-rule', rule);
+        
+        const transactions = await this.connector.post('transaction/find-transactions-from-rule', rule);
         transactions.forEach(element => {
             element.extensions = JSON.parse(element.extensions) ?? ""
         });
