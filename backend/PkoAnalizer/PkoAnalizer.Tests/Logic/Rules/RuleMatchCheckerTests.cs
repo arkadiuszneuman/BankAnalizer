@@ -30,7 +30,7 @@ namespace PkoAnalizer.Tests.Logic.Rules
             {
                 Extensions = new LocationExtension
                 {
-                    Location = "Some Test value"
+                    Location = "Some test value"
                 }.ToJson()
             };
 

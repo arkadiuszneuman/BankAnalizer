@@ -35,7 +35,7 @@ namespace PkoAnalizer.Logic.Rules
             {
                 if (rule.RuleType == RuleType.Contains)
                 {
-                    if (columnValue.Contains(rule.Value))
+                    if (columnValue.ToLower().Contains(rule.Value.ToLower()))
                     {
                         logger.LogInformation("Found rule for event {0} (Order: {1})", bankTransaction.Title, bankTransaction.Order);
                         return true;

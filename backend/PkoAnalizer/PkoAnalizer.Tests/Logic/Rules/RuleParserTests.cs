@@ -24,7 +24,7 @@ namespace PkoAnalizer.Tests.Logic.Rules
             };
 
             //act
-            var result = sut.Parse(ruleViewModel.AsList());
+            var result = sut.Parse(ruleViewModel);
 
             //assert
             result.Should().BeEquivalentTo(new ParsedRule
@@ -52,7 +52,7 @@ namespace PkoAnalizer.Tests.Logic.Rules
             };
 
             //act
-            var result = sut.Parse(ruleViewModel.AsList());
+            var result = sut.Parse(ruleViewModel);
 
             //assert
             result.Should().BeEquivalentTo(new ParsedRule
