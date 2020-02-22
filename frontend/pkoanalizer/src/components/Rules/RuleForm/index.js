@@ -43,11 +43,13 @@ class RuleForm extends Component {
     }
 
     findTransactions = async (rule) => {
-        const transactions = await this.connector.post('transaction/find-transactions-from-rule', rule);
-        transactions.forEach(element => {
-            element.extensions = JSON.parse(element.extensions) ?? ""
-        });
-        this.setState({fitTransactions: transactions});
+        if (rule.text) {
+            const transactions = await this.connector.post('transaction/find-transactions-from-rule', rule);
+            transactions.forEach(element => {
+                element.extensions = JSON.parse(element.extensions) ?? ""
+            });
+            this.setState({fitTransactions: transactions});
+        }
     }
 
     save = async () => {
