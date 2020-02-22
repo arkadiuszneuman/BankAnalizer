@@ -14,6 +14,7 @@ class RuleForm extends Component {
         rule: {...this.props.rule},
         fitTransactions: []
     }
+
     async componentDidMount() {
         window.$('.ui.dropdown.clearable').dropdown({ clearable: true })
         window.$('.ui.dropdown').dropdown()
@@ -29,13 +30,19 @@ class RuleForm extends Component {
         rule.columnId = rule.columnId || transactionColumns[0].id;
         rule.type = rule.type || 'Contains';
         this.setState({transactionTypes: transactionTypes, transactionColumns: transactionColumns, rule: rule});
+
+        await this.findTransactions(rule)
     }
 
     handleChange = async event => {
         const rule = this.state.rule
         rule[event.target.name] = event.target.value
         this.setState({ rule: rule });
-        
+
+        await this.findTransactions(rule)
+    }
+
+    findTransactions = async (rule) => {
         const transactions = await this.connector.post('transaction/find-transactions-from-rule', rule);
         transactions.forEach(element => {
             element.extensions = JSON.parse(element.extensions) ?? ""
