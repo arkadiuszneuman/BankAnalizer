@@ -12,6 +12,7 @@ class Menu extends Component {
                   <div className="header">Transactions analizer</div>
                   <NavLink to="/" exact={true} activeClassName="active" className="item">Main</NavLink>
                   <NavLink to="/rules" activeClassName="active" className="item">Rules</NavLink>
+                  <NavLink to="/charts" activeClassName="active" className="item">Charts</NavLink>
               </div>
           </div>
     )

@@ -3,6 +3,7 @@ import Importer from "./components/Importer"
 import TransactionView from "./components/TransactionView"
 import Menu from "./components/Menu"
 import Rules from "./components/Rules/RulesTable"
+import Charts from './components/Charts'
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,7 +23,10 @@ function App() {
         <Route path="/rules">
           <Rules />
         </Route>
-        </Switch>
+        <Route path="/charts">
+          <Charts />
+        </Route>
+      </Switch>
     </Router>
   );
 }
