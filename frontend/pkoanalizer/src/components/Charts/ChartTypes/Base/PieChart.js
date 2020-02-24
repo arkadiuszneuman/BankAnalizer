@@ -1,9 +1,10 @@
 import React from 'react';
 import { ResponsivePie } from '@nivo/pie'
 
-const PieChart = ({ data }) => (
+const PieChart = ({ data, onClick }) => (
     <ResponsivePie
         data={data}
+        onClick={onClick}
         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         sortByValue={true}
         innerRadius={0.5}

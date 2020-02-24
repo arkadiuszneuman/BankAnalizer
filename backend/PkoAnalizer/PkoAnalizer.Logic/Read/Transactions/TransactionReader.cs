@@ -43,6 +43,9 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			if (filter.OnlyWithoutGroup)
 				builder.Where("btg.BankTransactionId IS NULL");
 
+			if (filter.GroupName != null)
+				builder.Where("g.Name = @GroupName", new { filter.GroupName });
+
 			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(selector.RawSql, selector.Parameters);
 
 			foreach (var transactionGroups in trasactionGroupsContainers.GroupBy(g => g.TransactionId))

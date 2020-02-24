@@ -24,7 +24,7 @@ export default class GroupsChart extends Component {
         const height = '300px'
         return (
             <div style={{height: height}}>
-                <PieChart data={this.state.data} />
+                <PieChart data={this.state.data} onClick={this.props.onSegmentClick} />
             </div>
         );
     }
