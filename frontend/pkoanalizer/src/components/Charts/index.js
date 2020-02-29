@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import GroupsChart from './ChartTypes/GroupsChart'
 import ApiConnector from '../../helpers/api/ApiConnector'
 import TransactionList from '../TransactionView/TransactionList'
+import DateTimeRange from '../Controls/DateTimeRange'
 
 export default class ChartsView extends Component {
     state = {
@@ -21,6 +22,7 @@ export default class ChartsView extends Component {
     render() {
         return (
             <div>
+                <DateTimeRange />
                 <GroupsChart onSegmentClick={this.segmentClicked} />
                 <TransactionList transactions={this.state.fitTransactions} showGroups={false} />
             </div>
