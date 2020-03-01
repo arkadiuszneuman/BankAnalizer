@@ -46,6 +46,9 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			if (filter.GroupName != null)
 				builder.Where("g.Name = @GroupName", new { filter.GroupName });
 
+			if (filter.DateFrom != null && filter.DateTo != null)
+				builder.Where("bt.TransactionDate BETWEEN @DateFrom AND @DateTo", new { filter.DateFrom, filter.DateTo });
+
 			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(selector.RawSql, selector.Parameters);
 
 			foreach (var transactionGroups in trasactionGroupsContainers.GroupBy(g => g.TransactionId))

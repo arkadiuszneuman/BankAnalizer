@@ -8,11 +8,7 @@ export default class GroupsChart extends Component {
     state = {
         data: []
     }
-
-    componentDidMount = async () => {
-        
-    }
-
+    
     componentDidUpdate = async (prevProps) => {
         if (prevProps.dateFrom !== this.props.dateFrom ||
             prevProps.dateTo !== this.props.dateTo) {
@@ -21,7 +17,7 @@ export default class GroupsChart extends Component {
     }
 
     reloadGroups = async (dateFrom, dateTo) => {
-        let body = { dateFrom: dateFrom?.toISOString(), dateTo: dateTo?.toISOString() }
+        let body = { dateFrom: dateFrom, dateTo: dateTo }
         if (!dateFrom || !dateTo)
             body = {}
             

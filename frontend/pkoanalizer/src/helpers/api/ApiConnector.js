@@ -24,13 +24,20 @@ export default class ApiConnector {
         let isFirstQuery = true;
 
         for (var param in params) {
+            let paramValue = params[param];
+            if (params[param] instanceof Date) {
+                paramValue = params[param].toISOString()
+            }
+
+            if (!paramValue)
+                continue;
+
             if (isFirstQuery) {
                 isFirstQuery = false
             } else {
                 query += '&'
             }
-
-            query += param + "=" + params[param]
+            query += param + "=" + paramValue
         }
 
         if (query === '?')
