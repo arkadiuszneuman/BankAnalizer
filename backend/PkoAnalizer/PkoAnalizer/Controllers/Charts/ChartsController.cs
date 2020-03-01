@@ -2,6 +2,7 @@
 using PkoAnalizer.Logic.Read.Charts.Groups;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,8 +24,8 @@ namespace PkoAnalizer.Web.Controllers.Charts
 
         [HttpGet]
         [Route("groups")]
-        public async Task<IEnumerable<GroupsViewModel>> GetGroups() =>
-            await groupsReader.GetGroups();
+        public async Task<IEnumerable<GroupsViewModel>> GetGroups(DateTime? dateFrom, DateTime? dateTo) =>
+            await groupsReader.GetGroups(dateFrom, dateTo);
 
         [HttpGet]
         [Route("groups/transactions")]

@@ -10,7 +10,22 @@ export default class GroupsChart extends Component {
     }
 
     componentDidMount = async () => {
-        const groups = await this.connector.get("charts/groups")
+        
+    }
+
+    componentDidUpdate = async (prevProps) => {
+        if (prevProps.dateFrom !== this.props.dateFrom ||
+            prevProps.dateTo !== this.props.dateTo) {
+                await this.reloadGroups(this.props.dateFrom, this.props.dateTo)
+            }
+    }
+
+    reloadGroups = async (dateFrom, dateTo) => {
+        let body = { dateFrom: dateFrom?.toISOString(), dateTo: dateTo?.toISOString() }
+        if (!dateFrom || !dateTo)
+            body = {}
+            
+        const groups = await this.connector.get("charts/groups", body)
         const mappedGroups = groups.map(g => ({
                 id: g.groupName,
                 label: g.groupName,

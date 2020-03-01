@@ -33,6 +33,9 @@ export default class ApiConnector {
             query += param + "=" + params[param]
         }
 
+        if (query === '?')
+            query = ''
+
         return await this._executeMethod(methodName + query, 'get')
     }
 

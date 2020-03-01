@@ -6,7 +6,9 @@ import DateTimeRange from '../Controls/DateTimeRange'
 
 export default class ChartsView extends Component {
     state = {
-        fitTransactions: []
+        fitTransactions: [],
+        dateFrom: null,
+        dateTo: null
     }
 
     connector = new ApiConnector()
@@ -18,12 +20,16 @@ export default class ChartsView extends Component {
         });
         this.setState({fitTransactions: transactions})
     }
+
+    dateTimeChanged = (dateFrom, dateTo) => {
+        this.setState({dateFrom: dateFrom, dateTo: dateTo})
+    }
     
     render() {
         return (
             <div>
-                <DateTimeRange />
-                <GroupsChart onSegmentClick={this.segmentClicked} />
+                <DateTimeRange onChange={this.dateTimeChanged} />
+                <GroupsChart onSegmentClick={this.segmentClicked} dateFrom={this.state.dateFrom} dateTo={this.state.dateTo} />
                 <TransactionList transactions={this.state.fitTransactions} showGroups={false} />
             </div>
         );
