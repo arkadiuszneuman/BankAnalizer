@@ -2,9 +2,9 @@ import HubConnector from './HubConnector'
 
 export default class ApiConnector {
     _apiAddress = "https://localhost:5001/api/"
-    
-    _executeMethod = async (methodName, methodType, body) => {
-        var result = await fetch(this._apiAddress + methodName, { 
+
+    _executeMethod =  async (methodName, methodType, body) => {
+        return await fetch(this._apiAddress + methodName, { 
             method: methodType, 
             headers: {
                 'Content-Type': 'application/json',
@@ -12,6 +12,10 @@ export default class ApiConnector {
             },
             body: JSON.stringify(body)
         })
+    }
+    
+    _executeMethodAndParseResult = async (methodName, methodType, body) => {
+        var result = await this._executeMethod(methodName, methodType, body)
 
         if (!result.ok)
             throw result;
@@ -19,7 +23,7 @@ export default class ApiConnector {
         return result.json()
     }
 
-    get = async (methodName, params) => {
+    _prepareGetQuery = (params) => {
         let query = '?';
         let isFirstQuery = true;
 
@@ -43,18 +47,29 @@ export default class ApiConnector {
         if (query === '?')
             query = ''
 
-        return await this._executeMethod(methodName + query, 'get')
+        return query
+    }
+
+    get = async (methodName, params) => {
+        let query = this._prepareGetQuery(params)
+        return await this._executeMethodAndParseResult(methodName + query, 'get')
+    }
+
+    getFile = async (methodName, params) => {
+        let query = this._prepareGetQuery(params)
+        let response = await this._executeMethod(methodName + query, 'get')
+        return response.blob()
     }
 
     put = async (methodName) => {
-        return await this._executeMethod(methodName, 'put')
+        return await this._executeMethodAndParseResult(methodName, 'put')
     }
 
     post = async (methodName, body, headers) => {
-        return await this._executeMethod(methodName, 'post', body)
+        return await this._executeMethodAndParseResult(methodName, 'post', body)
     }
 
     delete = async (methodName, body) => {
-        return await this._executeMethod(methodName, 'delete', body)
+        return await this._executeMethodAndParseResult(methodName, 'delete', body)
     }
 }

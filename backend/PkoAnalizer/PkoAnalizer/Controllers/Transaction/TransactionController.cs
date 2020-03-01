@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.ViewModels.Rules;
+using PkoAnalizer.Logic.Export;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
 using PkoAnalizer.Logic.Rules.Logic;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Controllers.Transaction
@@ -22,18 +25,21 @@ namespace PkoAnalizer.Web.Controllers.Transaction
         private readonly ColumnFinder columnFinder;
         private readonly BankTransactionRuleFinder bankTransactionRuleFinder;
         private readonly IMapper mapper;
+        private readonly Export export;
 
         public TransactionController(ICommandsBus bus,
             TransactionReader transactionReader,
             ColumnFinder columnFinder,
             BankTransactionRuleFinder bankTransactionRuleFinder,
-            IMapper mapper)
+            IMapper mapper,
+            Export export)
         {
             this.bus = bus;
             this.transactionReader = transactionReader;
             this.columnFinder = columnFinder;
             this.bankTransactionRuleFinder = bankTransactionRuleFinder;
             this.mapper = mapper;
+            this.export = export;
         }
 
         [HttpGet]
@@ -59,5 +65,16 @@ namespace PkoAnalizer.Web.Controllers.Transaction
         [Route("find-transactions-from-rule")]
         public async Task<IEnumerable<TransactionViewModel>> FindTransactionsFromRule(RuleParsedViewModel rule) =>
             mapper.Map<IEnumerable<TransactionViewModel>>(await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule));
+
+        [HttpGet]
+        [Route("export")]
+        public async Task<ActionResult> Export()
+        {
+            var exportedJson = await export.GetExportedJson();
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(exportedJson));
+            var contentType = "APPLICATION/octet-stream";
+            var fileName = "something.txt";
+            return File(stream, contentType, fileName);
+        }
     }
 }

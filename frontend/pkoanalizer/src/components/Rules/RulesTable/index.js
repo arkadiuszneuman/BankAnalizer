@@ -18,11 +18,6 @@ class Rules extends Component {
     currentRule: {}
   }
 
-  constructor() {
-    super()
-    this.ruleAccepted = this.ruleAccepted.bind(this)
-  }
-
   async componentDidMount() {
     var rules = await this.connector.get("rule")
     this.setState({rules: rules});
@@ -32,7 +27,7 @@ class Rules extends Component {
     this.setState({currentRule: rule})
   }
 
-  ruleAccepted(rule) {
+  ruleAccepted = (rule) => {
     if (rule.id) {
       Object.assign(this.state.currentRule, rule);
       this.setState({ rules: this.state.rules});
@@ -59,6 +54,7 @@ class Rules extends Component {
         <Switch>
           <Route exact path={path}>
             <Link onClick={e => this.setCurrentRule({})} to={`${url}/edit`}>Add</Link>
+            <div></div>
             <div className="ui relaxed divided list">
             {this.state.rules.map(rule => 
               <div className="item" key={rule.id}>

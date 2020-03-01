@@ -1,5 +1,6 @@
 import React from 'react';
 import Importer from "./components/Importer"
+import Exporter from "./components/Exporter"
 import TransactionView from "./components/TransactionView"
 import Menu from "./components/Menu"
 import Rules from "./components/Rules/RulesTable"
@@ -18,6 +19,7 @@ function App() {
       <Switch>
         <Route exact path="/">
           <Importer />
+          <Exporter />
           <TransactionView />
         </Route>
         <Route path="/rules">
