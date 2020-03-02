@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Logging;
 using PkoAnalizer.Logic.Common;
 using PkoAnalizer.Logic.Import.Importers.TypeImporters;
 using PkoAnalizer.Logic.Import.Models;
@@ -24,16 +25,17 @@ namespace PkoAnalizer.Logic.Import.Importers
             this.typeImporters = typeImporters;
         }
 
-        public IEnumerable<PkoTransaction> ImportTransactions(int lastOrder)
+        public IEnumerable<PkoTransaction> ImportTransactions(string textToImport, int lastOrder)
         {
             logger.LogInformation("Loading transactions from csv file");
 
-            return fileReader.ReadLines("pko_history.csv", Encoding.GetEncoding(1250))
+            return textToImport.Split('\n')
                 .GetAllLinesExceptFirst()
                 .Reverse()
                 .Select(line =>
                     line.SplitCsv()
                         .RemoveWhitespacesAndQuotes()
+                        .RemoveEmptyEntries()
                         .ToArray())
                 .Select(Import)
                 .OnlyExistsingTransactions()
@@ -44,20 +46,23 @@ namespace PkoAnalizer.Logic.Import.Importers
         {
             PkoTransaction pkoTransaction = null;
 
-            foreach (var typeImporter in typeImporters)
+            if (splittedLine.Any())
             {
-                var transaction = typeImporter.Import(splittedLine);
-                if (transaction != null)
+                foreach (var typeImporter in typeImporters)
                 {
-                    if (pkoTransaction != null)
-                        throw new ImportException($"Too many importers for type {splittedLine.Index(2)}");
+                    var transaction = typeImporter.Import(splittedLine);
+                    if (transaction != null)
+                    {
+                        if (pkoTransaction != null)
+                            throw new ImportException($"Too many importers for type {splittedLine.Index(2)}");
 
-                    pkoTransaction = transaction;
+                        pkoTransaction = transaction;
+                    }
                 }
-            }
 
-            if (pkoTransaction == null)
-                logger.LogWarning($"No importer exists for type {splittedLine.Index(2)}");
+                if (pkoTransaction == null)
+                    logger.LogWarning($"No importer exists for type {splittedLine.Index(2)}");
+            }
 
             return pkoTransaction;
         }
@@ -75,6 +80,12 @@ namespace PkoAnalizer.Logic.Import.Importers
             return column
                 .Select(i => i.Trim())
                 .Select(t => t.Trim('"'));
+        }
+
+        public static IEnumerable<string> RemoveEmptyEntries(this IEnumerable<string> column)
+        {
+            return column
+                .Where(c => c != string.Empty);
         }
 
         public static IEnumerable<PkoTransaction> OnlyExistsingTransactions(this IEnumerable<PkoTransaction> transactions)

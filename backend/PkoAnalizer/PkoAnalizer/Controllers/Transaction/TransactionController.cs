@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Cqrs.Command;
@@ -42,13 +43,30 @@ namespace PkoAnalizer.Web.Controllers.Transaction
             this.export = export;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("import")]
-        public ActionResult Import([FromHeader]string connectionId)
+        public async Task<ActionResult> Import([FromHeader]string connectionId, IFormFile file)
         {
-            var command = new ImportCommand(connectionId);
-            _ = bus.Send(command);
-            return Accepted(command);
+            if (file.Length < 1024 * 1024)
+            {
+                var text = await ReadStream(file);
+                var command = new ImportCommand(connectionId, text);
+
+                _ = bus.Send(command);
+                return Accepted(command);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        private async Task<string> ReadStream(IFormFile file)
+        {
+            using var reader = new StreamReader(file.OpenReadStream(), Encoding.GetEncoding(1250));
+            var result = await reader.ReadToEndAsync();
+
+            return result;
         }
 
         [HttpGet]

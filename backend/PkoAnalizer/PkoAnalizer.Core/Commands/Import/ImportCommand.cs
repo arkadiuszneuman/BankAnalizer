@@ -1,7 +1,6 @@
 ﻿using PkoAnalizer.Core.Cqrs.Command;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace PkoAnalizer.Core.Commands.Import
 {
@@ -9,10 +8,12 @@ namespace PkoAnalizer.Core.Commands.Import
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string ConnectionId { get; set; }
+        public string FileText { get; }
 
-        public ImportCommand(string connectionId)
+        public ImportCommand(string connectionId, string file)
         {
             ConnectionId = connectionId;
+            FileText = file;
         }
     }
 }

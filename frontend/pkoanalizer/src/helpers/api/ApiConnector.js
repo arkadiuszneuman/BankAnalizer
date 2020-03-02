@@ -3,19 +3,22 @@ import HubConnector from './HubConnector'
 export default class ApiConnector {
     _apiAddress = "https://localhost:5001/api/"
 
-    _executeMethod =  async (methodName, methodType, body) => {
+    _executeMethod =  async (methodName, methodType, body, headers) => {
+        const finalHeaders = {
+            'Content-Type': 'application/json',
+            'connectionId': HubConnector.getConnectionId(),
+            ...headers
+        }
+
         return await fetch(this._apiAddress + methodName, { 
             method: methodType, 
-            headers: {
-                'Content-Type': 'application/json',
-                'connectionId': HubConnector.getConnectionId()
-            },
+            headers: finalHeaders,
             body: JSON.stringify(body)
         })
     }
     
-    _executeMethodAndParseResult = async (methodName, methodType, body) => {
-        var result = await this._executeMethod(methodName, methodType, body)
+    _executeMethodAndParseResult = async (methodName, methodType, body, headers) => {
+        var result = await this._executeMethod(methodName, methodType, body, headers)
 
         if (!result.ok)
             throw result;
@@ -66,10 +69,23 @@ export default class ApiConnector {
     }
 
     post = async (methodName, body, headers) => {
-        return await this._executeMethodAndParseResult(methodName, 'post', body)
+        return await this._executeMethodAndParseResult(methodName, 'post', body, headers)
     }
 
     delete = async (methodName, body) => {
         return await this._executeMethodAndParseResult(methodName, 'delete', body)
+    }
+
+    uploadFile =  async (methodName, file, headers) => {
+        const finalHeaders = {
+            'connectionId': HubConnector.getConnectionId(),
+            ...headers
+        }
+
+        return await fetch(this._apiAddress + methodName, { 
+            method: 'post', 
+            headers: finalHeaders,
+            body: file
+        })
     }
 }
