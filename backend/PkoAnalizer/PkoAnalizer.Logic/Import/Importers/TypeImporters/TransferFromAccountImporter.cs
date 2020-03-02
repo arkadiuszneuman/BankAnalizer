@@ -14,6 +14,9 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
             var type = splittedLine.Index(2);
             if (type == "Przelew z rachunku")
             {
+                var isAddressExists = splittedLine.Index(8).Contains("Adres odbiorcy:");
+                var titleIndex = isAddressExists ? 9 : 8;
+
                 return new PkoTransaction
                 {
                     OperationDate = splittedLine.Index(0).ConvertToDate(),
@@ -25,9 +28,9 @@ namespace PkoAnalizer.Logic.Import.Importers.TypeImporters
                     {
                         RecipientReceipt = splittedLine.Index(6).RemoveSubstring("Rachunek odbiorcy:").Trim(),
                         RecipientName = splittedLine.Index(7).RemoveSubstring("Nazwa odbiorcy:").Trim(),
-                        RecipientAddress = splittedLine.Index(8).RemoveSubstring("Adres odbiorcy:").Trim(),
+                        RecipientAddress = isAddressExists ? splittedLine.Index(8).RemoveSubstring("Adres odbiorcy:").Trim() : null,
                     }.ToJson(),
-                    Title = splittedLine.Index(9).RemoveSubstring("Tytuł:").Trim()
+                    Title = splittedLine.Index(titleIndex).RemoveSubstring("Tytuł:").Trim()
                 };
             }
 

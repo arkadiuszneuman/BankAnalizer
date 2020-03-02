@@ -38,7 +38,7 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
             {
                 if (ruleMatchChecker.IsRuleMatch(rule, @event.DatabaseTransaction))
                 {
-                    await bus.Send(new AddGroupCommand(@event.DatabaseTransaction.Id, rule.GroupName));
+                    await bus.Send(new AddGroupCommand(@event.DatabaseTransaction.Id, rule.GroupName, rule.Id));
                 }
             }
         }
