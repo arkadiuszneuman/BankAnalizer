@@ -14,7 +14,11 @@ export default class ChartsView extends Component {
     connector = new ApiConnector()
 
     segmentClicked = async (segment) => {
-        const transactions = await this.connector.get('charts/groups/transactions', { groupName: segment.label })
+        const transactions = await this.connector.get('charts/groups/transactions', { 
+            groupName: segment.label, 
+            dateFrom: this.state.dateFrom, 
+            dateTo: this.state.dateTo
+        })
         transactions.forEach(element => {
             element.extensions = JSON.parse(element.extensions) ?? ""
         });

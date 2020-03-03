@@ -29,7 +29,7 @@ namespace PkoAnalizer.Web.Controllers.Charts
 
         [HttpGet]
         [Route("groups/transactions")]
-        public IAsyncEnumerable<TransactionViewModel> GetGroupTransactions(string groupName) =>
-            transactionReader.ReadTransactions(new TransactionsFilter() { GroupName = groupName });
+        public IAsyncEnumerable<TransactionViewModel> GetGroupTransactions([FromQuery] TransactionsFilter transactionsFilter) =>
+            transactionReader.ReadTransactions(transactionsFilter);
     }
 }
