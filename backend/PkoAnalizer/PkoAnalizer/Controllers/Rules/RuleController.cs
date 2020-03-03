@@ -31,9 +31,9 @@ namespace PkoAnalizer.Web.Controllers.Rules
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Save([FromHeader]string connectionId, RuleParsedViewModel rule)
+        public async Task<ActionResult> Save([FromHeader]string connectionId, [FromHeader]Guid userId, RuleParsedViewModel rule)
         {
-            var command = new SaveRuleCommand(connectionId, rule);
+            var command = new SaveRuleCommand(connectionId, userId, rule);
             _ = bus.Send(command);
             return Accepted(command);
         }

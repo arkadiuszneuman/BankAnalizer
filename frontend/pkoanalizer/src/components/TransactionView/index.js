@@ -2,15 +2,26 @@ import React, { Component } from 'react';
 import TransactionList from './TransactionList'
 import ApiConnector from '../../helpers/api/ApiConnector'
 import DateTimeRange from '../Controls/DateTimeRange'
+import HubConnector from '../../helpers/api/HubConnector'
 
 export default class TransactionView extends Component {
     connector = new ApiConnector()
 
     state = {
         transactions: [],
+        loadedTransactions: [],
         dateFrom: null,
         dateTo: null,
         onlyWithoutGroup: false
+    }
+
+    componentDidMount = async () => {
+        (await HubConnector).HubConnection.on('group-to-transaction-added', event => {
+            if (this.state.onlyWithoutGroup) {
+                const transactions = this.state.transactions.filter(t => t.transactionId !== event.bankTransactionId)
+                this.setState({transactions: transactions})
+            }
+        });
     }
     
     loadTransactions = async () => {
@@ -22,7 +33,7 @@ export default class TransactionView extends Component {
         transactions.forEach(element => {
             element.extensions = JSON.parse(element.extensions) ?? ""
         });
-        this.setState({transactions: transactions})
+        this.setState({transactions: transactions, loadedTransactions: transactions})
     }
 
     toggleOnlyWithoutGroup = async (event) => {

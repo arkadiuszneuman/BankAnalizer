@@ -2,6 +2,7 @@
 using PkoAnalizer.Core.Commands.Group;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Web.Controllers.Group.ViewModels;
+using System;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Controllers.Group
@@ -19,9 +20,9 @@ namespace PkoAnalizer.Web.Controllers.Group
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> AddGroup(BankTransactionGroupViewModel addGroupViewModel)
+        public async Task<ActionResult> AddGroup([FromHeader]Guid userId, BankTransactionGroupViewModel addGroupViewModel)
         {
-            var command = new AddGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName);
+            var command = new AddGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName, userId, default);
             _ = bus.Send(command);
             return Accepted(command);
         }

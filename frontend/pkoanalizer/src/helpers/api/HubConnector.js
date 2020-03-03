@@ -4,27 +4,29 @@ class HubConnector {
     _hubAddress = "https://localhost:5001/hub/"
     _connectionId = ""
     _actions = {}
+    UserId = '42A15FE3-905D-4718-9552-968C21BEDC66'
 
-    constructor() {
-        if(!HubConnector.instance){
+    Init = async () => {
+        if (!HubConnector.instance){
             HubConnector.instance = this;
 
-            this._hubConnection = new HubConnectionBuilder()
+            this.HubConnection = new HubConnectionBuilder()
                 .withUrl(this._hubAddress)
                 .build()
 
-            this._connect();
+            await this._connect();
           }
 
           return HubConnector.instance;
     }
 
     async _connect() {
-        await this._hubConnection.start();
-        this._connectionId = await this._hubConnection.invoke('getConnectionId');
+        await this.HubConnection.start();
+        this._connectionId = await this.HubConnection.invoke('getConnectionId');
+        await this.HubConnection.invoke('registerClient', this.UserId, this._connectionId);
         console.log("connectionID: " + this._connectionId);
 
-        this._hubConnection.on('command-completed', (event) => {
+        this.HubConnection.on('command-completed', (event) => {
             const action = this._actions[event.id];
             if (action) {
                 delete this._actions[event.id];
@@ -40,6 +42,6 @@ class HubConnector {
     getConnectionId = () => this._connectionId;
 }
 
-const instance = new HubConnector();
+const instance = async () => await new HubConnector().Init();
 
-export default instance;
+export default instance();

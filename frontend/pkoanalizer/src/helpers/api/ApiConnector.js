@@ -6,7 +6,8 @@ export default class ApiConnector {
     _executeMethod =  async (methodName, methodType, body, headers) => {
         const finalHeaders = {
             'Content-Type': 'application/json',
-            'connectionId': HubConnector.getConnectionId(),
+            'connectionId': (await HubConnector).getConnectionId(),
+            'userId': (await HubConnector).UserId,
             ...headers
         }
 

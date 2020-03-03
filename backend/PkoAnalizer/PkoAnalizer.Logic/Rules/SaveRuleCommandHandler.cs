@@ -59,7 +59,7 @@ namespace PkoAnalizer.Logic.Rules
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await context.SaveChangesAsync();
-                await eventsBus.Publish(new RuleSavedEvent(rule));
+                await eventsBus.Publish(new RuleSavedEvent(rule, command.UserId));
 
                 scope.Complete();
             }

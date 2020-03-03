@@ -48,7 +48,7 @@ namespace PkoAnalizer.Logic.Import
                 var databaseTransaction = await bankTransactionAccess.AddToDatabase(transaction);
 
                 if (databaseTransaction != null)
-                    transactionSavedEventTasks.Add(eventsBus.Publish(new TransactionSavedEvent(transaction, databaseTransaction)));
+                    transactionSavedEventTasks.Add(eventsBus.Publish(new TransactionSavedEvent(command.UserId, transaction, databaseTransaction)));
                 else
                     --lastOrder;
             }

@@ -6,13 +6,15 @@ namespace PkoAnalizer.Core.Commands.Rules
 {
     public class SaveRuleCommand : ICommand
     {
-        public Guid Id { get; private set; } = Guid.NewGuid();
-        public string ConnectionId { get; private set; }
-        public RuleParsedViewModel Rule { get; private set; }
+        public Guid Id { get; } = Guid.NewGuid();
+        public string ConnectionId { get; }
+        public Guid UserId { get; }
+        public RuleParsedViewModel Rule { get; }
 
-        public SaveRuleCommand(string connectionId, RuleParsedViewModel rule)
+        public SaveRuleCommand(string connectionId, Guid userId, RuleParsedViewModel rule)
         {
             ConnectionId = connectionId;
+            UserId = userId;
             Rule = rule;
         }
     }

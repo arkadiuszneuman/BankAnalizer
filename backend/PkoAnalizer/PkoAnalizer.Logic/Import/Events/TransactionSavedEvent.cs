@@ -2,18 +2,18 @@
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PkoAnalizer.Logic.Import.Events
 {
     public class TransactionSavedEvent : IEvent
     {
+        public Guid UserId { get; }
         public PkoTransaction Transaction { get; }
         public BankTransaction DatabaseTransaction { get; }
 
-        public TransactionSavedEvent(PkoTransaction transaction, BankTransaction databaseTransaction)
+        public TransactionSavedEvent(Guid userId, PkoTransaction transaction, BankTransaction databaseTransaction)
         {
+            UserId = userId;
             Transaction = transaction;
             DatabaseTransaction = databaseTransaction;
         }

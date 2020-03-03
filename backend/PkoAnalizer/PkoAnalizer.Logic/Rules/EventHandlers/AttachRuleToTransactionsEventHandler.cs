@@ -40,7 +40,7 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
             {
                 logger.LogInformation("Found transaction {transaction} for rule {rule}", bankTransaction.Id, rule.RuleName);
 
-                await bus.Send(new AddGroupCommand(bankTransaction.Id, rule.GroupName, @event.Rule.Id));
+                await bus.Send(new AddGroupCommand(bankTransaction.Id, rule.GroupName, @event.UserId, @event.Rule.Id));
             }
         }
     }

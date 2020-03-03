@@ -8,6 +8,7 @@ using PkoAnalizer.Logic.Export;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
 using PkoAnalizer.Logic.Rules.Logic;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -45,12 +46,12 @@ namespace PkoAnalizer.Web.Controllers.Transaction
 
         [HttpPost]
         [Route("import")]
-        public async Task<ActionResult> Import([FromHeader]string connectionId, IFormFile file)
+        public async Task<ActionResult> Import([FromHeader]string connectionId,[FromHeader]Guid userId, IFormFile file)
         {
             if (file.Length < 1024 * 1024)
             {
                 var text = await ReadStream(file);
-                var command = new ImportCommand(connectionId, text);
+                var command = new ImportCommand(connectionId, userId, text);
 
                 _ = bus.Send(command);
                 return Accepted(command);
