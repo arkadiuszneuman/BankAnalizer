@@ -18,7 +18,7 @@ namespace PkoAnalizer.Tests.Logic.Rules
             var ruleViewModel = new RuleViewModel
             {
                 Id = Guid.Parse("C61308F9-AB25-4123-9084-BCDA14F2540F"),
-                RuleDefinition = "Title Contains TESCO",
+                RuleDefinition = "Title Contains TESCO AND TESCO",
                 GroupName = "Some Group",
                 RuleName = "Some rule name"
             };
@@ -34,7 +34,7 @@ namespace PkoAnalizer.Tests.Logic.Rules
                 Column = "Title",
                 IsColumnInExtensions = false,
                 RuleType = RuleType.Contains,
-                Value = "TESCO",
+                Value = "TESCO AND TESCO",
                 GroupName = "Some Group",
                 RuleName = "Some rule name"
             });

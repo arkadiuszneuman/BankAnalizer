@@ -2,6 +2,7 @@
 using PkoAnalizer.Logic.Rules.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -59,7 +60,7 @@ namespace PkoAnalizer.Logic.Rules
                 Column = splittedString[0].Replace("Extensions.", "").Trim(),
                 IsColumnInExtensions = splittedString[0].StartsWith("Extensions."),
                 RuleType = Enum.Parse<RuleType>(splittedString[1].Trim()),
-                Value = splittedString[2].Trim(),
+                Value = string.Join(" ", splittedString.Skip(2)),
                 GroupName = rule.GroupName,
                 RuleName = rule.RuleName
             };
