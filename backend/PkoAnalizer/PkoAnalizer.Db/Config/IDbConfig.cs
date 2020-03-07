@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PkoAnalizer.Db.Config
 {
-    public interface IConfig
+    public interface IDbConfig
     {
     }
 }

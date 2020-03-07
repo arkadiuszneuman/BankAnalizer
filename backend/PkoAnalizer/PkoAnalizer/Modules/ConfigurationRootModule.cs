@@ -1,9 +1,6 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Modules
 {
@@ -22,6 +19,7 @@ namespace PkoAnalizer.Web.Modules
                 configurationBuilder.AddJsonFile("appsettings.json")
                     .AddJsonFile($"appsettings.Secrets.json", optional: true)
                     .AddJsonFile($"appsettings.{environment}.json", optional: true)
+                    .AddJsonFile($"appsettings.Secrets.json", optional: true)
                     .AddEnvironmentVariables();
 
                 return configurationBuilder.Build();
