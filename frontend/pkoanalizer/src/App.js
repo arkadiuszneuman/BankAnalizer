@@ -9,7 +9,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect
 } from "react-router-dom";
+import LoginPage from './components/Authentication/LoginPage'
+import RegisterPage from './components/Authentication/RegisterPage'
+import PrivateRoute from './components/Authentication/PrivateRoute'
 
 
 function App() {
@@ -25,9 +29,10 @@ function App() {
         <Route path="/rules">
           <Rules />
         </Route>
-        <Route path="/charts">
-          <Charts />
-        </Route>
+        <PrivateRoute path="/charts" component={Charts} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
+        <Redirect from="*" to="/" />  
       </Switch>
     </Router>
   );

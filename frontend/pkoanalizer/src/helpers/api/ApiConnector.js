@@ -4,11 +4,20 @@ export default class ApiConnector {
     _apiAddress = "https://localhost:5001/api/"
 
     _executeMethod =  async (methodName, methodType, body, headers) => {
-        const finalHeaders = {
+        let finalHeaders = {
             'Content-Type': 'application/json',
             'connectionId': (await HubConnector).getConnectionId(),
             'userId': (await HubConnector).UserId,
             ...headers
+        }
+
+        const user = localStorage.getItem('user')
+        if (user != null) {
+            const parsedUser = JSON.parse(user)
+            finalHeaders = {
+                'Authorization': 'Bearer ' + parsedUser.token,
+                ...finalHeaders
+            }
         }
 
         return await fetch(this._apiAddress + methodName, { 
