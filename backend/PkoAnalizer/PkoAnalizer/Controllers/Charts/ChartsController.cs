@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Logic.Read.Charts.Groups;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace PkoAnalizer.Web.Controllers.Charts
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ChartsController : ControllerBase
     {

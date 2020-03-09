@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Core.Commands.Import;
@@ -20,6 +21,7 @@ namespace PkoAnalizer.Web.Controllers.Transaction
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TransactionController : ControllerBase
     {
         private readonly ICommandsBus bus;

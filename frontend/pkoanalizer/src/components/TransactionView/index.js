@@ -3,6 +3,8 @@ import TransactionList from './TransactionList'
 import ApiConnector from '../../helpers/api/ApiConnector'
 import DateTimeRange from '../Controls/DateTimeRange'
 import HubConnector from '../../helpers/api/HubConnector'
+import Importer from '../Importer'
+import Exporter from '../Exporter'
 
 export default class TransactionView extends Component {
     connector = new ApiConnector()
@@ -47,6 +49,8 @@ export default class TransactionView extends Component {
     render() {
         return (
             <div>
+                <Importer />
+                <Exporter />
                 <DateTimeRange onChange={this.dateTimeChanged} />
                 <div className="ui checkbox">
                     <input type="checkbox" onChange={this.toggleOnlyWithoutGroup} />

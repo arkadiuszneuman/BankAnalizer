@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace PkoAnalizer.Web.Controllers.Transaction
 {
     [Route("api/transaction-type")]
     [ApiController]
+    [Authorize]
     public class TransactionTypeController : ControllerBase
     {
         private readonly TransactionReader transactionReader;

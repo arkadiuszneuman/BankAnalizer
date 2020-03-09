@@ -20,15 +20,21 @@ export default class ApiConnector {
             }
         }
 
-        return await fetch(this._apiAddress + methodName, { 
+        const result = await fetch(this._apiAddress + methodName, { 
             method: methodType, 
             headers: finalHeaders,
             body: JSON.stringify(body)
         })
+
+        if (result.status === 401) {
+            window.location.href = '/login'
+        }
+
+        return result
     }
     
     _executeMethodAndParseResult = async (methodName, methodType, body, headers) => {
-        var result = await this._executeMethod(methodName, methodType, body, headers)
+        const result = await this._executeMethod(methodName, methodType, body, headers)
 
         if (!result.ok)
             throw result;

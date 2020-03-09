@@ -25,19 +25,19 @@ namespace PkoAnalizer.Web.Startup
             })
             .AddJwtBearer(x =>
             {
-                x.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = async context =>
-                    {
-                        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-                        var userId = Guid.Parse(context.Principal.Identity.Name);
-                        var user = await userService.GetById(userId);
-                        if (user == null)
-                        {
-                            context.Fail("Unauthorized");
-                        }
-                    }
-                };
+                //x.Events = new JwtBearerEvents
+                //{
+                //    OnTokenValidated = async context =>
+                //    {
+                //        var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                //        var userId = Guid.Parse(context.Principal.Identity.Name);
+                //        var user = await userService.GetById(userId);
+                //        if (user == null)
+                //        {
+                //            context.Fail("Unauthorized");
+                //        }
+                //    }
+                //};
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
