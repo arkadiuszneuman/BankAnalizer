@@ -84,7 +84,6 @@ namespace PkoAnalizer.Db.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("UserId")
@@ -92,7 +91,7 @@ namespace PkoAnalizer.Db.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name");
+                    b.HasIndex("Name");
 
                     b.HasIndex("UserId");
 

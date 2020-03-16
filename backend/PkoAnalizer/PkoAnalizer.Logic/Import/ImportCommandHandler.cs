@@ -36,7 +36,7 @@ namespace PkoAnalizer.Logic.Import
         {
             logger.LogInformation("Importing transactions from file");
 
-            var lastOrder = await bankTransactionAccess.GetLastTransactionOrder();
+            var lastOrder = await bankTransactionAccess.GetLastTransactionOrder(command.UserId);
             var transactions = importers.SelectMany(i => i.ImportTransactions(command.FileText, lastOrder).ToList()).ToList();
 
             var transactionSavedEventTasks = new List<Task>();
@@ -45,7 +45,7 @@ namespace PkoAnalizer.Logic.Import
             {
                 transaction.Order = ++lastOrder;
 
-                var databaseTransaction = await bankTransactionAccess.AddToDatabase(transaction);
+                var databaseTransaction = await bankTransactionAccess.AddToDatabase(transaction, command.UserId);
 
                 if (databaseTransaction != null)
                     transactionSavedEventTasks.Add(eventsBus.Publish(new TransactionSavedEvent(command.UserId, transaction, databaseTransaction)));

@@ -6,6 +6,7 @@ using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Read.Rule;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Controllers.Rules
@@ -13,7 +14,7 @@ namespace PkoAnalizer.Web.Controllers.Rules
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class RuleController : ControllerBase
+    public class RuleController : BankControllerBase
     {
         private readonly ICommandsBus bus;
         private readonly RuleReader ruleReader;
@@ -32,9 +33,10 @@ namespace PkoAnalizer.Web.Controllers.Rules
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Save([FromHeader]string connectionId, [FromHeader]Guid userId, RuleParsedViewModel rule)
+        public async Task<ActionResult> Save([FromHeader]string connectionId, RuleParsedViewModel rule)
         {
-            var command = new SaveRuleCommand(connectionId, userId, rule);
+            
+            var command = new SaveRuleCommand(connectionId, GetCurrentUserId(), rule);
             _ = bus.Send(command);
             return Accepted(command);
         }

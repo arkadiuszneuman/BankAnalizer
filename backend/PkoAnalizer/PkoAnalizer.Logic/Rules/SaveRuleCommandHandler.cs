@@ -39,13 +39,12 @@ namespace PkoAnalizer.Logic.Rules
             if (command.Rule.Id != default)
                 rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.Rule.Id) ?? new Rule();
             else
-            {
                 rule = new Rule();
-            }
 
+            var isNewRule = rule.Id == default;
             mapper.Map(command.Rule, rule);
 
-            if (rule.Id == default)
+            if (isNewRule)
             {
                 rule.Id = Guid.NewGuid();
                 await context.AddAsync(rule);
@@ -55,6 +54,8 @@ namespace PkoAnalizer.Logic.Rules
                 rule.BankTransactionType = await context.BankTransactionTypes.SingleAsync(b => b.Id == command.Rule.BankTransactionTypeId);
             else
                 rule.BankTransactionType = null;
+
+            rule.User = await context.Users.FindAsync();
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {

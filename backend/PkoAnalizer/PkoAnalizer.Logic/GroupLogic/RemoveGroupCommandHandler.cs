@@ -19,7 +19,7 @@ namespace PkoAnalizer.Logic.GroupLogic
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var group = await groupAccess.GetGroupByName(command.GroupName);
+                var group = await groupAccess.GetGroupByName(command.GroupName, command.UserId);
                 await groupAccess.RemoveBankTransactionsFromGroup(command.BankTransactionId, group.Id);
                 await groupAccess.RemoveGroupIfBankTransactionsDoNotExist(group.Id);
 

@@ -7,11 +7,13 @@ namespace PkoAnalizer.Core.Commands.Group
     {
         public Guid BankTransactionId { get; set; }
         public string GroupName { get; set; }
+        public Guid UserId { get; }
 
-        public RemoveGroupCommand(Guid bankTransactionId, string groupName)
+        public RemoveGroupCommand(Guid bankTransactionId, string groupName, Guid userId)
         {
             BankTransactionId = bankTransactionId;
             GroupName = groupName;
+            UserId = userId;
         }
     }
 }

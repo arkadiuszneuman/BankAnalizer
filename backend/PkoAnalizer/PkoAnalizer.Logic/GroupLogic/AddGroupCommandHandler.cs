@@ -28,12 +28,13 @@ namespace PkoAnalizer.Logic.GroupLogic
                 throw new PkoAnalizerException($"Bank transaction id {command.BankTransactionId} doesn't exist");
 
             var group = command.RuleId == default ?
-                await groupAccess.GetGroupByName(command.GroupName) :
-                await groupAccess.GetGroupByNameAndRuleId(command.GroupName, command.RuleId);
+                await groupAccess.GetGroupByName(command.GroupName, command.UserId) :
+                await groupAccess.GetGroupByNameAndRuleId(command.GroupName, command.RuleId, command.UserId);
 
             if (group == null)
             {
                 group = new Group { Name = command.GroupName };
+                group.User = await groupAccess.GetUser(command.UserId);
                 if (command.RuleId != default)
                     group.Rule = new Rule { Id = command.RuleId };
             }
