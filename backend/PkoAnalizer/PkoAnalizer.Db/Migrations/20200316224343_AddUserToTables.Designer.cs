@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PkoAnalizer.Db;
 
 namespace PkoAnalizer.Db.Migrations
 {
     [DbContext(typeof(PkoContext))]
-    partial class PkoContextModelSnapshot : ModelSnapshot
+    [Migration("20200316224343_AddUserToTables")]
+    partial class AddUserToTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,7 +86,6 @@ namespace PkoAnalizer.Db.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("UserId")
@@ -92,7 +93,7 @@ namespace PkoAnalizer.Db.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Name");
+                    b.HasIndex("Name");
 
                     b.HasIndex("UserId");
 

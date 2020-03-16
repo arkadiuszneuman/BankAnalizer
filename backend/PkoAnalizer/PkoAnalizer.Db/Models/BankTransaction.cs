@@ -7,6 +7,7 @@ namespace PkoAnalizer.Db.Models
     public class BankTransaction
     {
         public Guid Id { get; set; }
+        public User User { get; set; }
         public int Order { get; set; }
         public DateTime OperationDate { get; set; }
         public DateTime TransactionDate { get; set; }
