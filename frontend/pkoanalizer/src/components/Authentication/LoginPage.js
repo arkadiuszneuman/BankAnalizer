@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { Redirect } from 'react-router-dom'
 import ApiConnector from '../../helpers/api/ApiConnector'
 import userManager from '../../helpers/api/UserManager'
+import Input from '../Controls/Input'
 
 export default class LoginPage extends Component {
   connector = new ApiConnector()
@@ -13,7 +14,7 @@ export default class LoginPage extends Component {
   }
 
   handleChange = e => {
-    const { name, value } = e.target;
+    const { name, value } = e;
     this.setState({ [name]: value });
   }
 
@@ -30,23 +31,14 @@ export default class LoginPage extends Component {
   }
 
   render() {
-    const username = this.state.username
-    const password = this.state.password
-
     if (this.state.redirectTo != null) {
       return <Redirect to={this.state.redirectTo} />
     }
 
     return (
       <form className="ui form">
-        <div className="field">
-            <label>Username</label>
-            <input type="text" value={username} name="username" onChange={this.handleChange} placeholder="Username" />
-        </div>
-        <div className="field">
-            <label>Password</label>
-            <input type="password" value={password} name="password" onChange={this.handleChange} placeholder="Password" />
-        </div>
+        <Input name="username" text="Username" onChange={this.handleChange} />
+        <Input type="password" name="password" text="Password" onChange={this.handleChange} />
         <button className="ui primary button" onClick={this.login}>Login</button>
     </form>
     )
