@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import { Redirect } from 'react-router-dom'
 import ApiConnector from '../../helpers/api/ApiConnector'
 import userManager from '../../helpers/api/UserManager'

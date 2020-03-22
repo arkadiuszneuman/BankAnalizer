@@ -39,7 +39,11 @@ export default class ApiConnector {
         if (!result.ok)
             throw result;
 
-        return result.json()
+        var bodyAsText = await result.text()
+        if (bodyAsText === '')
+            return null
+
+        return JSON.parse(bodyAsText)
     }
 
     _prepareGetQuery = (params) => {
