@@ -9,3 +9,4 @@ services:
       - SA_PASSWORD=1Secure*Password1
       - MSSQL_PID=Express
     container_name: mssql
+    restart: unless-stopped
