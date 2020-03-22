@@ -55,7 +55,7 @@ namespace PkoAnalizer.Logic.Rules
             else
                 rule.BankTransactionType = null;
 
-            rule.User = await context.Users.FindAsync();
+            rule.User = await context.Users.FindAsync(command.UserId);
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
