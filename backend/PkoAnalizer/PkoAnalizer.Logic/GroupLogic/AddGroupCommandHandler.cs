@@ -25,7 +25,7 @@ namespace PkoAnalizer.Logic.GroupLogic
         {
             var bankTransaction = await groupAccess.GetBankTransactionById(command.BankTransactionId);
             if (bankTransaction == null)
-                throw new PkoAnalizerException($"Bank transaction id {command.BankTransactionId} doesn't exist");
+                throw new BankAnalizerException($"Bank transaction id {command.BankTransactionId} doesn't exist");
 
             var group = command.RuleId == default ?
                 await groupAccess.GetGroupByName(command.GroupName, command.UserId) :

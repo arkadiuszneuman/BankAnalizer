@@ -79,7 +79,7 @@ namespace PkoAnalizer.Web.Controllers.Users
                 await userService.Create(user, model.Password);
                 return Ok();
             }
-            catch (PkoAnalizerException ex)
+            catch (BankAnalizerException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }

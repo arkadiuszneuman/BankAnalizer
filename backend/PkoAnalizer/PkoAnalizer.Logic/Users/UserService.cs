@@ -67,11 +67,11 @@ namespace PkoAnalizer.Logic.Users
         public async Task<User> Create(User user, string password)
         {
             if (string.IsNullOrWhiteSpace(password))
-                throw new PkoAnalizerException("Password is required");
+                throw new BankAnalizerException("Password is required");
 
             using var context = contextFactory.GetContext();
             if (await context.Users.AnyAsync(x => x.Username == user.Username))
-                throw new PkoAnalizerException($"Username \"{user.Username}\" is already taken");
+                throw new BankAnalizerException($"Username \"{user.Username}\" is already taken");
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -91,12 +91,12 @@ namespace PkoAnalizer.Logic.Users
             var user = await context.Users.FindAsync(userParam.Id);
 
             if (user == null)
-                throw new PkoAnalizerException("User not found");
+                throw new BankAnalizerException("User not found");
 
             if (!string.IsNullOrWhiteSpace(userParam.Username) && userParam.Username != user.Username)
             {
                 if (await context.Users.AnyAsync(x => x.Username == userParam.Username))
-                    throw new PkoAnalizerException("Username " + userParam.Username + " is already taken");
+                    throw new BankAnalizerException("Username " + userParam.Username + " is already taken");
 
                 user.Username = userParam.Username;
             }

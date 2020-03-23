@@ -2,7 +2,7 @@
 
 namespace PkoAnalizer.Core
 {
-    public class DatabaseException : PkoAnalizerException
+    public class DatabaseException : BankAnalizerException
     {
         public DatabaseException(string message) : base(message)
         {

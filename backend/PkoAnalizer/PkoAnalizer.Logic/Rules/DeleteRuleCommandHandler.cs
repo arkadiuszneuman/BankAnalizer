@@ -25,7 +25,7 @@ namespace PkoAnalizer.Logic.Rules
             using var context = contextFactory.GetContext();
             var rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.RuleId && r.User.Id == command.UserId);
             if (rule == null)
-                throw new PkoAnalizerException($"Invalid rule id {command.RuleId}");
+                throw new BankAnalizerException($"Invalid rule id {command.RuleId}");
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
