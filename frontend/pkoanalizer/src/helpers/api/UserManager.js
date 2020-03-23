@@ -6,7 +6,11 @@ class UserManager {
     }
 
     getUserFromStorage() {
-        return localStorage.getItem('user')
+        var user = localStorage.getItem('user')
+        if (user == null)
+            return null
+        
+        return JSON.parse(user)
     }
 }
 

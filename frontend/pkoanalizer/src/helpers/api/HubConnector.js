@@ -6,8 +6,8 @@ class HubConnector {
     _actions = {}
     UserId = '42A15FE3-905D-4718-9552-968C21BEDC66'
 
-    Init = async () => {
-        if (!HubConnector.instance){
+    init = async () => {
+        if (!HubConnector.instance) {
             HubConnector.instance = this;
 
             this.HubConnection = new HubConnectionBuilder()
@@ -42,6 +42,6 @@ class HubConnector {
     getConnectionId = () => this._connectionId;
 }
 
-const instance = async () => await new HubConnector().Init();
+const instance = async () => await new HubConnector().init();
 
 export default instance();

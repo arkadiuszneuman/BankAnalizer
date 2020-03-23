@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,15 @@ namespace PkoAnalizer.Logic.Import.Db
     {
         private readonly ILogger<BankTransactionAccess> logger;
         private readonly IContextFactory contextFactory;
+        private readonly IUserService userService;
 
         public BankTransactionAccess(ILogger<BankTransactionAccess> logger,
-            IContextFactory contextFactory)
+            IContextFactory contextFactory,
+            IUserService userService)
         {
             this.logger = logger;
             this.contextFactory = contextFactory;
+            this.userService = userService;
         }
 
         public async Task<int> GetLastTransactionOrder(Guid userId)
@@ -37,7 +41,7 @@ namespace PkoAnalizer.Logic.Import.Db
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using var context = contextFactory.GetContext();
-                var user = new User { Id = userId };
+                var user = await userService.GetById(userId);
                 context.Attach(user);
 
                 var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name && t.User.Id == userId);
