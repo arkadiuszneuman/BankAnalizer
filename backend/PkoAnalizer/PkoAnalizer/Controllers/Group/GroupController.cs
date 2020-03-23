@@ -9,7 +9,7 @@ namespace PkoAnalizer.Web.Controllers.Group
 {
     [Route("api/transaction/[controller]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupController : BankControllerBase
     {
         private readonly ICommandsBus bus;
 
@@ -20,9 +20,9 @@ namespace PkoAnalizer.Web.Controllers.Group
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> AddGroup([FromHeader]Guid userId, BankTransactionGroupViewModel addGroupViewModel)
+        public async Task<ActionResult> AddGroup(BankTransactionGroupViewModel addGroupViewModel)
         {
-            var command = new AddGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName, userId, default);
+            var command = new AddGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName, GetCurrentUserId(), default);
             _ = bus.Send(command);
             return Accepted(command);
         }
@@ -31,7 +31,7 @@ namespace PkoAnalizer.Web.Controllers.Group
         [Route("")]
         public async Task<ActionResult> RemoveGroup(BankTransactionGroupViewModel addGroupViewModel)
         {
-            var command = new RemoveGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName);
+            var command = new RemoveGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName, GetCurrentUserId());
             _ = bus.Send(command);
             return Accepted(command);
         }

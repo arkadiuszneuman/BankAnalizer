@@ -45,7 +45,7 @@ namespace PkoAnalizer
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
                 builder
-                    .WithOrigins("http://localhost:3000")
+                    .WithOrigins("http://localhost:3000", "https://localhost:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();

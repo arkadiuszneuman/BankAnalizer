@@ -11,7 +11,7 @@ namespace PkoAnalizer.Db.Configurations
     {
         public void Configure(EntityTypeBuilder<BankTransactionType> builder)
         {
-            builder.HasAlternateKey(x => x.Name);
+            builder.HasIndex(x => x.Name);
         }
     }
 }

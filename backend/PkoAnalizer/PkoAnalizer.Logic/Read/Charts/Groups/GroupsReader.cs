@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Db;
+using PkoAnalizer.Logic.Users;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,15 +18,15 @@ namespace PkoAnalizer.Logic.Read.Charts.Groups
             this.connectionFactory = connectionFactory;
         }
 
-        public async Task<IEnumerable<GroupsViewModel>> GetGroups(DateTime? dateFrom, DateTime? dateTo)
+        public async Task<IEnumerable<GroupsViewModel>> GetGroups(DateTime? dateFrom, DateTime? dateTo, Guid userId)
         {
             using var connection = connectionFactory.CreateConnection();
 
-            var queryString = @"SELECT Name as GroupName, SUM(Amount) * -1 as Amount FROM Groups
+            var queryString = $@"SELECT Name as GroupName, SUM(Amount) * -1 as Amount FROM Groups
                     JOIN BankTransactionGroups ON Groups.Id = BankTransactionGroups.GroupId
                     JOIN BankTransactions ON BankTransactionGroups.BankTransactionId = BankTransactions.Id /**filterBankTransactions**/
-                    GROUP BY Name
-                    HAVING SUM(Amount) < 0";
+                    GROUP BY Name, UserId
+                    HAVING SUM(Amount) < 0 AND UserId = {userId}";
             string filterBankTransactionsQuery = GetFilterTransactionsQuery(dateFrom, dateTo);
 
             queryString = queryString.Replace("/**filterBankTransactions**/", filterBankTransactionsQuery);

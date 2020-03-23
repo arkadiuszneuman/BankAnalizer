@@ -18,9 +18,9 @@ namespace PkoAnalizer.Logic.Read.Transactions
             this.transactionReader = transactionReader;
         }
 
-        public async Task<IEnumerable<ColumnViewModel>> FindColumns()
+        public async Task<IEnumerable<ColumnViewModel>> FindColumns(Guid userId)
         {
-            var extensions = await transactionReader.ReadAllExtensionColumns();
+            var extensions = await transactionReader.ReadAllExtensionColumns(userId);
 
             var staticColumns = GetStaticColumns();
             var columns = extensions.SelectMany(x => GetExtensionColumns(x));

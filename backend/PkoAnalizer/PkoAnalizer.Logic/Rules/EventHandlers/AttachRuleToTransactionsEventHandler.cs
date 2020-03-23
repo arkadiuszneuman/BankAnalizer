@@ -36,7 +36,7 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
 
             await bus.Send(new DeleteTransactionsAndGroupsAssignedToRuleCommand(@event.Rule));
 
-            foreach (var bankTransaction in await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule))
+            foreach (var bankTransaction in await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule, @event.UserId))
             {
                 logger.LogInformation("Found transaction {transaction} for rule {rule}", bankTransaction.Id, rule.RuleName);
 

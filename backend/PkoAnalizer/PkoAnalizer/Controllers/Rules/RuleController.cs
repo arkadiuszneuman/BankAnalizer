@@ -6,6 +6,7 @@ using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Read.Rule;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Controllers.Rules
@@ -13,7 +14,7 @@ namespace PkoAnalizer.Web.Controllers.Rules
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class RuleController : ControllerBase
+    public class RuleController : BankControllerBase
     {
         private readonly ICommandsBus bus;
         private readonly RuleReader ruleReader;
@@ -28,13 +29,13 @@ namespace PkoAnalizer.Web.Controllers.Rules
         [HttpGet]
         [Route("")]
         public async Task<IEnumerable<RuleParsedViewModel>> Index() =>
-            await ruleReader.ReadRules();
+            await ruleReader.ReadRules(GetCurrentUserId());
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Save([FromHeader]string connectionId, [FromHeader]Guid userId, RuleParsedViewModel rule)
+        public async Task<ActionResult> Save([FromHeader]string connectionId, RuleParsedViewModel rule)
         {
-            var command = new SaveRuleCommand(connectionId, userId, rule);
+            var command = new SaveRuleCommand(connectionId, GetCurrentUserId(), rule);
             _ = bus.Send(command);
             return Accepted(command);
         }
@@ -43,7 +44,7 @@ namespace PkoAnalizer.Web.Controllers.Rules
         [Route("{ruleId:Guid}")]
         public async Task<ActionResult> Delete([FromHeader]string connectionId, Guid ruleId)
         {
-            var command = new DeleteRuleCommand(connectionId, ruleId);
+            var command = new DeleteRuleCommand(connectionId, ruleId, GetCurrentUserId());
             _ = bus.Send(command);
             return Accepted(command);
         }

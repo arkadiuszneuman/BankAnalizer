@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,21 +16,24 @@ namespace PkoAnalizer.Logic.Import.Db
     {
         private readonly ILogger<BankTransactionAccess> logger;
         private readonly IContextFactory contextFactory;
+        private readonly IUserService userService;
 
         public BankTransactionAccess(ILogger<BankTransactionAccess> logger,
-            IContextFactory contextFactory)
+            IContextFactory contextFactory,
+            IUserService userService)
         {
             this.logger = logger;
             this.contextFactory = contextFactory;
+            this.userService = userService;
         }
 
-        public async Task<int> GetLastTransactionOrder()
+        public async Task<int> GetLastTransactionOrder(Guid userId)
         {
             using var context = contextFactory.GetContext();
-            return (await context.BankTransactions.MaxAsync(t => (int?)t.Order)) ?? 0;
+            return (await context.BankTransactions.Where(u => u.User.Id == userId).MaxAsync(t => (int?)t.Order)) ?? 0;
         }
 
-        public async Task<BankTransaction> AddToDatabase(PkoTransaction transaction)
+        public async Task<BankTransaction> AddToDatabase(PkoTransaction transaction, Guid userId)
         {
             BankTransaction databaseTransaction = null;
             var groupDbModel = MapGroup(transaction.TransactionType);
@@ -37,14 +41,18 @@ namespace PkoAnalizer.Logic.Import.Db
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using var context = contextFactory.GetContext();
+                var user = await userService.GetById(userId);
+                context.Attach(user);
 
-                var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name);
+                var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name && t.User.Id == userId);
                 var group = existingGroup ?? groupDbModel;
+                group.User = user;
 
                 databaseTransaction = MapTransaction(transaction);
                 databaseTransaction.BankTransactionType = group;
+                databaseTransaction.User = user;
 
-                var existingTransaction = await ExistingTransaction(context, databaseTransaction, existingGroup);
+                var existingTransaction = await ExistingTransaction(context, databaseTransaction, existingGroup, userId);
                 if (existingTransaction == null)
                 {
                     await context.AddAsync(databaseTransaction);
@@ -62,7 +70,8 @@ namespace PkoAnalizer.Logic.Import.Db
             return databaseTransaction;
         }
 
-        private async Task<BankTransaction> ExistingTransaction(IContext context, BankTransaction groupTransaction, BankTransactionType existingGroup)
+        private async Task<BankTransaction> ExistingTransaction(IContext context, BankTransaction groupTransaction, 
+            BankTransactionType existingGroup, Guid userId)
         {
             if (existingGroup == null)
                 return null;
@@ -73,7 +82,8 @@ namespace PkoAnalizer.Logic.Import.Db
                 t.Extensions == groupTransaction.Extensions &&
                 t.OperationDate == groupTransaction.OperationDate &&
                 t.Title == groupTransaction.Title &&
-                t.TransactionDate == groupTransaction.TransactionDate)
+                t.TransactionDate == groupTransaction.TransactionDate &&
+                t.User.Id == userId)
                 .SingleOrDefaultAsync();
         }
 

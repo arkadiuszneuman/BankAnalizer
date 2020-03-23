@@ -10,7 +10,7 @@ namespace PkoAnalizer.Web.Controllers.Transaction
     [Route("api/transaction-type")]
     [ApiController]
     [Authorize]
-    public class TransactionTypeController : ControllerBase
+    public class TransactionTypeController : BankControllerBase
     {
         private readonly TransactionReader transactionReader;
 
@@ -22,6 +22,6 @@ namespace PkoAnalizer.Web.Controllers.Transaction
         [HttpGet]
         [Route("")]
         public async Task<IEnumerable<TransactionTypeViewModel>> Index() =>
-            await transactionReader.ReadTransactionTypes();
+            await transactionReader.ReadTransactionTypes(GetCurrentUserId());
     }
 }

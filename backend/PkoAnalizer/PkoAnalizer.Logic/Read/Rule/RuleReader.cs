@@ -2,6 +2,7 @@
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Rules;
 using PkoAnalizer.Logic.Rules.Db;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +24,9 @@ namespace PkoAnalizer.Logic.Read.Rule
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<RuleParsedViewModel>> ReadRules()
+        public async Task<IEnumerable<RuleParsedViewModel>> ReadRules(Guid userId)
         {
-            var rules = await ruleAccess.GetRules();
+            var rules = await ruleAccess.GetRules(userId);
             return mapper.Map<IEnumerable<RuleParsedViewModel>>(ruleParser.Parse(rules));
         }
     }

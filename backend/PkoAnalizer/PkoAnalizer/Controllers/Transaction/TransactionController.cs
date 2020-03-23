@@ -22,7 +22,7 @@ namespace PkoAnalizer.Web.Controllers.Transaction
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class TransactionController : ControllerBase
+    public class TransactionController : BankControllerBase
     {
         private readonly ICommandsBus bus;
         private readonly TransactionReader transactionReader;
@@ -48,12 +48,12 @@ namespace PkoAnalizer.Web.Controllers.Transaction
 
         [HttpPost]
         [Route("import")]
-        public async Task<ActionResult> Import([FromHeader]string connectionId,[FromHeader]Guid userId, IFormFile file)
+        public async Task<ActionResult> Import([FromHeader]string connectionId, IFormFile file)
         {
             if (file.Length < 1024 * 1024)
             {
                 var text = await ReadStream(file);
-                var command = new ImportCommand(connectionId, userId, text);
+                var command = new ImportCommand(connectionId, GetCurrentUserId(), text);
 
                 _ = bus.Send(command);
                 return Accepted(command);
@@ -75,17 +75,18 @@ namespace PkoAnalizer.Web.Controllers.Transaction
         [HttpGet]
         [Route("")]
         public IAsyncEnumerable<TransactionViewModel> Index([FromQuery] TransactionsFilter filter) =>
-            transactionReader.ReadTransactions(filter);
+            transactionReader.ReadTransactions(filter, GetCurrentUserId());
 
         [HttpGet]
         [Route("transaction-columns")]
         public async Task<IEnumerable<ColumnViewModel>> GetTransactionColumns() =>
-            await columnFinder.FindColumns();
+            await columnFinder.FindColumns(GetCurrentUserId());
 
         [HttpPost]
         [Route("find-transactions-from-rule")]
         public async Task<IEnumerable<TransactionViewModel>> FindTransactionsFromRule(RuleParsedViewModel rule) =>
-            mapper.Map<IEnumerable<TransactionViewModel>>(await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule));
+            mapper.Map<IEnumerable<TransactionViewModel>>(await bankTransactionRuleFinder
+                .FindBankTransactionsFitToRule(rule, GetCurrentUserId()));
 
         [HttpGet]
         [Route("export")]

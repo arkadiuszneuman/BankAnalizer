@@ -1,4 +1,5 @@
-import HubConnector from './HubConnector'
+import hubConnector from './HubConnector'
+import userManager from '../api/UserManager'
 
 export default class ApiConnector {
     _apiAddress = "https://localhost:5001/api/"
@@ -6,19 +7,11 @@ export default class ApiConnector {
     _executeMethod =  async (methodName, methodType, body, headers) => {
         let finalHeaders = {
             'Content-Type': 'application/json',
-            'connectionId': (await HubConnector).getConnectionId(),
-            'userId': (await HubConnector).UserId,
+            'connectionId': (await hubConnector).getConnectionId(),
             ...headers
         }
 
-        const user = localStorage.getItem('user')
-        if (user != null) {
-            const parsedUser = JSON.parse(user)
-            finalHeaders = {
-                'Authorization': 'Bearer ' + parsedUser.token,
-                ...finalHeaders
-            }
-        }
+        finalHeaders = this._addAuthorizationHeaderToHeaders(finalHeaders);
 
         const result = await fetch(this._apiAddress + methodName, { 
             method: methodType, 
@@ -32,6 +25,18 @@ export default class ApiConnector {
 
         return result
     }
+
+    _addAuthorizationHeaderToHeaders = (headers) => {
+        const user = userManager.getUserFromStorage()
+        if (user == null) {
+            return headers
+        }
+
+        return {
+            'Authorization': 'Bearer ' + user.token,
+            ...headers
+        }
+    }
     
     _executeMethodAndParseResult = async (methodName, methodType, body, headers) => {
         const result = await this._executeMethod(methodName, methodType, body, headers)
@@ -39,7 +44,11 @@ export default class ApiConnector {
         if (!result.ok)
             throw result;
 
-        return result.json()
+        var bodyAsText = await result.text()
+        if (bodyAsText === '')
+            return null
+
+        return JSON.parse(bodyAsText)
     }
 
     _prepareGetQuery = (params) => {
@@ -94,14 +103,24 @@ export default class ApiConnector {
 
     uploadFile =  async (methodName, file, headers) => {
         const finalHeaders = {
-            'connectionId': HubConnector.getConnectionId(),
+            'connectionId': (await hubConnector).getConnectionId(),
             ...headers
         }
 
-        return await fetch(this._apiAddress + methodName, { 
+        var result = await fetch(this._apiAddress + methodName, { 
             method: 'post', 
-            headers: finalHeaders,
+            headers: this._addAuthorizationHeaderToHeaders(finalHeaders),
             body: file
         })
+
+        if (result.status === 401) {
+            window.location.href = '/login'
+        }
+
+        var bodyAsText = await result.text()
+        if (bodyAsText === '')
+            return null
+
+        return JSON.parse(bodyAsText)
     }
 }

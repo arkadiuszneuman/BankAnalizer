@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ApiConnector from '../../helpers/api/ApiConnector'
-import HubConnector from '../../helpers/api/HubConnector'
+import hubConnector from '../../helpers/api/HubConnector'
 
 class Importer extends Component {
   connector = new ApiConnector()
@@ -13,7 +13,7 @@ class Importer extends Component {
     this.setState({isLoading: true})
 
     const result = await this.connector.get("transaction/import");
-    HubConnector.waitForEventResult(result.id, () => {
+    (await hubConnector).waitForEventResult(result.id, () => {
       this.setState({isLoading: false})
     });
   }
@@ -30,12 +30,12 @@ class Importer extends Component {
 
     const result = await this.connector.uploadFile("transaction/import", formData);
 
-    if (!result.ok) {
+    if (result == null) {
       this.setState({isLoading: false})
       return
     }
 
-    HubConnector.waitForEventResult(result.id, () => {
+    (await hubConnector).waitForEventResult(result.id, () => {
       this.setState({isLoading: false})
     });
   }

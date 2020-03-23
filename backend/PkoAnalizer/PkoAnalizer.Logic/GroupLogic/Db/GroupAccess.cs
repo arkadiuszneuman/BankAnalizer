@@ -33,16 +33,22 @@ namespace PkoAnalizer.Logic.GroupLogic.Db
             await context.SaveChangesAsync();
         }
 
-        public async Task<Group> GetGroupByNameAndRuleId(string groupName, Guid ruleId)
+        public async Task<Group> GetGroupByNameAndRuleId(string groupName, Guid ruleId, Guid userId)
         {
             using var context = contextFactory.GetContext();
-            return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName && b.Rule.Id == ruleId);
+            return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName && b.Rule.Id == ruleId && b.User.Id == userId);
         }
 
-        public async Task<Group> GetGroupByName(string groupName)
+        public async Task<User> GetUser(Guid userId)
         {
             using var context = contextFactory.GetContext();
-            return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName);
+            return await context.Users.FindAsync(userId);
+        }
+
+        public async Task<Group> GetGroupByName(string groupName, Guid userId)
+        {
+            using var context = contextFactory.GetContext();
+            return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName && b.User.Id == userId);
         }
 
         public async Task AddBankTransactionToGroup(BankTransaction bankTransaction, Group group)
@@ -50,7 +56,7 @@ namespace PkoAnalizer.Logic.GroupLogic.Db
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using var context = contextFactory.GetContext();
-                context.AttachRange(bankTransaction, group);
+                context.AttachRange(bankTransaction, group, group.User);
                 await context.AddAsync(new BankTransactionGroup
                 {
                     BankTransaction = bankTransaction,

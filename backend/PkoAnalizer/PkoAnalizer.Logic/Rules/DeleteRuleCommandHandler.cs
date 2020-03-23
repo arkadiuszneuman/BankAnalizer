@@ -23,7 +23,7 @@ namespace PkoAnalizer.Logic.Rules
         public async Task Handle(DeleteRuleCommand command)
         {
             using var context = contextFactory.GetContext();
-            var rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.RuleId);
+            var rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.RuleId && r.User.Id == command.UserId);
             if (rule == null)
                 throw new PkoAnalizerException($"Invalid rule id {command.RuleId}");
 

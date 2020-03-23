@@ -48,7 +48,7 @@ namespace PkoAnalizer.Db
                 Database = "PkoAnalizer",
                 Password = "1Secure*Password1",
                 UserId = "sa",
-                Server = "192.168.99.104"
+                Server = "localhost"
             });
         }
 

@@ -3,6 +3,7 @@ using PkoAnalizer.Core;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace PkoAnalizer.Logic.Users
     public class UserService : IUserService
     {
         private readonly IContextFactory contextFactory;
+        private static readonly ConcurrentDictionary<Guid, User> usersCache = new ConcurrentDictionary<Guid, User>();
 
         public UserService(IContextFactory contextFactory)
         {
@@ -52,8 +54,14 @@ namespace PkoAnalizer.Logic.Users
 
         public async Task<User> GetById(Guid id)
         {
-            using var context = contextFactory.GetContext();
-            return await context.Users.FindAsync(id);
+            if (!usersCache.ContainsKey(id))
+            {
+                using var context = contextFactory.GetContext();
+                var user = await context.Users.FindAsync(id);
+                usersCache.TryAdd(id, user);
+            }
+
+            return usersCache[id];
         }
 
         public async Task<User> Create(User user, string password)
