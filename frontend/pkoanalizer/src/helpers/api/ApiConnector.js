@@ -8,7 +8,6 @@ export default class ApiConnector {
         let finalHeaders = {
             'Content-Type': 'application/json',
             'connectionId': (await hubConnector).getConnectionId(),
-            'userId': (await hubConnector).UserId,
             ...headers
         }
 

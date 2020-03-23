@@ -12,7 +12,7 @@ namespace PkoAnalizer.Web.Controllers.Charts
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class ChartsController : ControllerBase
+    public class ChartsController : BankControllerBase
     {
         private readonly GroupsReader groupsReader;
         private readonly TransactionReader transactionReader;
@@ -27,11 +27,11 @@ namespace PkoAnalizer.Web.Controllers.Charts
         [HttpGet]
         [Route("groups")]
         public async Task<IEnumerable<GroupsViewModel>> GetGroups(DateTime? dateFrom, DateTime? dateTo) =>
-            await groupsReader.GetGroups(dateFrom, dateTo);
+            await groupsReader.GetGroups(dateFrom, dateTo, GetCurrentUserId());
 
         [HttpGet]
         [Route("groups/transactions")]
         public IAsyncEnumerable<TransactionViewModel> GetGroupTransactions([FromQuery] TransactionsFilter transactionsFilter) =>
-            transactionReader.ReadTransactions(transactionsFilter);
+            transactionReader.ReadTransactions(transactionsFilter, GetCurrentUserId());
     }
 }

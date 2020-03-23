@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace PkoAnalizer.Logic.Rules.Logic
 {
@@ -28,22 +29,22 @@ namespace PkoAnalizer.Logic.Rules.Logic
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<BankTransaction>> FindBankTransactionsFitToRule(RuleViewModel rule)
+        public async Task<IEnumerable<BankTransaction>> FindBankTransactionsFitToRule(RuleViewModel rule, Guid userId)
         {
             var parsedRule = ruleParser.Parse(rule);
-            return await FindBankTransactionsFitToRule(parsedRule);
+            return await FindBankTransactionsFitToRule(parsedRule, userId);
         }
 
-        public async Task<IEnumerable<BankTransaction>> FindBankTransactionsFitToRule(ParsedRule parsedRule)
+        public async Task<IEnumerable<BankTransaction>> FindBankTransactionsFitToRule(ParsedRule parsedRule, Guid userId)
         {
-            var bankTransactions = await ruleAccess.GetBankTransactions();
+            var bankTransactions = await ruleAccess.GetBankTransactions(userId);
             return bankTransactions.Where(bankTransaction => ruleMatchChecker.IsRuleMatch(parsedRule, bankTransaction));
         }
 
-        public async Task<IEnumerable<BankTransaction>> FindBankTransactionsFitToRule(RuleParsedViewModel rule)
+        public async Task<IEnumerable<BankTransaction>> FindBankTransactionsFitToRule(RuleParsedViewModel rule, Guid userId)
         {
             var parsedRule = mapper.Map<ParsedRule>(rule);
-            return await FindBankTransactionsFitToRule(parsedRule);
+            return await FindBankTransactionsFitToRule(parsedRule, userId);
         }
     }
 }

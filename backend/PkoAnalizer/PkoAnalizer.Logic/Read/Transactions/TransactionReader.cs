@@ -3,6 +3,7 @@ using Dapper;
 using PkoAnalizer.Db;
 using PkoAnalizer.Logic.Read.Transactions.Containers;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +12,9 @@ namespace PkoAnalizer.Logic.Read.Transactions
 {
 	public interface ITransactionReader
 	{
-		Task<IEnumerable<string>> ReadAllExtensionColumns();
-		IAsyncEnumerable<TransactionViewModel> ReadTransactions(TransactionsFilter filter);
-		Task<IEnumerable<TransactionTypeViewModel>> ReadTransactionTypes();
+		Task<IEnumerable<string>> ReadAllExtensionColumns(Guid userId);
+		IAsyncEnumerable<TransactionViewModel> ReadTransactions(TransactionsFilter filter, Guid userId);
+		Task<IEnumerable<TransactionTypeViewModel>> ReadTransactionTypes(Guid userId);
 	}
 	public class TransactionReader : ITransactionReader
 	{
@@ -27,7 +28,7 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			this.mapper = mapper;
 		}
 
-		public async IAsyncEnumerable<TransactionViewModel> ReadTransactions(TransactionsFilter filter)
+		public async IAsyncEnumerable<TransactionViewModel> ReadTransactions(TransactionsFilter filter, Guid userId)
 		{
 			using var connection = connectionFactory.CreateConnection();
 
@@ -49,6 +50,8 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			if (filter.DateFrom != null && filter.DateTo != null)
 				builder.Where("bt.TransactionDate BETWEEN @DateFrom AND @DateTo", new { filter.DateFrom, filter.DateTo });
 
+			builder.Where("bt.UserId = @userId", new { userId });
+
 			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(selector.RawSql, selector.Parameters);
 
 			foreach (var transactionGroups in trasactionGroupsContainers.GroupBy(g => g.TransactionId))
@@ -61,18 +64,19 @@ namespace PkoAnalizer.Logic.Read.Transactions
 			}
 		}
 
-		public async Task<IEnumerable<TransactionTypeViewModel>> ReadTransactionTypes()
+		public async Task<IEnumerable<TransactionTypeViewModel>> ReadTransactionTypes(Guid userId)
 		{
 			using var connection = connectionFactory.CreateConnection();
 
-			return await connection.QueryAsync<TransactionTypeViewModel>(@"SELECT Id, Name FROM BankTransactionTypes");
+			return await connection.QueryAsync<TransactionTypeViewModel>(
+				@"SELECT Id, Name FROM BankTransactionTypes WHERE UserId = @userId", new { userId });
 		}
 
-		public async Task<IEnumerable<string>> ReadAllExtensionColumns()
+		public async Task<IEnumerable<string>> ReadAllExtensionColumns(Guid userId)
 		{
 			using var connection = connectionFactory.CreateConnection();
 			return await connection.QueryAsync<string>(@"SELECT DISTINCT Extensions FROM BankTransactions 
-				WHERE Extensions IS NOT NULL");
+				WHERE Extensions IS NOT NULL AND UserId = @userId", new { userId });
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using NSubstitute;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -20,12 +21,14 @@ namespace PkoAnalizer.Tests.Logic.Read.Transactions
                 "{\"AnotherColumn\":\"Some other\"}"
             };
 
+            var userGuid = Guid.NewGuid();
+
             Mock<ITransactionReader>()
-                .ReadAllExtensionColumns()
+                .ReadAllExtensionColumns(userGuid)
                 .Returns(jsons);
 
             //act
-            var result = await Sut.FindColumns();
+            var result = await Sut.FindColumns(userGuid);
 
             //assert
             result.Should().BeEquivalentTo(

@@ -75,17 +75,18 @@ namespace PkoAnalizer.Web.Controllers.Transaction
         [HttpGet]
         [Route("")]
         public IAsyncEnumerable<TransactionViewModel> Index([FromQuery] TransactionsFilter filter) =>
-            transactionReader.ReadTransactions(filter);
+            transactionReader.ReadTransactions(filter, GetCurrentUserId());
 
         [HttpGet]
         [Route("transaction-columns")]
         public async Task<IEnumerable<ColumnViewModel>> GetTransactionColumns() =>
-            await columnFinder.FindColumns();
+            await columnFinder.FindColumns(GetCurrentUserId());
 
         [HttpPost]
         [Route("find-transactions-from-rule")]
         public async Task<IEnumerable<TransactionViewModel>> FindTransactionsFromRule(RuleParsedViewModel rule) =>
-            mapper.Map<IEnumerable<TransactionViewModel>>(await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule));
+            mapper.Map<IEnumerable<TransactionViewModel>>(await bankTransactionRuleFinder
+                .FindBankTransactionsFitToRule(rule, GetCurrentUserId()));
 
         [HttpGet]
         [Route("export")]

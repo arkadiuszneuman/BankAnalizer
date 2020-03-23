@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import {
-    NavLink
-  } from "react-router-dom";
+import React, { Component } from 'react'
+import { NavLink } from "react-router-dom"
+import userManager from '../../helpers/api/UserManager'
+
 
 class Menu extends Component {
   render() {
+    const user = userManager.getUserFromStorage()
 
     return (
           <div className="ui secondary vertical menu">
               <div className="item">
-                  <div className="header">Transactions analizer</div>
+                  <div className="header">Hello {user?.firstName}</div>
                   <NavLink to="/" exact={true} activeClassName="active" className="item">Main</NavLink>
                   <NavLink to="/rules" activeClassName="active" className="item">Rules</NavLink>
                   <NavLink to="/charts" activeClassName="active" className="item">Charts</NavLink>

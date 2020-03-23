@@ -31,7 +31,7 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
 
         public async Task Handle(TransactionSavedEvent @event)
         {
-            var rules = await ruleAccess.GetRules();
+            var rules = await ruleAccess.GetRules(@event.UserId);
             var parsedRules = ruleParser.Parse(rules);
 
             foreach (var rule in parsedRules)

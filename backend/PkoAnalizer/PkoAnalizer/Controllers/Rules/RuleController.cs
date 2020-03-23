@@ -29,13 +29,12 @@ namespace PkoAnalizer.Web.Controllers.Rules
         [HttpGet]
         [Route("")]
         public async Task<IEnumerable<RuleParsedViewModel>> Index() =>
-            await ruleReader.ReadRules();
+            await ruleReader.ReadRules(GetCurrentUserId());
 
         [HttpPost]
         [Route("")]
         public async Task<ActionResult> Save([FromHeader]string connectionId, RuleParsedViewModel rule)
         {
-            
             var command = new SaveRuleCommand(connectionId, GetCurrentUserId(), rule);
             _ = bus.Send(command);
             return Accepted(command);
@@ -45,7 +44,7 @@ namespace PkoAnalizer.Web.Controllers.Rules
         [Route("{ruleId:Guid}")]
         public async Task<ActionResult> Delete([FromHeader]string connectionId, Guid ruleId)
         {
-            var command = new DeleteRuleCommand(connectionId, ruleId);
+            var command = new DeleteRuleCommand(connectionId, ruleId, GetCurrentUserId());
             _ = bus.Send(command);
             return Accepted(command);
         }
