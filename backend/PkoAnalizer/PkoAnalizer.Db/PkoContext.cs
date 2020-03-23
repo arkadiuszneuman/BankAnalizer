@@ -19,6 +19,7 @@ namespace PkoAnalizer.Db
         DbSet<Group> Groups { get; set; }
         DbSet<BankTransactionGroup> BankTransactionGroups { get; set; }
         DbSet<User> Users { get; set; }
+        DbSet<UsersConnection> UsersConnections { get; set; }
 
         Task LockTableAsync<T>(T table);
         ValueTask<EntityEntry> AddAsync([NotNull] object entity, CancellationToken cancellationToken = default);
@@ -40,6 +41,7 @@ namespace PkoAnalizer.Db
         public DbSet<Group> Groups { get; set; }
         public DbSet<BankTransactionGroup> BankTransactionGroups { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UsersConnection> UsersConnections { get; set; }
 
         public PkoContext()
         {
@@ -84,6 +86,7 @@ namespace PkoAnalizer.Db
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
             modelBuilder.ApplyConfiguration(new BankTransactionGroupConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersConnectionConfiguration());
         }
     }
 }
