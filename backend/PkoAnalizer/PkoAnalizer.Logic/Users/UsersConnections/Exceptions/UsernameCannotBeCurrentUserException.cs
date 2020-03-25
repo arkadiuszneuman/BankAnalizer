@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace PkoAnalizer.Logic.Users
+namespace PkoAnalizer.Logic.Users.UsersConnections.Exceptions
 {
     public class UsernameCannotBeCurrentUserException : BankAnalizerException
     {

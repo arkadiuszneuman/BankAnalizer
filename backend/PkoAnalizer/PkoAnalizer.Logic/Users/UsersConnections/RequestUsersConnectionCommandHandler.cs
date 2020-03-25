@@ -3,9 +3,10 @@ using PkoAnalizer.Core.Commands.Users;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
+using PkoAnalizer.Logic.Users.UsersConnections.Exceptions;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Logic.Users
+namespace PkoAnalizer.Logic.Users.UsersConnections
 {
     public class RequestUsersConnectionCommandHandler : ICommandHandler<RequestUserConnectionCommand>
     {
@@ -20,11 +21,8 @@ namespace PkoAnalizer.Logic.Users
         {
             using var context = contextFactory.GetContext();
             var requestedUser = await context.Users.SingleOrDefaultAsync(u => u.Username == command.RequestedConnectionToUsername);
-            if (requestedUser == null)
-                throw new UsernameDoesNotExistException(command.RequestedConnectionToUsername);
 
-            if (requestedUser.Id == command.RequestingUserId)
-                throw new UsernameCannotBeCurrentUserException();
+            await Validate(command, context, requestedUser);
 
             var connection = new UsersConnection()
             {
@@ -34,6 +32,22 @@ namespace PkoAnalizer.Logic.Users
 
             await context.AddAsync(connection);
             await context.SaveChangesAsync();
+        }
+
+        private static async Task Validate(RequestUserConnectionCommand command, IContext context, User requestedUser)
+        {
+            if (requestedUser == null)
+                throw new UsernameDoesNotExistException(command.RequestedConnectionToUsername);
+
+            if (requestedUser.Id == command.RequestingUserId)
+                throw new UsernameCannotBeCurrentUserException();
+
+            if (await context.UsersConnections.AnyAsync(u =>
+                u.UserRequestedToConnectId == requestedUser.Id &&
+                u.UserRequestingConnectionId == command.RequestingUserId))
+            {
+                throw new UsersConnectionAlreadyExistsException();
+            }
         }
     }
 }

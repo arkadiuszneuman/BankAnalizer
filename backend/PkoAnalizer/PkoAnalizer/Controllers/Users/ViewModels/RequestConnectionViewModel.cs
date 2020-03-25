@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace PkoAnalizer.Web.Controllers.Users.ViewModels
+﻿namespace PkoAnalizer.Web.Controllers.Users.ViewModels
 {
     public class RequestConnectionViewModel
     {
-        public string RequestedUsername{ get; set; }
+        public string RequestedUsername { get; set; }
     }
 }

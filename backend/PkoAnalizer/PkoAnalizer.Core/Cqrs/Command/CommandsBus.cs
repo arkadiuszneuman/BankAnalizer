@@ -18,15 +18,23 @@ namespace PkoAnalizer.Core.Cqrs.Command
 
         public async Task Send<TCommand>(TCommand command) where TCommand : ICommand
         {
-            var handler = (ICommandHandler<TCommand>)_handlersFactory(typeof(TCommand));
-
-            if (handler == null)
+            try
             {
-                logger.LogWarning("No command handler for command {command}", typeof(TCommand).FullName);
-                return;
-            }
+                var handler = (ICommandHandler<TCommand>)_handlersFactory(typeof(TCommand));
 
-            await handler.Handle(command);
+                if (handler == null)
+                {
+                    logger.LogWarning("No command handler for command {command}", typeof(TCommand).FullName);
+                    return;
+                }
+
+                await handler.Handle(command);
+            }
+            catch (BankAnalizerException exception)
+            {
+                logger.LogError(exception, exception.Message);
+                throw;
+            }
         }
     }
 }

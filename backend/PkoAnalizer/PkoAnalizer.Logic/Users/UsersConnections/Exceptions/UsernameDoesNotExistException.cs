@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PkoAnalizer.Logic.Users
+namespace PkoAnalizer.Logic.Users.UsersConnections.Exceptions
 {
     public class UsernameDoesNotExistException : BankAnalizerException
     {
