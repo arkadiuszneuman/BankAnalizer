@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import userManager from '../../helpers/api/UserManager'
+import Buttons from "./Buttons";
 
 export default class ConnectionCard extends Component {
     state = {
-        user: null
+        user: null,
+        requestedUser: {}
     }
 
     componentDidMount = () => {
@@ -32,26 +34,23 @@ export default class ConnectionCard extends Component {
                         src={link}
                         />
                     <div className="header">
-                        {requestedUser?.firstName} {requestedUser?.lastName}
+                        {requestedUser.firstName} {requestedUser.lastName}
                     </div>
                     <div className="description">
                     {isCurrentUserHost &&
                         <div className="description">
-                            You requested permission to view {connection?.requestedUserFirstName}'s transactions
+                            You requested permission to view {connection.requestedUserFirstName}'s transactions
                         </div>
                     }
                     {!isCurrentUserHost &&
                         <div className="description">
-                            {connection?.requestingUserFirstName} requested permission to view your transactions
+                            {connection.requestingUserFirstName} requested permission to view your transactions
                         </div>
                     }
                     </div>
                 </div>
                 <div className="extra content">
-                    <div className="ui two buttons">
-                        <div className="ui basic green button">Approve</div>
-                        <div className="ui basic red button">Decline</div>
-                    </div>
+                    <Buttons connection={connection} isCurrentUserHost={isCurrentUserHost} />
                 </div>
             </div>
         );
