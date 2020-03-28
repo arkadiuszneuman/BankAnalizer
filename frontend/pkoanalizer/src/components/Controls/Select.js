@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-export default class Date extends Component {
+export default class Select extends Component {
     state = {
         value: ''
     }
 
     componentDidMount = () => {
-        window.$('.ui.dropdown').dropdown()
+        window.$('.bank-transactions-select').dropdown()
     }
 
     handleChange = event => {
@@ -21,7 +21,7 @@ export default class Date extends Component {
     render() {
         const options = this.props.options ?? []
         return (
-            <select className="ui dropdown" value={this.state.value} onChange={this.handleChange}>
+            <select className="ui dropdown bank-transactions-select" value={this.state.value} onChange={this.handleChange}>
                 {options.map(option => 
                     <option key={option.id} value={option.id}>{option.name}</option>
                 )}

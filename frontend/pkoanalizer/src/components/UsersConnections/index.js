@@ -14,7 +14,7 @@ export default class UsersConnections extends Component {
     }
 
     loadConnections = async () => {
-        const connections = await this.connector.get("usersconnection")
+        const connections = await this.connector.get('usersconnection', { showAlsoAsRequestedUser: true })
         this.setState({ connections: connections })
     }
    

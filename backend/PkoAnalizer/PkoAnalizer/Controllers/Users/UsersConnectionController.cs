@@ -23,8 +23,8 @@ namespace PkoAnalizer.Web.Controllers.Users
 
         [HttpGet]
         [Route("")]
-        public Task<IEnumerable<UsersConnectionViewModel>> Get() => 
-            usersConnectionsReader.LoadUserConnections(GetCurrentUserId());
+        public Task<IEnumerable<UsersConnectionViewModel>> Get([FromQuery] UsersConnectionsReader.UsersConnectionsFilter filter) => 
+            usersConnectionsReader.LoadUserConnections(filter, GetCurrentUserId());
 
         [HttpPost]
         [Route("")]

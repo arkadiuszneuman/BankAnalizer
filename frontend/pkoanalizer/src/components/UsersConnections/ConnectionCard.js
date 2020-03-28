@@ -31,6 +31,7 @@ export default class ConnectionCard extends Component {
             <div className="card">
                 <div className="content">
                     <img className="right floated mini ui image" 
+                        alt=""
                         src={link}
                         />
                     <div className="header">

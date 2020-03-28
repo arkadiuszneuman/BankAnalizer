@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace PkoAnalizer.Logic.Read.Transactions.ViewModels
 {
@@ -8,5 +10,6 @@ namespace PkoAnalizer.Logic.Read.Transactions.ViewModels
         public string GroupName { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
+        public IEnumerable<Guid> Users { get; set; }
     }
 }

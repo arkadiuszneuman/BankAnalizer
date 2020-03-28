@@ -9,6 +9,12 @@ namespace PkoAnalizer.Logic.Users.UsersConnections
 {
     public class UsersConnectionsReader
     {
+        public class UsersConnectionsFilter
+        {
+            public bool ShowAlsoAsRequestedUser { get; set; }
+            public bool OnlyApproved { get; set; }
+        }
+
         private readonly ConnectionFactory connectionFactory;
 
         public UsersConnectionsReader(ConnectionFactory connectionFactory)
@@ -16,11 +22,12 @@ namespace PkoAnalizer.Logic.Users.UsersConnections
             this.connectionFactory = connectionFactory;
         }
 
-        public async Task<IEnumerable<UsersConnectionViewModel>> LoadUserConnections(Guid userId)
+        public async Task<IEnumerable<UsersConnectionViewModel>> LoadUserConnections(UsersConnectionsFilter filter, Guid userId)
         {
             using var connection = connectionFactory.CreateConnection();
 
-            return await connection.QueryAsync<UsersConnectionViewModel>(
+            var builder = new SqlBuilder();
+            var selector = builder.AddTemplate(
                 @"SELECT 
                   requestingConnectionUser.Id as RequestingUserId,
                   requestingConnectionUser.FirstName as RequestingUserFirstName,
@@ -32,7 +39,17 @@ namespace PkoAnalizer.Logic.Users.UsersConnections
                 FROM UsersConnections AS uc
                 JOIN Users requestingConnectionUser ON requestingConnectionUser.Id = uc.UserRequestingConnectionId
                 JOIN Users userRequestedDoConnect ON userRequestedDoConnect.Id = uc.UserRequestedToConnectId
-                WHERE uc.UserRequestingConnectionId = @userId OR uc.UserRequestedToConnectId = @userId", new { userId });
+                /**where**/");
+
+            if (filter.OnlyApproved)
+                builder.Where("uc.IsRequestApproved = 1", new { userId });
+
+            builder.OrWhere("uc.UserRequestingConnectionId = @userId", new { userId });
+
+            if (filter.ShowAlsoAsRequestedUser)
+                builder.OrWhere("uc.UserRequestedToConnectId = @userId", new { userId });
+
+            return await connection.QueryAsync<UsersConnectionViewModel>(selector.RawSql, selector.Parameters);
         }
     }
 }
