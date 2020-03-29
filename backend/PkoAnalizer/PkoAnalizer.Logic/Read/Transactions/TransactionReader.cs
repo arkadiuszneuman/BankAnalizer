@@ -52,7 +52,7 @@ namespace PkoAnalizer.Logic.Read.Transactions
 				if (filter.DateFrom != null && filter.DateTo != null)
 					builder.Where("bt.TransactionDate BETWEEN @DateFrom AND @DateTo", new { filter.DateFrom, filter.DateTo });
 
-				builder.Where("bt.UserId IN (@usersIds)", new { usersIds = string.Join(',', filter.Users) });
+				builder.Where("bt.UserId IN @usersIds", new { usersIds = filter.Users });
 
 				var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(selector.RawSql, selector.Parameters);
 
