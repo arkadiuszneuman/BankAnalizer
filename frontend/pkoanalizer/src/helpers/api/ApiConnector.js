@@ -56,8 +56,20 @@ export default class ApiConnector {
         let isFirstQuery = true;
 
         for (var param in params) {
-            let paramValue = params[param];
-            if (params[param] instanceof Date) {
+            let paramValue = params[param]
+
+            if (paramValue instanceof Array) {
+                if (paramValue.length > 0) {
+                    if (query.length !== 0) {
+                        query += '&'
+                    }
+
+                    query += paramValue.map(p => param + '=' + p).join('&')
+                }
+                continue
+            }
+
+            if (paramValue instanceof Date) {
                 paramValue = params[param].toISOString()
             }
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PkoAnalizer.Db;
 
 namespace PkoAnalizer.Db.Migrations
 {
     [DbContext(typeof(PkoContext))]
-    partial class PkoContextModelSnapshot : ModelSnapshot
+    [Migration("20200323214928_AddUsersConnection")]
+    partial class AddUsersConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

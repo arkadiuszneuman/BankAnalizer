@@ -30,10 +30,12 @@ namespace PkoAnalizer.Logic.Read.Transactions
 
 		public async IAsyncEnumerable<TransactionViewModel> ReadTransactions(TransactionsFilter filter, Guid userId)
 		{
-			using var connection = connectionFactory.CreateConnection();
+			if (filter.Users?.Any() ?? false)
+			{
+				using var connection = connectionFactory.CreateConnection();
 
-			var builder = new SqlBuilder();
-			var selector = builder.AddTemplate(@"
+				var builder = new SqlBuilder();
+				var selector = builder.AddTemplate(@"
 				SELECT bt.Id as TransactionId, bt.Title as Name, bt.TransactionDate, btt.Name as Type, g.Name as GroupName, g.RuleId as RuleId, bt.Extensions as Extensions, bt.Amount FROM BankTransactions bt
 				JOIN BankTransactionTypes btt ON bt.BankTransactionTypeId = btt.Id
 				LEFT JOIN BankTransactionGroups btg ON bt.Id = btg.BankTransactionId
@@ -41,26 +43,27 @@ namespace PkoAnalizer.Logic.Read.Transactions
 				/**where**/
 				ORDER BY bt.[Order] desc");
 
-			if (filter.OnlyWithoutGroup)
-				builder.Where("btg.BankTransactionId IS NULL");
+				if (filter.OnlyWithoutGroup)
+					builder.Where("btg.BankTransactionId IS NULL");
 
-			if (filter.GroupName != null)
-				builder.Where("g.Name = @GroupName", new { filter.GroupName });
+				if (filter.GroupName != null)
+					builder.Where("g.Name = @GroupName", new { filter.GroupName });
 
-			if (filter.DateFrom != null && filter.DateTo != null)
-				builder.Where("bt.TransactionDate BETWEEN @DateFrom AND @DateTo", new { filter.DateFrom, filter.DateTo });
+				if (filter.DateFrom != null && filter.DateTo != null)
+					builder.Where("bt.TransactionDate BETWEEN @DateFrom AND @DateTo", new { filter.DateFrom, filter.DateTo });
 
-			builder.Where("bt.UserId = @userId", new { userId });
+				builder.Where("bt.UserId IN @usersIds", new { usersIds = filter.Users });
 
-			var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(selector.RawSql, selector.Parameters);
+				var trasactionGroupsContainers = await connection.QueryAsync<TransactionGroupsContainer>(selector.RawSql, selector.Parameters);
 
-			foreach (var transactionGroups in trasactionGroupsContainers.GroupBy(g => g.TransactionId))
-			{
-				var transactionGroup = transactionGroups.First();
-				var viewModel = mapper.Map<TransactionViewModel>(transactionGroup);
-				viewModel.Groups = transactionGroups.Where(t => t.GroupName != null).Select(t =>
-					new TransactionViewModel.TransactionGroupViewModel(t.GroupName, t.RuleId == null)).ToList();
-				yield return viewModel;
+				foreach (var transactionGroups in trasactionGroupsContainers.GroupBy(g => g.TransactionId))
+				{
+					var transactionGroup = transactionGroups.First();
+					var viewModel = mapper.Map<TransactionViewModel>(transactionGroup);
+					viewModel.Groups = transactionGroups.Where(t => t.GroupName != null).Select(t =>
+						new TransactionViewModel.TransactionGroupViewModel(t.GroupName, t.RuleId == null)).ToList();
+					yield return viewModel;
+				}
 			}
 		}
 

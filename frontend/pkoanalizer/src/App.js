@@ -3,6 +3,7 @@ import TransactionView from "./components/TransactionView"
 import Menu from "./components/Menu"
 import Rules from "./components/Rules/RulesTable"
 import Charts from './components/Charts'
+import UsersConnections from './components/UsersConnections'
 import LoginPage from './components/Authentication/LoginPage'
 import RegisterPage from './components/Authentication/RegisterPage'
 import PrivateRoute from './components/Authentication/PrivateRoute'
@@ -21,6 +22,7 @@ export default function App() {
         <PrivateRoute exact path="/" component={TransactionView} />
         <PrivateRoute path="/rules" component={Rules} />
         <PrivateRoute path="/charts" component={Charts} />
+        <PrivateRoute path="/users-connections" component={UsersConnections} />
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
         <Redirect from="*" to="/" />  

@@ -25,7 +25,10 @@ namespace PkoAnalizer.Web.Modules.Cqrs
                 return t =>
                 {
                     var handlerType = typeof(ICommandHandler<>).MakeGenericType(t);
-                    return (ICommandHandler)ctx.Resolve(handlerType);
+                    if (ctx.TryResolve(handlerType, out object resolvedType))
+                        return (ICommandHandler)resolvedType;
+
+                    return null;
                 };
             });
 
