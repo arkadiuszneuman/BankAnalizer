@@ -17,16 +17,27 @@ import {
 export default function App() {
   return (
     <Router>
-      <Menu></Menu>
-      <Switch>
-        <PrivateRoute exact path="/" component={TransactionView} />
-        <PrivateRoute path="/rules" component={Rules} />
-        <PrivateRoute path="/charts" component={Charts} />
-        <PrivateRoute path="/users-connections" component={UsersConnections} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/register" component={RegisterPage} />
-        <Redirect from="*" to="/" />  
-      </Switch>
+      
+      {/* <Menu static={false} /> */}
+      <div className="pusher">
+        <div className="container">
+          <div className="menu">
+            <Menu static={true} />
+          </div>
+          <div className="content">
+            <Switch>
+              <PrivateRoute exact path="/" component={TransactionView} />
+              <PrivateRoute path="/rules" component={Rules} />
+              <PrivateRoute path="/charts" component={Charts} />
+              <PrivateRoute path="/users-connections" component={UsersConnections} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/register" component={RegisterPage} />
+              <Redirect from="*" to="/" />  
+            </Switch>
+          </div>
+        </div>
+      </div>
+      
     </Router>
   );
 }
