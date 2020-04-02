@@ -37,7 +37,7 @@ namespace PkoAnalizer.Web.Controllers.Rules
         [Route("")]
         public void Save(SaveRuleCommand command)
         {
-            bus.Send(command);
+            bus.SendAsync(command);
         }
 
         [HttpDelete]
@@ -45,7 +45,7 @@ namespace PkoAnalizer.Web.Controllers.Rules
         public async Task<ActionResult> Delete([FromHeader]string connectionId, Guid ruleId)
         {
             var command = new DeleteRuleCommand(connectionId, ruleId, GetCurrentUserId());
-            _ = bus.Send(command);
+            _ = bus.SendAsync(command);
             return Accepted(command);
         }
     }

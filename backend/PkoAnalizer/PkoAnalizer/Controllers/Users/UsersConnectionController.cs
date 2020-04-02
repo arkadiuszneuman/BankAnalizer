@@ -31,7 +31,7 @@ namespace PkoAnalizer.Web.Controllers.Users
         public IActionResult RequestConnection(RequestConnectionViewModel requestedConnection)
         {
             var command = new RequestUserConnectionCommand(GetCurrentUserId(), requestedConnection.RequestedUsername);
-            _ = bus.Send(command);
+            _ = bus.SendAsync(command);
             return Accepted(command.Id);
         }
 
@@ -40,7 +40,7 @@ namespace PkoAnalizer.Web.Controllers.Users
         public IActionResult AcceptConnection(AcceptConnectionViewModel acceptConnection)
         {
             var command = new AcceptConnectionCommand(GetCurrentUserId(), acceptConnection.HostUserIdToAcceptConnection);
-            _ = bus.Send(command);
+            _ = bus.SendAsync(command);
             return Accepted(command.Id);
         }
     }

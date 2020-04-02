@@ -29,7 +29,7 @@ namespace PkoAnalizer.Logic.Rules
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await commandsBus.Send(new DeleteTransactionsAndGroupsAssignedToRuleCommand(rule));
+                await commandsBus.SendAsync(new DeleteTransactionsAndGroupsAssignedToRuleCommand(rule));
                 context.Rules.Remove(rule);
 
                 await context.SaveChangesAsync();

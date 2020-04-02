@@ -23,7 +23,7 @@ namespace PkoAnalizer.Web.Controllers.Group
         public async Task<ActionResult> AddGroup(BankTransactionGroupViewModel addGroupViewModel)
         {
             var command = new AddGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName, GetCurrentUserId(), default);
-            _ = bus.Send(command);
+            _ = bus.SendAsync(command);
             return Accepted(command);
         }
 
@@ -32,7 +32,7 @@ namespace PkoAnalizer.Web.Controllers.Group
         public async Task<ActionResult> RemoveGroup(BankTransactionGroupViewModel addGroupViewModel)
         {
             var command = new RemoveGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName, GetCurrentUserId());
-            _ = bus.Send(command);
+            _ = bus.SendAsync(command);
             return Accepted(command);
         }
     }

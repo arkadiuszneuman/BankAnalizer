@@ -1,20 +1,15 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using BankAnalizer.Core.Api.CqrsRouting;
+using BankAnalizer.Infrastructure.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using PkoAnalizer.Logic;
-using PkoAnalizer.Logic.Config;
 using PkoAnalizer.Logic.Import.Hubs;
-using PkoAnalizer.Logic.Users;
 using PkoAnalizer.Web.Startup;
-using System;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PkoAnalizer
 {
@@ -73,18 +68,17 @@ namespace PkoAnalizer
             else
                 app.UseHsts();
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHub<SendSignalRAnswerHub>("/hub");
-            });
+            app.UseHttpsRedirection()
+                .UseRouting()
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseCqrsEndpointsCommands(endpoints => endpoints
+                    .UseCommand<SaveRuleCommand>("/api/rule"))
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                    endpoints.MapHub<SendSignalRAnswerHub>("/hub");
+                });
         }
     }
 }

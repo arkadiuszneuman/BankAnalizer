@@ -55,7 +55,7 @@ namespace PkoAnalizer.Web.Controllers.Transaction
                 var text = await ReadStream(file);
                 var command = new ImportCommand(connectionId, GetCurrentUserId(), text);
 
-                _ = bus.Send(command);
+                _ = bus.SendAsync(command);
                 return Accepted(command);
             }
             else

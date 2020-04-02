@@ -34,13 +34,13 @@ namespace PkoAnalizer.Logic.Rules.EventHandlers
         {
             var rule = mapper.Map<RuleViewModel>(@event.Rule);
 
-            await bus.Send(new DeleteTransactionsAndGroupsAssignedToRuleCommand(@event.Rule));
+            await bus.SendAsync(new DeleteTransactionsAndGroupsAssignedToRuleCommand(@event.Rule));
 
             foreach (var bankTransaction in await bankTransactionRuleFinder.FindBankTransactionsFitToRule(rule, @event.UserId))
             {
                 logger.LogInformation("Found transaction {transaction} for rule {rule}", bankTransaction.Id, rule.RuleName);
 
-                await bus.Send(new AddGroupCommand(bankTransaction.Id, rule.GroupName, @event.UserId, @event.Rule.Id));
+                await bus.SendAsync(new AddGroupCommand(bankTransaction.Id, rule.GroupName, @event.UserId, @event.Rule.Id));
             }
         }
     }

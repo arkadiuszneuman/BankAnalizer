@@ -7,6 +7,7 @@ namespace PkoAnalizer.Core.Cqrs.Command
 {
     public interface ICommandsBus
     {
-        Task Send<TCommand>(TCommand command) where TCommand : ICommand;
+        Task SendAsync<TCommand>(TCommand command) where TCommand : ICommand;
+        Task SendAsync(Type commandType, ICommand command);
     }
 }
