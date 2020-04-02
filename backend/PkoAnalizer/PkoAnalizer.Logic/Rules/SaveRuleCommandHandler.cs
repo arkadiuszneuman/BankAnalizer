@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BankAnalizer.Infrastructure.Commands;
 using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Commands.Rules;
@@ -36,13 +37,13 @@ namespace PkoAnalizer.Logic.Rules
         {
             using var context = contextFactory.GetContext();
             Rule rule;
-            if (command.Rule.Id != default)
-                rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.Rule.Id) ?? new Rule();
+            if (command.Id != default)
+                rule = await context.Rules.SingleOrDefaultAsync(r => r.Id == command.Id) ?? new Rule();
             else
                 rule = new Rule();
 
             var isNewRule = rule.Id == default;
-            mapper.Map(command.Rule, rule);
+            mapper.Map(command, rule);
 
             if (isNewRule)
             {
@@ -50,8 +51,8 @@ namespace PkoAnalizer.Logic.Rules
                 await context.AddAsync(rule);
             }
 
-            if (command.Rule.BankTransactionTypeId != null)
-                rule.BankTransactionType = await context.BankTransactionTypes.SingleAsync(b => b.Id == command.Rule.BankTransactionTypeId);
+            if (command.BankTransactionTypeId != null)
+                rule.BankTransactionType = await context.BankTransactionTypes.SingleAsync(b => b.Id == command.BankTransactionTypeId);
             else
                 rule.BankTransactionType = null;
 
