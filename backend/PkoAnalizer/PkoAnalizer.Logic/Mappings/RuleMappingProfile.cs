@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BankAnalizer.Infrastructure.Commands;
 using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Db.Models;
@@ -11,7 +12,7 @@ namespace PkoAnalizer.Logic.Mappings
     {
         public RuleMappingProfile()
         {
-            CreateMap<RuleParsedViewModel, Rule>()
+            CreateMap<SaveRuleCommand, Rule>()
                 .ForMember(x => x.RuleDefinition, z => z.MapFrom(rule => $"{rule.ColumnId} {rule.Type} {rule.Text}"));
             CreateMap<RuleParsedViewModel, ParsedRule>()
                 .ForMember(x => x.Value, z => z.MapFrom(r => r.Text))
