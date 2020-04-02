@@ -18,15 +18,6 @@ namespace PkoAnalizer.Web.Controllers.Group
             this.bus = bus;
         }
 
-        [HttpPost]
-        [Route("")]
-        public async Task<ActionResult> AddGroup(BankTransactionGroupViewModel addGroupViewModel)
-        {
-            var command = new AddGroupCommand(addGroupViewModel.BankTransactionId, addGroupViewModel.GroupName, GetCurrentUserId(), default);
-            _ = bus.SendAsync(command);
-            return Accepted(command);
-        }
-
         [HttpDelete]
         [Route("")]
         public async Task<ActionResult> RemoveGroup(BankTransactionGroupViewModel addGroupViewModel)

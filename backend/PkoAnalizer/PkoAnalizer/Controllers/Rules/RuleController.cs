@@ -33,13 +33,6 @@ namespace PkoAnalizer.Web.Controllers.Rules
         public async Task<IEnumerable<RuleParsedViewModel>> Index() =>
             await ruleReader.ReadRules(GetCurrentUserId());
 
-        [HttpPost]
-        [Route("")]
-        public void Save(SaveRuleCommand command)
-        {
-            bus.SendAsync(command);
-        }
-
         [HttpDelete]
         [Route("{ruleId:Guid}")]
         public async Task<ActionResult> Delete([FromHeader]string connectionId, Guid ruleId)
