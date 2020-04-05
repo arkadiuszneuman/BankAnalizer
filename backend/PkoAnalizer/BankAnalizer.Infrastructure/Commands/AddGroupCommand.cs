@@ -2,7 +2,7 @@
 using PkoAnalizer.Core.Cqrs.Command;
 using System;
 
-namespace PkoAnalizer.Core.Commands.Group
+namespace BankAnalizer.Infrastructure.Commands
 {
     public class AddGroupCommand : Command
     {

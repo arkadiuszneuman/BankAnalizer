@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using PkoAnalizer.Core.Commands.Group;
+﻿using BankAnalizer.Infrastructure.Commands;
+using Microsoft.Extensions.Logging;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
 using PkoAnalizer.Logic.Import.Events;

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PkoAnalizer.Core.Commands.Group;
 using PkoAnalizer.Logic;
 using PkoAnalizer.Logic.Import.Hubs;
 using PkoAnalizer.Web.Startup;
@@ -75,6 +74,7 @@ namespace PkoAnalizer
                 .UseAuthorization()
                 .UseCqrsEndpointsCommands(endpoints => endpoints
                     .UsePostCommand<AddGroupCommand>("/api/transaction/group")
+                    .UseDeleteCommand<RemoveGroupCommand>("/api/transaction/group")
                     .UsePostCommand<SaveRuleCommand>("/api/rule"))
                 .UseEndpoints(endpoints =>
                 {

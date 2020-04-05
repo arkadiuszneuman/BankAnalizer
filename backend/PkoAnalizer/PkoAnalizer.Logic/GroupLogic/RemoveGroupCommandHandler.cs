@@ -1,4 +1,4 @@
-﻿using PkoAnalizer.Core.Commands.Group;
+﻿using BankAnalizer.Infrastructure.Commands;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Logic.GroupLogic.Db;
 using System.Threading.Tasks;

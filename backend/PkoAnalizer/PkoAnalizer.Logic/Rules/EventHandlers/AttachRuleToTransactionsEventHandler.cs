@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using BankAnalizer.Infrastructure.Commands;
 using Microsoft.Extensions.Logging;
-using PkoAnalizer.Core.Commands.Group;
 using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
