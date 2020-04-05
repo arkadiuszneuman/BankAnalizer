@@ -45,12 +45,7 @@ namespace BankAnalizer.Core.Api.CqrsRouting
             }
 
             var request = await GetRequestText(context.Request);
-
-            Command command;
-            if (string.IsNullOrEmpty(request))
-                command = (Command)Activator.CreateInstance(endpointResult.Type);
-            else
-                command = (Command)JsonSerializer.Deserialize(request, endpointResult.Type, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            var command = GetCommand(endpointResult, request);
 
             if (command != null)
             {
@@ -80,6 +75,16 @@ namespace BankAnalizer.Core.Api.CqrsRouting
                 {
                     endpointResult.Type.GetProperty(patternSegmentObject.Key).SetValue(command, patternSegmentObject.Value);
                 }
+            }
+
+            static Command GetCommand(CqrsEndpointsBuilder.EndpointResult endpointResult, string request)
+            {
+                Command command;
+                if (string.IsNullOrEmpty(request))
+                    command = (Command)Activator.CreateInstance(endpointResult.Type);
+                else
+                    command = (Command)JsonSerializer.Deserialize(request, endpointResult.Type, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                return command;
             }
         }
 

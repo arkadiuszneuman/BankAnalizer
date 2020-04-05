@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PkoAnalizer.Core.Commands.Users;
+﻿using BankAnalizer.Infrastructure.Commands;
+using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
@@ -20,14 +20,14 @@ namespace PkoAnalizer.Logic.Users.UsersConnections
         public async Task Handle(RequestUserConnectionCommand command)
         {
             using var context = contextFactory.GetContext();
-            var requestedUser = await context.Users.SingleOrDefaultAsync(u => u.Username == command.RequestedConnectionToUsername);
+            var requestedUser = await context.Users.SingleOrDefaultAsync(u => u.Username == command.RequestedUsername);
 
             await Validate(command, context, requestedUser);
 
             var connection = new UsersConnection()
             {
                 UserRequestedToConnectId = requestedUser.Id,
-                UserRequestingConnectionId = command.RequestingUserId
+                UserRequestingConnectionId = command.UserId
             };
 
             await context.AddAsync(connection);
@@ -37,14 +37,14 @@ namespace PkoAnalizer.Logic.Users.UsersConnections
         private static async Task Validate(RequestUserConnectionCommand command, IContext context, User requestedUser)
         {
             if (requestedUser == null)
-                throw new UsernameDoesNotExistException(command.RequestedConnectionToUsername);
+                throw new UsernameDoesNotExistException(command.RequestedUsername);
 
-            if (requestedUser.Id == command.RequestingUserId)
+            if (requestedUser.Id == command.UserId)
                 throw new UsernameCannotBeCurrentUserException();
 
             if (await context.UsersConnections.AnyAsync(u =>
                 u.UserRequestedToConnectId == requestedUser.Id &&
-                u.UserRequestingConnectionId == command.RequestingUserId))
+                u.UserRequestingConnectionId == command.UserId))
             {
                 throw new UsersConnectionAlreadyExistsException();
             }

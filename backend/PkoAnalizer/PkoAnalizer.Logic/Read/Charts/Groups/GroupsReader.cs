@@ -25,8 +25,8 @@ namespace PkoAnalizer.Logic.Read.Charts.Groups
             var queryString = $@"SELECT Name as GroupName, SUM(Amount) * -1 as Amount FROM Groups
                     JOIN BankTransactionGroups ON Groups.Id = BankTransactionGroups.GroupId
                     JOIN BankTransactions ON BankTransactionGroups.BankTransactionId = BankTransactions.Id /**filterBankTransactions**/
-                    GROUP BY Name, UserId
-                    HAVING SUM(Amount) < 0 AND UserId = {userId}";
+                    GROUP BY Name, BankTransactions.UserId
+                    HAVING SUM(Amount) < 0 AND BankTransactions.UserId = '{userId}'";
             string filterBankTransactionsQuery = GetFilterTransactionsQuery(dateFrom, dateTo);
 
             queryString = queryString.Replace("/**filterBankTransactions**/", filterBankTransactionsQuery);

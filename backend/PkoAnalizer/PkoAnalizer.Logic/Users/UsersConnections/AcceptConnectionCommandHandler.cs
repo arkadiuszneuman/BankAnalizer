@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PkoAnalizer.Core.Commands.Users;
+﻿using BankAnalizer.Infrastructure.Commands;
+using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
 using PkoAnalizer.Logic.Users.UsersConnections.Exceptions;
@@ -21,11 +21,11 @@ namespace PkoAnalizer.Logic.Users.UsersConnections
             using var context = contextFactory.GetContext();
 
             var connectionToAccept = await context.UsersConnections.SingleOrDefaultAsync(c =>
-                c.UserRequestedToConnectId == command.CurrentUserId &&
+                c.UserRequestedToConnectId == command.UserId &&
                 c.UserRequestingConnectionId == command.HostUserIdToAcceptConnection);
 
             if (connectionToAccept == null)
-                throw new ConnectionDoesNotExistsException(command.HostUserIdToAcceptConnection, command.CurrentUserId);
+                throw new ConnectionDoesNotExistsException(command.HostUserIdToAcceptConnection, command.UserId);
 
             connectionToAccept.IsRequestApproved = true;
 

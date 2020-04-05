@@ -76,7 +76,9 @@ namespace PkoAnalizer
                     .UsePostCommand<AddGroupCommand>("/api/transaction/group")
                     .UseDeleteCommand<RemoveGroupCommand>("/api/transaction/group")
                     .UsePostCommand<SaveRuleCommand>("/api/rule")
-                    .UseDeleteCommand<DeleteRuleCommand>("/api/rule/{RuleId:Guid}"))
+                    .UseDeleteCommand<DeleteRuleCommand>("/api/rule/{RuleId:Guid}")
+                    .UsePostCommand<RequestUserConnectionCommand>("/api/usersconnection")
+                    .UsePostCommand<AcceptConnectionCommand>("/api/usersconnection/accept"))
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
