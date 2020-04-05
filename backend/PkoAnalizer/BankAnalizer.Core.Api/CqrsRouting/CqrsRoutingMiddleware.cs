@@ -32,10 +32,7 @@ namespace BankAnalizer.Core.Api.CqrsRouting
 
         public async Task<bool> InvokeRequestedCommand(HttpContext context)
         {
-            if (context.Request.Method != "POST")
-                return false;
-
-            var type = endpointsBuilder.GetTypeForEndpoint(context.Request.Path);
+            var type = endpointsBuilder.GetTypeForEndpoint(context.Request.Path, context.Request.Method);
             if (type == null)
                 return false;
 
@@ -52,7 +49,6 @@ namespace BankAnalizer.Core.Api.CqrsRouting
             if (command != null)
             {
                 var connectionId = context.Request.Headers["connectionId"].FirstOrDefault();
-                var userId = context.User.FindFirstValue(ClaimTypes.Name);
 
                 command.ConnectionId = connectionId;
                 command.UserId = Guid.Parse(userId);

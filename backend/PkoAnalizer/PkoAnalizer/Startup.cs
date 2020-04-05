@@ -74,8 +74,8 @@ namespace PkoAnalizer
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseCqrsEndpointsCommands(endpoints => endpoints
-                    .UseCommand<AddGroupCommand>("/api/transaction/group")
-                    .UseCommand<SaveRuleCommand>("/api/rule"))
+                    .UsePostCommand<AddGroupCommand>("/api/transaction/group")
+                    .UsePostCommand<SaveRuleCommand>("/api/rule"))
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
