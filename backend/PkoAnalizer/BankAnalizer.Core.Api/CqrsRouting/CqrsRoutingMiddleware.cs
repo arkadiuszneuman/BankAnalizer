@@ -32,8 +32,8 @@ namespace BankAnalizer.Core.Api.CqrsRouting
 
         public async Task<bool> InvokeRequestedCommand(HttpContext context)
         {
-            var type = endpointsBuilder.GetTypeForEndpoint(context.Request.Path, context.Request.Method);
-            if (type == null)
+            var endpointResult = endpointsBuilder.GetTypeForEndpoint(context.Request.Path, context.Request.Method);
+            if (endpointResult == null)
                 return false;
 
             var userId = context.User.FindFirstValue(ClaimTypes.Name);
@@ -45,9 +45,17 @@ namespace BankAnalizer.Core.Api.CqrsRouting
             }
 
             var request = await GetRequestText(context.Request);
-            var command = (Command)JsonSerializer.Deserialize(request, type, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+            Command command;
+            if (string.IsNullOrEmpty(request))
+                command = (Command)Activator.CreateInstance(endpointResult.Type);
+            else
+                command = (Command)JsonSerializer.Deserialize(request, endpointResult.Type, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
             if (command != null)
             {
+                SetPatternValuesToCommand(endpointResult, command);
+
                 var connectionId = context.Request.Headers["connectionId"].FirstOrDefault();
 
                 command.ConnectionId = connectionId;
@@ -55,7 +63,7 @@ namespace BankAnalizer.Core.Api.CqrsRouting
 
                 var bus = context.RequestServices.GetService<ICommandsBus>();
 
-                _ = bus.SendAsync(type, command);
+                _ = bus.SendAsync(endpointResult.Type, command);
 
                 context.Response.StatusCode = StatusCodes.Status202Accepted;
                 var returnObject = new { commandId = command.CommandId };
@@ -65,6 +73,14 @@ namespace BankAnalizer.Core.Api.CqrsRouting
             }
 
             return false;
+
+            static void SetPatternValuesToCommand(CqrsEndpointsBuilder.EndpointResult endpointResult, Command command)
+            {
+                foreach (var patternSegmentObject in endpointResult.PatternSegmentObjects)
+                {
+                    endpointResult.Type.GetProperty(patternSegmentObject.Key).SetValue(command, patternSegmentObject.Value);
+                }
+            }
         }
 
         private async Task<string> GetRequestText(HttpRequest request)

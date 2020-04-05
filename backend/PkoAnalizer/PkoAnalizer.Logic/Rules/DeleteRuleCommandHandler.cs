@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BankAnalizer.Infrastructure.Commands;
+using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core;
 using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
