@@ -39,6 +39,14 @@ namespace BankAnalizer.Core.Api.CqrsRouting
             if (type == null)
                 return false;
 
+            var userId = context.User.FindFirstValue(ClaimTypes.Name);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return true;
+            }
+
             var request = await GetRequestText(context.Request);
             var command = (Command)JsonSerializer.Deserialize(request, type, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             if (command != null)
