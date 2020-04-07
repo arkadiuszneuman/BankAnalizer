@@ -2,18 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PkoAnalizer.Core.Commands.Import;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Export;
 using PkoAnalizer.Logic.Read.Transactions;
 using PkoAnalizer.Logic.Read.Transactions.ViewModels;
 using PkoAnalizer.Logic.Rules.Logic;
-using System;
-using System.Collections;
+using PkoAnalizer.Logic.Transactions.Import.Commands;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 

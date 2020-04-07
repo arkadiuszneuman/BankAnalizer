@@ -1,10 +1,8 @@
 ﻿using Autofac;
 using PkoAnalizer.Core.Cqrs.Command;
-using PkoAnalizer.Logic.Import;
+using PkoAnalizer.Logic.Transactions.Import.Commands.Handlers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PkoAnalizer.Web.Modules.Cqrs
 {

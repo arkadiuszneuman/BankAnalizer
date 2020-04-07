@@ -1,12 +1,10 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters.Extensions;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -33,10 +31,11 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Przelew na telefon przychodz. zew.",
                 Amount = 11.73M,
                 Currency = "PLN",
-                 Extensions = new SenderReceiptNameExtension {
-                     SenderReceipt = "11 3333 6666 2222 1111 8888 6666",
-                     SenderName = "SNAME SSURNAME",
-                 }.ToJson(),
+                Extensions = new SenderReceiptNameExtension
+                {
+                    SenderReceipt = "11 3333 6666 2222 1111 8888 6666",
+                    SenderName = "SNAME SSURNAME",
+                }.ToJson(),
                 Title = "PRZELEW NA TELEFON +48XXXXXX123 BOLT DLA RNAME RSURNAME OD SNAME SSURNAME",
             });
         }

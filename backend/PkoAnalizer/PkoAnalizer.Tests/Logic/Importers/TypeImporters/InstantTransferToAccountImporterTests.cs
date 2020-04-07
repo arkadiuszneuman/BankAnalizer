@@ -1,12 +1,10 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters.Extensions;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -34,10 +32,11 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Przelew Natychmiastowy na rachunek",
                 Amount = 123.12M,
                 Currency = "PLN",
-                 Extensions = new RecipientReceiptNameExtension {
-                     RecipientReceipt = "44 2222 5555 1111 7777 4444 3333",
-                     RecipientName = "SOME RECIPIENT"
-                 }.ToJson(),
+                Extensions = new RecipientReceiptNameExtension
+                {
+                    RecipientReceipt = "44 2222 5555 1111 7777 4444 3333",
+                    RecipientName = "SOME RECIPIENT"
+                }.ToJson(),
                 Title = "PRZELEW ŚRODKÓW",
             });
         }

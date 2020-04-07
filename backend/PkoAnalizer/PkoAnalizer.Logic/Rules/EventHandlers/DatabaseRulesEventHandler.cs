@@ -2,8 +2,8 @@
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
 using PkoAnalizer.Logic.Groups.Commands;
-using PkoAnalizer.Logic.Import.Events;
 using PkoAnalizer.Logic.Rules.Db;
+using PkoAnalizer.Logic.Transactions.Import.Events;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Logic.Rules.EventHandlers

@@ -1,12 +1,10 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters.Extensions;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -34,7 +32,8 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 TransactionType = "Przelew z rachunku",
                 Amount = -43.47M,
                 Currency = "PLN",
-                Extensions = new RecipientExtension {
+                Extensions = new RecipientExtension
+                {
                     RecipientReceipt = "99 8888 5555 2222 0001 7777 4444",
                     RecipientName = "RECIPIENT NAME",
                     RecipientAddress = "SOME RECIPIENT ADDRESS 32/43 54-322 CITY",

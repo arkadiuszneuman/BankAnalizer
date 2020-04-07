@@ -1,10 +1,8 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -20,7 +18,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
             var sut = new AutoSubstitute().Resolve<ChargeTransactionImporter>();
 
             //act
-            var result = sut.Import(new[] { 
+            var result = sut.Import(new[] {
                 "2019-01-11","2019-01-12",typeName,"-11.32","PLN","+21.83",
                 "1231255123123151231235123123","","","","","",""
             });

@@ -1,12 +1,11 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters.Extensions;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -89,7 +88,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 "Nazwa nadawcy: SENDER NAME","Adres nadawcy: Street 4A/23 43-532 City",
                 "Tytuł: Some title","","",""
             });
-            
+
             //assert
             result.Should().BeNull();
         }

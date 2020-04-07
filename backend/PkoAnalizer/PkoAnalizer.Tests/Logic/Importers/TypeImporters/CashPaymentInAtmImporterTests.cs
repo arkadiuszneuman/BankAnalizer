@@ -1,12 +1,10 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters.Extensions;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -37,8 +35,9 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Amount = 11.21M,
                 Currency = "PLN",
                 Title = "PKO BP 123123123123",
-                Extensions = new LocationExtension { 
-                        Location = "Kraj: COUNTRY Miasto: CITY Adres: STREET"
+                Extensions = new LocationExtension
+                {
+                    Location = "Kraj: COUNTRY Miasto: CITY Adres: STREET"
                 }.ToJson()
             });
         }

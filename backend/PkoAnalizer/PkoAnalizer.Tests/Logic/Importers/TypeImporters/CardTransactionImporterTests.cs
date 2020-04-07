@@ -1,12 +1,10 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters.Extensions;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -21,8 +19,8 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
 
             //act
             var result = sut.Import(new[] { "2019-09-19", "2019-09-17", "Płatność kartą",
-                "-13.00", "PLN", "+45.94", "Tytuł: Some transaction title", 
-                "Lokalizacja: Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA", 
+                "-13.00", "PLN", "+45.94", "Tytuł: Some transaction title",
+                "Lokalizacja: Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA",
                 "Data i czas operacji: 2019-02-05", "Oryginalna kwota operacji: 13,00 PLN",
                 "Numer karty: 123456******7589", "", "" });
 
@@ -35,9 +33,10 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
                 Amount = -13.00M,
                 Currency = "PLN",
                 Title = "Some transaction title",
-                 Extensions = new LocationExtension {
-                     Location = "Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA"
-                 }.ToJson()
+                Extensions = new LocationExtension
+                {
+                    Location = "Kraj: POLSKA Miasto: CHORZOW Adres: PIEKARNIA CUKIERNIA RUTA"
+                }.ToJson()
             });
         }
 

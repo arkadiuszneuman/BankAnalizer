@@ -1,7 +1,7 @@
 ﻿using AutofacContrib.NSubstitute;
 using FluentAssertions;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
-using PkoAnalizer.Logic.Import.Models;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -14,8 +14,8 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
         {
             get
             {
-                yield return new object[] { 
-                    new[] { 
+                yield return new object[] {
+                    new[] {
                         "2015-10-03","2016-01-01","Naliczenie odsetek",
                         "-0.03","PLN","+21.32","KAPIT.ODSETEK KARNYCH-OBCIĄŻENIE","","","","","",""
                     },

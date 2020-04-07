@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
-using PkoAnalizer.Logic.Import.Importers;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters;
+using PkoAnalizer.Logic.Transactions.Import.Importers;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
 using System;
-using System.Linq;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
@@ -31,7 +30,7 @@ namespace PkoAnalizer.Tests.Logic.Importers.TypeImporters
             var lines = new[] { "a", "b" };
 
             //act
-            var result =  lines.Index(1);
+            var result = lines.Index(1);
 
             //assert
             result.Should().Be("b");

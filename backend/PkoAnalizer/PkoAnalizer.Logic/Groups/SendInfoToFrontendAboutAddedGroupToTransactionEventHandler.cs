@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using PkoAnalizer.Core.Cqrs.Event;
 using PkoAnalizer.Logic.Groups.Events;
-using PkoAnalizer.Logic.Import.Hubs;
+using PkoAnalizer.Logic.Transactions.Import.Hubs;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Logic.Groups

@@ -2,12 +2,8 @@
 using FluentAssertions;
 using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Db.Models;
-using PkoAnalizer.Logic.Import.Importers.TypeImporters.Extensions;
-using PkoAnalizer.Logic.Import.Models;
 using PkoAnalizer.Logic.Rules;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters.Extensions;
 using Xunit;
 
 namespace PkoAnalizer.Tests.Logic.Rules

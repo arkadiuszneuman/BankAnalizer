@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PkoAnalizer.Logic;
 using PkoAnalizer.Logic.Groups.Commands;
-using PkoAnalizer.Logic.Import.Hubs;
 using PkoAnalizer.Logic.Rules.Commands;
+using PkoAnalizer.Logic.Transactions.Import.Hubs;
 using PkoAnalizer.Logic.Users.UsersConnections.Commands;
 using PkoAnalizer.Web.Startup;
 
