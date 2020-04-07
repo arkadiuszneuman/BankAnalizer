@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Rules;
 using PkoAnalizer.Logic.Rules.Db;
+using PkoAnalizer.Logic.Rules.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PkoAnalizer.Logic.Read.Rule

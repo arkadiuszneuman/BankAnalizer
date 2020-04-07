@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PkoAnalizer.Core.Cqrs.Command;
-using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Read.Rule;
+using PkoAnalizer.Logic.Rules.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
