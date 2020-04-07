@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using PkoAnalizer.Logic.Read.Transactions;
-using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using PkoAnalizer.Logic.Transactions.Read;
+using PkoAnalizer.Logic.Transactions.Read.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xunit;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PkoAnalizer.Logic.Read.Transactions;
-using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using PkoAnalizer.Logic.Transactions.Read;
+using PkoAnalizer.Logic.Transactions.Read.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

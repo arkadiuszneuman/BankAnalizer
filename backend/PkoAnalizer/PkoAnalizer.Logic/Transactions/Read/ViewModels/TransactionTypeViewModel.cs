@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PkoAnalizer.Logic.Read.Transactions.ViewModels
+namespace PkoAnalizer.Logic.Transactions.Read.ViewModels
 {
     public class TransactionTypeViewModel
     {

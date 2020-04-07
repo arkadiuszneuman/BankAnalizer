@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Db;
+using PkoAnalizer.Logic.Charts.ViewModels;
 using PkoAnalizer.Logic.Users;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Logic.Read.Charts.Groups
+namespace PkoAnalizer.Logic.Charts.Read
 {
     public class GroupsReader
     {

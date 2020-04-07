@@ -1,13 +1,11 @@
 ﻿using PkoAnalizer.Core.ExtensionMethods;
-using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using PkoAnalizer.Logic.Transactions.Read.ViewModels;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Logic.Read.Transactions
+namespace PkoAnalizer.Logic.Transactions.Read
 {
     public class ColumnFinder
     {

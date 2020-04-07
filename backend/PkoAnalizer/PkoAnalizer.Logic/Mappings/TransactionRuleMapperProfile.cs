@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using PkoAnalizer.Db.Models;
-using PkoAnalizer.Logic.Read.Transactions.Containers;
-using PkoAnalizer.Logic.Read.Transactions.ViewModels;
 using PkoAnalizer.Logic.Transactions.Import.Models;
+using PkoAnalizer.Logic.Transactions.Read.Containers;
+using PkoAnalizer.Logic.Transactions.Read.ViewModels;
 
 namespace PkoAnalizer.Logic.Mappings
 {

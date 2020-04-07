@@ -1,6 +1,6 @@
 ﻿using Dapper.Contrib.Extensions;
 
-namespace PkoAnalizer.Logic.Read.Charts.Groups
+namespace PkoAnalizer.Logic.Charts.ViewModels
 {
     public class GroupsViewModel
     {

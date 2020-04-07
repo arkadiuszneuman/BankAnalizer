@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PkoAnalizer.Logic.Read.Transactions.Containers
+namespace PkoAnalizer.Logic.Transactions.Read.Containers
 {
     public class TransactionGroupsContainer
     {

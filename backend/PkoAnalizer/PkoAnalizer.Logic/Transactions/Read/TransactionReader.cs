@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using Dapper;
 using PkoAnalizer.Db;
-using PkoAnalizer.Logic.Read.Transactions.Containers;
-using PkoAnalizer.Logic.Read.Transactions.ViewModels;
+using PkoAnalizer.Logic.Transactions.Read.Containers;
+using PkoAnalizer.Logic.Transactions.Read.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Logic.Read.Transactions
+namespace PkoAnalizer.Logic.Transactions.Read
 {
 	public interface ITransactionReader
 	{

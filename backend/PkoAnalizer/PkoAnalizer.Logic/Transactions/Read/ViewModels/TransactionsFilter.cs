@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace PkoAnalizer.Logic.Read.Transactions.ViewModels
+namespace PkoAnalizer.Logic.Transactions.Read.ViewModels
 {
     public class TransactionsFilter
     {
