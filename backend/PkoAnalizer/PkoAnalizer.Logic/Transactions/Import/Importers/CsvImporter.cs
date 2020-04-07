@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
-using PkoAnalizer.Logic.Common;
 using PkoAnalizer.Logic.Transactions.Import.Importers.TypeImporters;
 using PkoAnalizer.Logic.Transactions.Import.Models;
 using System;
