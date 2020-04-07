@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BankAnalizer.Infrastructure\BankAnalizer.Infrastructure.csproj" />
+    <ProjectReference Include="..\BankAnalizer.Core.Api\BankAnalizer.Core.Api.csproj" />
     <ProjectReference Include="..\PkoAnalizer.Core\PkoAnalizer.Core.csproj" />
     <ProjectReference Include="..\PkoAnalizer.Db\PkoAnalizer.Db.csproj" />
   </ItemGroup>

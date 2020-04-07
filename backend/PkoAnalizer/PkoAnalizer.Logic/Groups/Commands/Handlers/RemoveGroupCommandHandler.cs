@@ -1,5 +1,4 @@
-﻿using BankAnalizer.Infrastructure.Commands;
-using PkoAnalizer.Core.Cqrs.Command;
+﻿using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Logic.Groups.Db;
 using System.Threading.Tasks;
 using System.Transactions;

@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BankAnalizer.Core.Api\BankAnalizer.Core.Api.csproj" />
-    <ProjectReference Include="..\BankAnalizer.Infrastructure\BankAnalizer.Infrastructure.csproj" />
     <ProjectReference Include="..\PkoAnalizer.Core\PkoAnalizer.Core.csproj" />
     <ProjectReference Include="..\PkoAnalizer.Db\PkoAnalizer.Db.csproj" />
     <ProjectReference Include="..\PkoAnalizer.Logic\PkoAnalizer.Logic.csproj" />

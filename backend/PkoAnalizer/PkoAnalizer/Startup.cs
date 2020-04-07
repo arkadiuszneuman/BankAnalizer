@@ -1,7 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankAnalizer.Core.Api.CqrsRouting;
-using BankAnalizer.Infrastructure.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +10,7 @@ using PkoAnalizer.Logic;
 using PkoAnalizer.Logic.Groups.Commands;
 using PkoAnalizer.Logic.Import.Hubs;
 using PkoAnalizer.Logic.Rules.Commands;
+using PkoAnalizer.Logic.Users.UsersConnections.Commands;
 using PkoAnalizer.Web.Startup;
 
 namespace PkoAnalizer

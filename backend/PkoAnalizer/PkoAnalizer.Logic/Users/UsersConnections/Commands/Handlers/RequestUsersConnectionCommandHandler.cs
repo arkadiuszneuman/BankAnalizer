@@ -1,12 +1,11 @@
-﻿using BankAnalizer.Infrastructure.Commands;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Users.UsersConnections.Exceptions;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Logic.Users.UsersConnections
+namespace PkoAnalizer.Logic.Users.UsersConnections.Commands.Handlers
 {
     public class RequestUsersConnectionCommandHandler : ICommandHandler<RequestUserConnectionCommand>
     {

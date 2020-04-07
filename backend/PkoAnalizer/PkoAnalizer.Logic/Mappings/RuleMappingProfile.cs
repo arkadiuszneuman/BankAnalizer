@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BankAnalizer.Infrastructure.Commands;
 using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Db.Models;

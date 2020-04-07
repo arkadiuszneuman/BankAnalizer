@@ -3,7 +3,6 @@ using BankAnalizer.Core.Api.CqrsRouting;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 using static BankAnalizer.Core.Api.CqrsRouting.CqrsEndpointsBuilder;
 

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BankAnalizer.Infrastructure.Commands
+namespace PkoAnalizer.Logic.Users.UsersConnections.Commands
 {
     public class RequestUserConnectionCommand : Command
     {
