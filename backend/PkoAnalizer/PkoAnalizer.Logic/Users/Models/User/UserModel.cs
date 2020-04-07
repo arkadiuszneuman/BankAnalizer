@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PkoAnalizer.Logic.Models.User
+namespace PkoAnalizer.Logic.Users.Models.User
 {
     public class UserModel
     {

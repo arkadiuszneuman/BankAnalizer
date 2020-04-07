@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PkoAnalizer.Logic.Models.User
+﻿namespace PkoAnalizer.Logic.Users.Models.User
 {
-    public class RegisterModel
+    public class UpdateModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -5,10 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using PkoAnalizer.Core;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Config;
-using PkoAnalizer.Logic.Models.User;
 using PkoAnalizer.Logic.Users;
+using PkoAnalizer.Logic.Users.Models.User;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -40,7 +39,7 @@ namespace PkoAnalizer.Web.Controllers.Users
         public async Task<IActionResult> Authenticate([FromBody]AuthenticateModel model)
         {
             var user = await userService.Authenticate(model.Username, model.Password);
-            
+
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PkoAnalizer.Db.Models;
-using PkoAnalizer.Logic.Models.User;
+using PkoAnalizer.Logic.Users.Models.User;
 
 namespace PkoAnalizer.Logic.Mappings
 {
