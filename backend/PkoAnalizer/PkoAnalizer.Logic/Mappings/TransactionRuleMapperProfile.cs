@@ -16,7 +16,7 @@ namespace PkoAnalizer.Logic.Mappings
             CreateMap<BankTransaction, TransactionViewModel>()
                 .ForMember(x => x.TransactionId, z => z.MapFrom(b => b.Id))
                 .ForMember(x => x.Name, z => z.MapFrom(b => b.Title))
-                .ForMember(x => x.Type, z => z.MapFrom(b => "asdasd"));
+                .ForMember(x => x.Type, z => z.MapFrom(b => b.BankTransactionType.Name));
         }
     }
 }
