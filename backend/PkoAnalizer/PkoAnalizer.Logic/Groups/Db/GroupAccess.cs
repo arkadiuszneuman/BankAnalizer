@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Z.EntityFramework.Plus;
 
-namespace PkoAnalizer.Logic.GroupLogic.Db
+namespace PkoAnalizer.Logic.Groups.Db
 {
     public class GroupAccess
     {

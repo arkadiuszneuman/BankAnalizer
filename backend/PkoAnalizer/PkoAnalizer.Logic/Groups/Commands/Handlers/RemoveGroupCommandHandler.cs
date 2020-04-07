@@ -1,10 +1,10 @@
 ﻿using BankAnalizer.Infrastructure.Commands;
 using PkoAnalizer.Core.Cqrs.Command;
-using PkoAnalizer.Logic.GroupLogic.Db;
+using PkoAnalizer.Logic.Groups.Db;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace PkoAnalizer.Logic.GroupLogic
+namespace PkoAnalizer.Logic.Groups.Commands.Handlers
 {
     public class RemoveGroupCommandHandler : ICommandHandler<RemoveGroupCommand>
     {

@@ -1,13 +1,12 @@
-﻿using BankAnalizer.Infrastructure.Commands;
-using PkoAnalizer.Core;
+﻿using PkoAnalizer.Core;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
 using PkoAnalizer.Db.Models;
-using PkoAnalizer.Logic.GroupLogic.Db;
-using PkoAnalizer.Logic.GroupLogic.Events;
+using PkoAnalizer.Logic.Groups.Db;
+using PkoAnalizer.Logic.Groups.Events;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Logic.GroupLogic
+namespace PkoAnalizer.Logic.Groups.Commands.Handlers
 {
     public class AddGroupCommandHandler : ICommandHandler<AddGroupCommand>
     {

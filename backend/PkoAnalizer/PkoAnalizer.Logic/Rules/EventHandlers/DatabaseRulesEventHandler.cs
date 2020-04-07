@@ -1,7 +1,7 @@
-﻿using BankAnalizer.Infrastructure.Commands;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
+using PkoAnalizer.Logic.Groups.Commands;
 using PkoAnalizer.Logic.Import.Events;
 using PkoAnalizer.Logic.Rules.Db;
 using System.Threading.Tasks;

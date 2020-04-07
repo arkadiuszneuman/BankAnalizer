@@ -2,7 +2,7 @@
 using PkoAnalizer.Core.Cqrs.Command;
 using System;
 
-namespace BankAnalizer.Infrastructure.Commands
+namespace PkoAnalizer.Logic.Groups.Commands
 {
     public class RemoveGroupCommand : Command
     {

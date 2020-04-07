@@ -2,7 +2,7 @@
 using PkoAnalizer.Db.Models;
 using System;
 
-namespace PkoAnalizer.Logic.GroupLogic.Events
+namespace PkoAnalizer.Logic.Groups.Events
 {
     public class GroupToTransactionAddedEvent : IEvent
     {
