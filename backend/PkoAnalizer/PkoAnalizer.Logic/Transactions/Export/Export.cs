@@ -3,7 +3,7 @@ using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Db;
 using System.Threading.Tasks;
 
-namespace PkoAnalizer.Logic.Export
+namespace PkoAnalizer.Logic.Transactions.Export
 {
     public class Export
     {
