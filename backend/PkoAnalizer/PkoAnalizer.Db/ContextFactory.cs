@@ -7,9 +7,9 @@
 
     public class ContextFactory : IContextFactory
     {
-        private readonly ConnectionFactory connectionFactory;
+        private readonly IConnectionFactory connectionFactory;
 
-        public ContextFactory(ConnectionFactory connectionFactory)
+        public ContextFactory(IConnectionFactory connectionFactory)
         {
             this.connectionFactory = connectionFactory;
         }

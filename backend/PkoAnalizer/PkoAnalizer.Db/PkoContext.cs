@@ -30,7 +30,7 @@ namespace PkoAnalizer.Db
 
     public class PkoContext : DbContext, IContext
     {
-        private readonly ConnectionFactory connectionFactory;
+        private readonly IConnectionFactory connectionFactory;
 
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
@@ -54,7 +54,7 @@ namespace PkoAnalizer.Db
             });
         }
 
-        public PkoContext(ConnectionFactory connectionFactory)
+        public PkoContext(IConnectionFactory connectionFactory)
         {
             this.connectionFactory = connectionFactory;
         }

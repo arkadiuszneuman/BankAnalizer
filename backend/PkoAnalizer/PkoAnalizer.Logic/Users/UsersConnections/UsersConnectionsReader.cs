@@ -15,9 +15,9 @@ namespace PkoAnalizer.Logic.Users.UsersConnections
             public bool OnlyApproved { get; set; }
         }
 
-        private readonly ConnectionFactory connectionFactory;
+        private readonly IConnectionFactory connectionFactory;
 
-        public UsersConnectionsReader(ConnectionFactory connectionFactory)
+        public UsersConnectionsReader(IConnectionFactory connectionFactory)
         {
             this.connectionFactory = connectionFactory;
         }

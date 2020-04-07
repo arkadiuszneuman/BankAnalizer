@@ -10,8 +10,8 @@ namespace PkoAnalizer.Web.Modules
             base.Load(builder);
 
             builder.RegisterType<ConnectionFactory>()
-                .SingleInstance()
-                .AsSelf();
+                .As<IConnectionFactory>()
+                .SingleInstance();
 
             builder.RegisterType<ContextFactory>()
                 .As<IContextFactory>()

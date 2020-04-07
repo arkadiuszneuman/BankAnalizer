@@ -18,10 +18,10 @@ namespace PkoAnalizer.Logic.Read.Transactions
 	}
 	public class TransactionReader : ITransactionReader
 	{
-		private readonly ConnectionFactory connectionFactory;
+		private readonly IConnectionFactory connectionFactory;
 		private readonly IMapper mapper;
 
-		public TransactionReader(ConnectionFactory connectionFactory,
+		public TransactionReader(IConnectionFactory connectionFactory,
 			IMapper mapper)
 		{
 			this.connectionFactory = connectionFactory;

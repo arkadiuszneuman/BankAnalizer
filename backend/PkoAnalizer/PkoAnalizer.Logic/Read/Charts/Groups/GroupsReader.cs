@@ -11,9 +11,9 @@ namespace PkoAnalizer.Logic.Read.Charts.Groups
 {
     public class GroupsReader
     {
-        private readonly ConnectionFactory connectionFactory;
+        private readonly IConnectionFactory connectionFactory;
 
-        public GroupsReader(ConnectionFactory connectionFactory)
+        public GroupsReader(IConnectionFactory connectionFactory)
         {
             this.connectionFactory = connectionFactory;
         }

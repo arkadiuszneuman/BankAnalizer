@@ -13,11 +13,11 @@ namespace PkoAnalizer.Logic.Rules.Db
 {
     public class RuleAccess
     {
-        private readonly ConnectionFactory connectionFactory;
-        private readonly ContextFactory contextFactory;
+        private readonly IConnectionFactory connectionFactory;
+        private readonly IContextFactory contextFactory;
 
-        public RuleAccess(ConnectionFactory connectionFactory,
-            ContextFactory contextFactory)
+        public RuleAccess(IConnectionFactory connectionFactory,
+            IContextFactory contextFactory)
         {
             this.connectionFactory = connectionFactory;
             this.contextFactory = contextFactory;
@@ -35,6 +35,7 @@ namespace PkoAnalizer.Logic.Rules.Db
             return await context.BankTransactions
                 .Where(t => t.User.Id == userId)
                 .Include(c => c.BankTransactionType)
+                .AsNoTracking()
                 .ToListAsync();
         }
     }
