@@ -4,6 +4,7 @@ using PkoAnalizer.Core.ExtensionMethods;
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Rules;
+using PkoAnalizer.Logic.Rules.Commands;
 using PkoAnalizer.Logic.Rules.ViewModels;
 
 namespace PkoAnalizer.Logic.Mappings

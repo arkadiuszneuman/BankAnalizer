@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using BankAnalizer.Infrastructure.Commands;
 using Microsoft.Extensions.Logging;
-using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
+using PkoAnalizer.Logic.Rules.Commands;
 using PkoAnalizer.Logic.Rules.Events;
 using PkoAnalizer.Logic.Rules.Logic;
 using PkoAnalizer.Logic.Rules.ViewModels;

@@ -1,13 +1,11 @@
-﻿using BankAnalizer.Infrastructure.Commands;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PkoAnalizer.Core;
-using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace PkoAnalizer.Logic.Rules
+namespace PkoAnalizer.Logic.Rules.Commands.Handlers.CommandHandlers
 {
     public class DeleteRuleCommandHandler : ICommandHandler<DeleteRuleCommand>
     {

@@ -1,7 +1,7 @@
 ﻿using BankAnalizer.Core.Api;
 using System;
 
-namespace BankAnalizer.Infrastructure.Commands
+namespace PkoAnalizer.Logic.Rules.Commands
 {
     public class DeleteRuleCommand : Command
     {

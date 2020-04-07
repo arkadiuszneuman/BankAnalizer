@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Z.EntityFramework.Plus;
 
-namespace PkoAnalizer.Logic.Rules.CommandHandlers
+namespace PkoAnalizer.Logic.Rules.Commands.Handlers.CommandHandlers
 {
     public class DeleteTransactionsAndGroupsAssignedToRuleCommandHandler : ICommandHandler<DeleteTransactionsAndGroupsAssignedToRuleCommand>
     {

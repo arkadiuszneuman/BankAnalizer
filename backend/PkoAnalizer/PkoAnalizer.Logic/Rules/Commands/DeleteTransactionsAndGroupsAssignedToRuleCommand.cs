@@ -1,7 +1,7 @@
 ﻿using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Db.Models;
 
-namespace PkoAnalizer.Core.Commands.Rules
+namespace PkoAnalizer.Logic.Rules.Commands
 {
     public class DeleteTransactionsAndGroupsAssignedToRuleCommand : ICommand
     {

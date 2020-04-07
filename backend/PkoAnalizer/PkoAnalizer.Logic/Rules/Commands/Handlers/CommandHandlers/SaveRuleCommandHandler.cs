@@ -1,22 +1,15 @@
 ﻿using AutoMapper;
-using BankAnalizer.Infrastructure.Commands;
 using Microsoft.EntityFrameworkCore;
-using PkoAnalizer.Core.Commands.Import;
-using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.Cqrs.Event;
-using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Db;
 using PkoAnalizer.Db.Models;
 using PkoAnalizer.Logic.Rules.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace PkoAnalizer.Logic.Rules
+namespace PkoAnalizer.Logic.Rules.Commands.Handlers.CommandHandlers
 {
     public class SaveRuleCommandHandler : ICommandHandler<SaveRuleCommand>
     {

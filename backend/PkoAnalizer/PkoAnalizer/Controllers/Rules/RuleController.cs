@@ -1,12 +1,9 @@
 ﻿using BankAnalizer.Core.Api;
-using BankAnalizer.Infrastructure.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PkoAnalizer.Core.Commands.Rules;
 using PkoAnalizer.Core.Cqrs.Command;
 using PkoAnalizer.Core.ViewModels.Rules;
 using PkoAnalizer.Logic.Read.Rule;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
