@@ -1,23 +1,17 @@
 ﻿using BankAnalizer.Core.Cqrs.Event;
+using BankAnalizer.Core.SignalR;
 using BankAnalizer.Logic.Transactions.Import.Events;
-using BankAnalizer.Logic.Transactions.Import.Hubs;
-using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace BankAnalizer.Logic.Transactions.Import.EventHandlers
 {
     public class CommandCompletedEventHandler : IHandleEvent<CommandCompletedEvent>
     {
-        private readonly IHubContext<SendSignalRAnswerHub> context;
+        private readonly ISignalrClient signalrClient;
 
-        public CommandCompletedEventHandler(IHubContext<SendSignalRAnswerHub> context)
-        {
-            this.context = context;
-        }
+        public CommandCompletedEventHandler(ISignalrClient signalrClient) => this.signalrClient = signalrClient;
 
-        public async Task Handle(CommandCompletedEvent @event)
-        {
-            await context.Clients.Client(@event.ConnectionId).SendAsync("command-completed", @event);
-        }
+        public Task Handle(CommandCompletedEvent @event) =>
+            signalrClient.SendNotificationToUserId("command-completed", @event.UserId.ToString(), @event);
     }
 }

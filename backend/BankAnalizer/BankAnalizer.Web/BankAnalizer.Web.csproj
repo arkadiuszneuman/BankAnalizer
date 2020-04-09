@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BankAnalizer.Core.Api\BankAnalizer.Core.Api.csproj" />
+    <ProjectReference Include="..\BankAnalizer.Core.SignalR\BankAnalizer.Core.SignalR.csproj" />
     <ProjectReference Include="..\BankAnalizer.Core\BankAnalizer.Core.csproj" />
     <ProjectReference Include="..\BankAnalizer.Db\BankAnalizer.Db.csproj" />
     <ProjectReference Include="..\BankAnalizer.Logic\BankAnalizer.Logic.csproj" />

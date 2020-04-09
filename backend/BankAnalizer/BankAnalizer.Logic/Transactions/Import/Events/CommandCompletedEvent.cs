@@ -5,13 +5,13 @@ namespace BankAnalizer.Logic.Transactions.Import.Events
 {
     public class CommandCompletedEvent : IEvent
     {
-        public string ConnectionId { get; }
+        public Guid UserId { get; }
         public Guid Id { get; }
         public object Object { get; }
 
-        public CommandCompletedEvent(string connectionId, Guid id, object @object = null)
+        public CommandCompletedEvent(Guid userId, Guid id, object @object = null)
         {
-            ConnectionId = connectionId;
+            UserId = userId;
             Id = id;
             Object = @object;
         }

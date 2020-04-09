@@ -1,10 +1,9 @@
 import { HubConnectionBuilder } from '@aspnet/signalr';
-import { v4 as uuidv4 } from 'uuid';
+import userManager from './UserManager'
 
 class HubConnector {
     _hubAddress = "https://localhost:5001/hub/"
     _actions = {}
-    _userId = uuidv4()
 
     init = async () => {
         if (!HubConnector.instance) {
@@ -12,6 +11,7 @@ class HubConnector {
 
             this.HubConnection = new HubConnectionBuilder()
                 .withUrl(this._hubAddress)
+                // .withAutomaticReconnect()
                 .build()
 
             await this._connect();
@@ -22,7 +22,7 @@ class HubConnector {
 
     async _connect() {
         await this.HubConnection.start();
-        await this.HubConnection.invoke('registerClient', this._userId);
+        await this.HubConnection.invoke('registerClient', userManager.getUserFromStorage().id);
         console.log("Connected to hub");
 
         this.HubConnection.on('command-completed', (event) => {
