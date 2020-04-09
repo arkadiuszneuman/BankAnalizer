@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 class HubConnector {
     _hubAddress = "https://localhost:5001/hub/"
-    _connectionId = ""
     _actions = {}
     _userId = uuidv4()
 
@@ -23,9 +22,8 @@ class HubConnector {
 
     async _connect() {
         await this.HubConnection.start();
-        this._connectionId = await this.HubConnection.invoke('getConnectionId');
-        await this.HubConnection.invoke('registerClient', this._userId, this._connectionId);
-        console.log("connectionID: " + this._connectionId);
+        await this.HubConnection.invoke('registerClient', this._userId);
+        console.log("Connected to hub");
 
         this.HubConnection.on('command-completed', (event) => {
             const action = this._actions[event.id];
@@ -39,8 +37,6 @@ class HubConnector {
     waitForEventResult(eventId, action) {
         this._actions[eventId] = action;
     }
-
-    getConnectionId = () => this._connectionId;
 }
 
 const instance = async () => await new HubConnector().init();

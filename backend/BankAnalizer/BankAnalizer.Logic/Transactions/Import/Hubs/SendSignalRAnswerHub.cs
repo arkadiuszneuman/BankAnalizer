@@ -7,19 +7,17 @@ namespace BankAnalizer.Logic.Transactions.Import.Hubs
 {
     public class SendSignalRAnswerHub : Hub
     {
-        private static readonly ConcurrentDictionary<Guid, List<string>> registeredClients = new ConcurrentDictionary<Guid, List<string>>();
+        private static readonly ConcurrentDictionary<Guid, ConcurrentBag<string>> registeredClients = new ConcurrentDictionary<Guid, ConcurrentBag<string>>();
 
-        public string GetConnectionId() => Context.ConnectionId;
-
-        public void RegisterClient(Guid clientId, string connectionId)
+        public void RegisterClient(Guid clientId)
         {
-            if (registeredClients.ContainsKey(clientId))
-                registeredClients[clientId].Add(connectionId);
-            else
-                registeredClients.TryAdd(clientId, new List<string> { connectionId });
+            if (!registeredClients.ContainsKey(clientId))
+                registeredClients.TryAdd(clientId, new ConcurrentBag<string>());
+
+            registeredClients[clientId].Add(Context.ConnectionId);
         }
 
-        public static List<string> GetRegisteredClients(Guid clientId)
+        public static IEnumerable<string> GetRegisteredClients(Guid clientId)
         {
             if (!registeredClients.ContainsKey(clientId))
                 return new List<string>();

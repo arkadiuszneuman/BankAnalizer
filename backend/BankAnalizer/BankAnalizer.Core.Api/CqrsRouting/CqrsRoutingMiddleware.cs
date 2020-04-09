@@ -51,9 +51,6 @@ namespace BankAnalizer.Core.Api.CqrsRouting
             {
                 SetPatternValuesToCommand(endpointResult, command);
 
-                var connectionId = context.Request.Headers["connectionId"].FirstOrDefault();
-
-                command.ConnectionId = connectionId;
                 command.UserId = Guid.Parse(userId);
 
                 var bus = context.RequestServices.GetService<ICommandsBus>();

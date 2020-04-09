@@ -2,6 +2,7 @@
 using BankAnalizer.Logic.Groups.Events;
 using BankAnalizer.Logic.Transactions.Import.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BankAnalizer.Logic.Groups
@@ -18,7 +19,7 @@ namespace BankAnalizer.Logic.Groups
         public async Task Handle(GroupToTransactionAddedEvent @event)
         {
             var registeredClients = SendSignalRAnswerHub.GetRegisteredClients(@event.UserId);
-            await context.Clients.Clients(registeredClients).SendAsync("group-to-transaction-added",
+            await context.Clients.Clients(registeredClients.ToList()).SendAsync("group-to-transaction-added",
                 new { BankTransactionId = @event.BankTransaction.Id, GroupName = @event.Group.Name });
         }
     }

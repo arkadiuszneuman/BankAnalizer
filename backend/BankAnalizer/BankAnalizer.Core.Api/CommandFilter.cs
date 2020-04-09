@@ -33,7 +33,6 @@ namespace BankAnalizer.Core.Api
                 var connectionId = context.HttpContext.Request.Headers["connectionId"].FirstOrDefault();
                 var userId = context.HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-                command.ConnectionId = connectionId;
                 command.UserId = Guid.Parse(userId);
             }
         }

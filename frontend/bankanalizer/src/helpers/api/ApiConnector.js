@@ -1,4 +1,3 @@
-import hubConnector from './HubConnector'
 import userManager from '../api/UserManager'
 
 export default class ApiConnector {
@@ -7,7 +6,6 @@ export default class ApiConnector {
     _executeMethod =  async (methodName, methodType, body, headers) => {
         let finalHeaders = {
             'Content-Type': 'application/json',
-            'connectionId': (await hubConnector).getConnectionId(),
             ...headers
         }
 
@@ -115,7 +113,6 @@ export default class ApiConnector {
 
     uploadFile =  async (methodName, file, headers) => {
         const finalHeaders = {
-            'connectionId': (await hubConnector).getConnectionId(),
             ...headers
         }
 
