@@ -1,5 +1,6 @@
 ﻿using BankAnalizer.Core.Cqrs.Command;
 using BankAnalizer.Core.Cqrs.Event;
+using BankAnalizer.Logic.CommonEvents;
 using BankAnalizer.Logic.Transactions.Import.Db;
 using BankAnalizer.Logic.Transactions.Import.Events;
 using BankAnalizer.Logic.Transactions.Import.Importers;

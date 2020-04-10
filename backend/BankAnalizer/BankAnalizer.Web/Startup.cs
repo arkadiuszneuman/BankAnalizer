@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankAnalizer.Core.Api.CqrsRouting;
+using BankAnalizer.Core.Registration;
 using BankAnalizer.Core.SignalR;
 using BankAnalizer.Logic;
 using BankAnalizer.Logic.Groups.Commands;
@@ -51,6 +52,8 @@ namespace BankAnalizer.Web
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterCQRS<IAnalizerLogic>();
+
             builder.RegisterAssemblyTypes(typeof(IAnalizerLogic).Assembly)
                 .AsImplementedInterfaces()
                 .AsSelf();

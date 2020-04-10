@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BankAnalizer.Db\BankAnalizer.Db.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Transactions\Import\EventHandlers\" />
+  </ItemGroup>
+
 </Project>

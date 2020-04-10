@@ -1,7 +1,7 @@
 ﻿using BankAnalizer.Core.Cqrs.Event;
 using System;
 
-namespace BankAnalizer.Logic.Transactions.Import.Events
+namespace BankAnalizer.Logic.CommonEvents
 {
     public class CommandCompletedEvent : IEvent
     {
