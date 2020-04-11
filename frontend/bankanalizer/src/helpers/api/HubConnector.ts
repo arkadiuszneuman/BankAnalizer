@@ -1,4 +1,4 @@
-import { HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection, IRetryPolicy, RetryContext } from '@microsoft/signalr';
 import userManager from './UserManager'
 
 interface IEvent {
@@ -8,7 +8,7 @@ interface IEvent {
 
 class HubConnector {
     private static instance: HubConnector
-    public hubConnection: any
+    public hubConnection!: HubConnection;
 
     private _hubAddress = "https://localhost:5001/hub/"
     private _actions: { [id: string] : Function } = {}
@@ -23,7 +23,11 @@ class HubConnector {
 
             this.hubConnection = new HubConnectionBuilder()
                 .withUrl(this._hubAddress)
-                // .withAutomaticReconnect()
+                .withAutomaticReconnect({
+                    nextRetryDelayInMilliseconds(): number | null {
+                        return 1000
+                    }
+                })
                 .build()
 
             await this._connect()
