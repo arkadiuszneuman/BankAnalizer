@@ -1,4 +1,4 @@
-import { HubConnectionBuilder, HubConnection, IRetryPolicy, RetryContext } from '@microsoft/signalr';
+import { HubConnectionBuilder, HubConnection } from '@microsoft/signalr';
 import userManager from './UserManager'
 
 interface IEvent {
@@ -10,19 +10,19 @@ class HubConnector {
     private static instance: HubConnector
     public hubConnection!: HubConnection;
 
-    private _hubAddress = "https://localhost:5001/hub/"
-    private _actions: { [id: string] : Function } = {}
-    private _errorActions: { [id: string] : Function } = {}
+    private hubAddress = "https://localhost:5001/hub/"
+    private actions: { [id: string] : Function } = {}
+    private errorActions: { [id: string] : Function } = {}
 
-    _executedCommandCompletedActions: Array<any> = []
-    _executedCommandErrorActions: Array<any> = []
+    private executedCommandCompletedActions: Array<IEvent> = []
+    private executedCommandErrorActions: Array<IEvent> = []
 
     init = async () => {
         if (!HubConnector.instance) {
             HubConnector.instance = this;
 
             this.hubConnection = new HubConnectionBuilder()
-                .withUrl(this._hubAddress)
+                .withUrl(this.hubAddress)
                 .withAutomaticReconnect({
                     nextRetryDelayInMilliseconds(): number | null {
                         return 1000
@@ -30,57 +30,57 @@ class HubConnector {
                 })
                 .build()
 
-            await this._connect()
+            await this.connect()
           }
 
           return HubConnector.instance;
     }
 
-    async _connect() {
+    private async connect() {
         await this.hubConnection.start()
         await this.hubConnection.invoke('registerClient', userManager.getUserFromStorage().id)
         console.log("Connected to hub")
 
         this.hubConnection.on('command-completed', (event: IEvent) => {
-            this._executedCommandCompletedActions.push(event)
-            this._consumeCompleteActions()
+            this.executedCommandCompletedActions.push(event)
+            this.consumeCompleteActions()
         });
 
         this.hubConnection.on('command-error', (event: IEvent) => {
-            this._executedCommandErrorActions.push(event)
-            this._consumeErrorActions()
+            this.executedCommandErrorActions.push(event)
+            this.consumeErrorActions()
         });
     }
 
-    _consumeCompleteActions = () => {
-        this._executedCommandCompletedActions.forEach((event: IEvent) => {
-            const action = this._actions[event.id];
+    private consumeCompleteActions = () => {
+        this.executedCommandCompletedActions.forEach((event: IEvent) => {
+            const action = this.actions[event.id];
             if (action) {
-                delete this._actions[event.id];
-                this._executedCommandCompletedActions = this._executedCommandCompletedActions.filter(e => e !== event)
+                delete this.actions[event.id];
+                this.executedCommandCompletedActions = this.executedCommandCompletedActions.filter(e => e !== event)
                 action(event.object);
             }
         })
     }
 
-    _consumeErrorActions = () => {
-        this._executedCommandErrorActions.forEach(event => {
-            const action = this._errorActions[event.id]
+    private consumeErrorActions = () => {
+        this.executedCommandErrorActions.forEach(event => {
+            const action = this.errorActions[event.id]
             if (action) {
-                delete this._errorActions[event.id]
-                this._executedCommandErrorActions = this._executedCommandErrorActions.filter(e => e !== event)
+                delete this.errorActions[event.id]
+                this.executedCommandErrorActions = this.executedCommandErrorActions.filter(e => e !== event)
                 action()
             }
         })
     }
 
-    waitForEventResult(eventId: string, action: Function) {
-        this._actions[eventId] = action;
+    public waitForEventResult(eventId: string, action: Function) {
+        this.actions[eventId] = action;
     }
 
-    waitForEventErrorResult(eventId: string, action: Function) {
-        this._errorActions[eventId] = action;
-        this._consumeErrorActions();
+    public waitForEventErrorResult(eventId: string, action: Function) {
+        this.errorActions[eventId] = action;
+        this.consumeErrorActions();
     }
 }
 
