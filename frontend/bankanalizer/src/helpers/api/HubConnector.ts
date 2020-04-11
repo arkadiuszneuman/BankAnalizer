@@ -17,7 +17,7 @@ class HubConnector {
     private executedCommandCompletedActions: Array<IEvent> = []
     private executedCommandErrorActions: Array<IEvent> = []
 
-    init = async () => {
+    public init = async () => {
         if (!HubConnector.instance) {
             HubConnector.instance = this;
 
@@ -54,9 +54,9 @@ class HubConnector {
 
     private consumeCompleteActions = () => {
         this.executedCommandCompletedActions.forEach((event: IEvent) => {
-            const action = this.actions[event.id];
+            const action = this.actions[event.id]
             if (action) {
-                delete this.actions[event.id];
+                delete this.actions[event.id]
                 this.executedCommandCompletedActions = this.executedCommandCompletedActions.filter(e => e !== event)
                 action(event.object);
             }
@@ -69,21 +69,34 @@ class HubConnector {
             if (action) {
                 delete this.errorActions[event.id]
                 this.executedCommandErrorActions = this.executedCommandErrorActions.filter(e => e !== event)
-                action()
+                action(event)
             }
         })
     }
 
     public waitForEventResult(eventId: string, action: Function) {
-        this.actions[eventId] = action;
+        this.actions[eventId] = action
+        this.consumeCompleteActions()
     }
 
     public waitForEventErrorResult(eventId: string, action: Function) {
-        this.errorActions[eventId] = action;
-        this.consumeErrorActions();
+        this.errorActions[eventId] = action
+        this.consumeErrorActions()
+    }
+
+    public handleCommandResult = async (request: Promise<IEvent>) => {
+        const response = await request
+        
+        return new Promise((resolve, reject) => {
+            this.waitForEventResult(response.id, (object: any) => {
+                resolve(object)
+            })
+
+            this.waitForEventErrorResult(response.id, (event: any) => {
+                reject(event)
+            })
+        })
     }
 }
 
-const instance = async () => await new HubConnector().init();
-
-export default instance();
+export default new HubConnector();

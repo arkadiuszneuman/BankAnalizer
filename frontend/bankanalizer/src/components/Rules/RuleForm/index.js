@@ -54,11 +54,7 @@ class RuleForm extends Component {
     }
 
     save = async () => {
-        var result = await this.connector.post("rule", this.state.rule);
-
-        (await hubConnector).waitForEventErrorResult(result.id, () => {
-            console.log('error');
-        });
+        await hubConnector.handleCommandResult(this.connector.post("rule", this.state.rule))
 
         if (this.props.onAccept) {
             this.props.onAccept(this.state.rule)

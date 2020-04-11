@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import TransactionView from "./components/TransactionView"
 import Menu from "./components/Menu"
 import Rules from "./components/Rules/RulesTable"
@@ -13,31 +13,39 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
+import hubConnector from './helpers/api/HubConnector'
 
-export default function App() {
-  return (
-    <Router>
-      
-      {/* <Menu static={false} /> */}
-      <div className="pusher">
-        <div className="container">
-          <div className="menu">
-            <Menu static={true} />
-          </div>
-          <div className="content">
-            <Switch>
-              <PrivateRoute exact path="/" component={TransactionView} />
-              <PrivateRoute path="/rules" component={Rules} />
-              <PrivateRoute path="/charts" component={Charts} />
-              <PrivateRoute path="/users-connections" component={UsersConnections} />
-              <Route path="/login" component={LoginPage} />
-              <Route path="/register" component={RegisterPage} />
-              <Redirect from="*" to="/" />  
-            </Switch>
+export default class App extends Component {
+
+  componentDidMount = async () => {
+    await hubConnector.init()
+  }
+
+  render() {
+    return (
+      <Router>
+        
+        {/* <Menu static={false} /> */}
+        <div className="pusher">
+          <div className="container">
+            <div className="menu">
+              <Menu static={true} />
+            </div>
+            <div className="content">
+              <Switch>
+                <PrivateRoute exact path="/" component={TransactionView} />
+                <PrivateRoute path="/rules" component={Rules} />
+                <PrivateRoute path="/charts" component={Charts} />
+                <PrivateRoute path="/users-connections" component={UsersConnections} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/register" component={RegisterPage} />
+                <Redirect from="*" to="/" />  
+              </Switch>
+            </div>
           </div>
         </div>
-      </div>
-      
-    </Router>
-  );
+        
+      </Router>
+    );
+  }
 }

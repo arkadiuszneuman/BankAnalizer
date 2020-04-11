@@ -13,7 +13,7 @@ class Importer extends Component {
     this.setState({isLoading: true})
 
     const result = await this.connector.get("transaction/import");
-    (await hubConnector).waitForEventResult(result.id, () => {
+    hubConnector.waitForEventResult(result.id, () => {
       this.setState({isLoading: false})
     });
   }
@@ -28,16 +28,8 @@ class Importer extends Component {
     const formData = new FormData();
     formData.append('file', file)
 
-    const result = await this.connector.uploadFile("transaction/import", formData);
-
-    if (result == null) {
-      this.setState({isLoading: false})
-      return
-    }
-
-    (await hubConnector).waitForEventResult(result.id, () => {
-      this.setState({isLoading: false})
-    });
+    const result = await hubConnector.handleCommandResult(this.connector.uploadFile("transaction/import", formData))
+    this.setState({isLoading: false})
   }
 
   render() {
