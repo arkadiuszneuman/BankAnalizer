@@ -23,7 +23,7 @@ export default class TransactionView extends Component {
     }
 
     componentDidMount = async () => {
-        (await HubConnector).HubConnection.on('group-to-transaction-added', event => {
+        (await HubConnector).hubConnection.on('group-to-transaction-added', event => {
             if (this.state.onlyWithoutGroup) {
                 const transactions = this.state.transactions.filter(t => t.transactionId !== event.bankTransactionId)
                 this.setState({transactions: transactions})

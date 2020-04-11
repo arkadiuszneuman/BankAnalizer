@@ -1,19 +1,27 @@
 import { HubConnectionBuilder } from '@aspnet/signalr';
 import userManager from './UserManager'
 
-class HubConnector {
-    _hubAddress = "https://localhost:5001/hub/"
-    _actions = {}
-    _errorActions = {}
+interface IEvent {
+    id: string
+    object: any
+}
 
-    _executedCommandCompletedActions = []
-    _executedCommandErrorActions = []
+class HubConnector {
+    private static instance: HubConnector
+    public hubConnection: any
+
+    private _hubAddress = "https://localhost:5001/hub/"
+    private _actions: { [id: string] : Function } = {}
+    private _errorActions: { [id: string] : Function } = {}
+
+    _executedCommandCompletedActions: Array<any> = []
+    _executedCommandErrorActions: Array<any> = []
 
     init = async () => {
         if (!HubConnector.instance) {
             HubConnector.instance = this;
 
-            this.HubConnection = new HubConnectionBuilder()
+            this.hubConnection = new HubConnectionBuilder()
                 .withUrl(this._hubAddress)
                 // .withAutomaticReconnect()
                 .build()
@@ -25,23 +33,23 @@ class HubConnector {
     }
 
     async _connect() {
-        await this.HubConnection.start()
-        await this.HubConnection.invoke('registerClient', userManager.getUserFromStorage().id)
+        await this.hubConnection.start()
+        await this.hubConnection.invoke('registerClient', userManager.getUserFromStorage().id)
         console.log("Connected to hub")
 
-        this.HubConnection.on('command-completed', (event) => {
+        this.hubConnection.on('command-completed', (event: IEvent) => {
             this._executedCommandCompletedActions.push(event)
             this._consumeCompleteActions()
         });
 
-        this.HubConnection.on('command-error', (event) => {
+        this.hubConnection.on('command-error', (event: IEvent) => {
             this._executedCommandErrorActions.push(event)
             this._consumeErrorActions()
         });
     }
 
     _consumeCompleteActions = () => {
-        this._executedCommandCompletedActions.forEach(event => {
+        this._executedCommandCompletedActions.forEach((event: IEvent) => {
             const action = this._actions[event.id];
             if (action) {
                 delete this._actions[event.id];
@@ -62,11 +70,11 @@ class HubConnector {
         })
     }
 
-    waitForEventResult(eventId, action) {
+    waitForEventResult(eventId: string, action: Function) {
         this._actions[eventId] = action;
     }
 
-    waitForEventErrorResult(eventId, action) {
+    waitForEventErrorResult(eventId: string, action: Function) {
         this._errorActions[eventId] = action;
         this._consumeErrorActions();
     }
