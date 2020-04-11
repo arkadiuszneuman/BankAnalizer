@@ -8,17 +8,17 @@ namespace BankAnalizer.Core.Registration
 {
     public static class ContainerBuilderExtensions
     {
-        public static ContainerBuilder RegisterCQRS<ASSEMBLYTYPE>(this ContainerBuilder builder)
+        public static ContainerBuilder RegisterCQRS<TAssemblyType>(this ContainerBuilder builder)
         {
-            RegisterCommands<ASSEMBLYTYPE>(builder);
-            RegisterEvents<ASSEMBLYTYPE>(builder);
+            RegisterCommands<TAssemblyType>(builder);
+            RegisterEvents<TAssemblyType>(builder);
 
             return builder;
         }
 
-        private static void RegisterCommands<ASSEMBLYTYPE>(ContainerBuilder builder)
+        private static void RegisterCommands<TAssemblyType>(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(ASSEMBLYTYPE).Assembly)
+            builder.RegisterAssemblyTypes(typeof(TAssemblyType).Assembly)
                 .Where(x => x.IsAssignableTo<ICommandHandler>())
                 .AsImplementedInterfaces();
 
@@ -39,11 +39,13 @@ namespace BankAnalizer.Core.Registration
             builder.RegisterType<CommandsBus>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
+
+            builder.RegisterDecorator<LoggerCommandsBus, ICommandsBus>();
         }
 
-        private static void RegisterEvents<ASSEMBLYTYPE>(ContainerBuilder builder)
+        private static void RegisterEvents<TAssemblyType>(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(ASSEMBLYTYPE).Assembly)
+            builder.RegisterAssemblyTypes(typeof(TAssemblyType).Assembly)
                             .Where(x => x.IsAssignableTo<IHandleEvent>())
                             .AsImplementedInterfaces();
 

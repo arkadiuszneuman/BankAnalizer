@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankAnalizer.Core.Api\BankAnalizer.Core.Api.csproj" />
+    <ProjectReference Include="..\BankAnalizer.Core\BankAnalizer.Core.csproj" />
   </ItemGroup>
 
 </Project>

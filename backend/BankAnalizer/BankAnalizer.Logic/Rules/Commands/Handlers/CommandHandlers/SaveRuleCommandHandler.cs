@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BankAnalizer.Core;
 using BankAnalizer.Core.Cqrs.Command;
 using BankAnalizer.Core.Cqrs.Event;
 using BankAnalizer.Db;

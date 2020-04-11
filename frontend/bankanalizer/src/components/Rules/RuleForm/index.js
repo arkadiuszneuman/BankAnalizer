@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ApiConnector from '../../../helpers/api/ApiConnector'
 import TransactionList from '../../TransactionView/TransactionList'
+import hubConnector from '../../../helpers/api/HubConnector'
 import {
     NavLink
   } from "react-router-dom";
@@ -53,7 +54,11 @@ class RuleForm extends Component {
     }
 
     save = async () => {
-        await this.connector.post("rule", this.state.rule);
+        var result = await this.connector.post("rule", this.state.rule);
+
+        (await hubConnector).waitForEventErrorResult(result.id, () => {
+            console.log('error');
+        });
 
         if (this.props.onAccept) {
             this.props.onAccept(this.state.rule)

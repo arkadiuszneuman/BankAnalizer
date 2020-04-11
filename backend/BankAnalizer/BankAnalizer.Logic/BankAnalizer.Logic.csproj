@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Transactions\Import\EventHandlers\**" />
+    <EmbeddedResource Remove="Transactions\Import\EventHandlers\**" />
+    <None Remove="Transactions\Import\EventHandlers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.30" />
@@ -20,10 +26,6 @@
     <ProjectReference Include="..\BankAnalizer.Core.SignalR\BankAnalizer.Core.SignalR.csproj" />
     <ProjectReference Include="..\BankAnalizer.Core\BankAnalizer.Core.csproj" />
     <ProjectReference Include="..\BankAnalizer.Db\BankAnalizer.Db.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Transactions\Import\EventHandlers\" />
   </ItemGroup>
 
 </Project>

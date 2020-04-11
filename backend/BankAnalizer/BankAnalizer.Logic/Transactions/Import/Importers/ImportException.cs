@@ -2,9 +2,8 @@
 
 namespace BankAnalizer.Logic.Transactions.Import.Importers
 {
-    public class ImportException : BankAnalizerException
+    public class ImportException : GenericBankAnalizerException
     {
-        public ImportException() : base() { }
         public ImportException(string message) : base(message) { }
     }
 }

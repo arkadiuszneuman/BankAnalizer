@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace BankAnalizer.Core.SignalR
+namespace BankAnalizer.Core.SignalR.Registration
 {
     public static class SignalrExtensions
     {
