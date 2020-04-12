@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TransactionList from './TransactionList'
-import ApiConnector from '../../helpers/api/ApiConnector'
+import apiConnector from '../../helpers/api/CqrsApiConnector'
 import DateTimeRange from '../Controls/DateTimeRange'
 import HubConnector from '../../helpers/api/HubConnector'
 import Importer from '../Importer'
@@ -9,7 +9,6 @@ import UsersSelector from '../Controls/UsersSelector'
 import userManager from '../../helpers/api/UserManager'
 
 export default class TransactionView extends Component {
-    connector = new ApiConnector()
 
     state = {
         isInit: true,
@@ -36,7 +35,7 @@ export default class TransactionView extends Component {
     }
 
     loadUsers = async () => {
-        const connections = await this.connector.get('usersconnection', { onlyApproved: true })
+        const connections = await apiConnector.get('usersconnection', { onlyApproved: true })
         const users = connections.map(function(c) {
             return {
                 id: c.requestedUserId,
@@ -52,7 +51,7 @@ export default class TransactionView extends Component {
     
     loadTransactions = async () => {
         if (!this.state.isInit) {
-            const transactions = await this.connector.get("transaction", { 
+            const transactions = await apiConnector.get("transaction", { 
                 onlyWithoutGroup: this.state.onlyWithoutGroup,
                 dateFrom: this.state.dateFrom,
                 dateTo: this.state.dateTo,

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import ApiConnector from '../../helpers/api/ApiConnector'
+import apiConnector from '../../helpers/api/CqrsApiConnector'
 import download from 'downloadjs'
 
 export default class Exporter extends Component {
-  connector = new ApiConnector()
-
   state = {
     isLoading: false,
   }
@@ -13,7 +11,7 @@ export default class Exporter extends Component {
     this.setState({isLoading: true})
 
     try {
-        const result = await this.connector.getFile("transaction/export");
+        const result = await apiConnector.getFile("transaction/export");
         download(result, 'bankanalizer_export.json')
     }
     finally {

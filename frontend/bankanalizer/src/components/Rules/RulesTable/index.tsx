@@ -3,31 +3,44 @@ import {
     Switch,
     Route,
     Link,
-    withRouter
+    withRouter,
+    RouteComponentProps
   } from "react-router-dom";
-import ApiConnector from '../../../helpers/api/ApiConnector'
+import apiConnector from '../../../helpers/api/CqrsApiConnector'
 import RuleForm from '../RuleForm'
 import uuid from 'uuid/v4'
 import _ from 'lodash'
 
-class Rules extends Component {
-  connector = new ApiConnector()
+type PathParamsType = {
+  path: string,
+  url: string
+}
 
+type PropsType = RouteComponentProps<PathParamsType> & {
+  someString: string,
+}
+
+interface IState {
+  rules: Array<any>,
+  currentRule: any
+}
+
+class Rules extends React.Component<PropsType, IState> {
   state = {
     rules: [],
     currentRule: {}
-  }
+  } as IState
 
   async componentDidMount() {
-    var rules = await this.connector.get("rule")
+    var rules = await apiConnector.get("rule")
     this.setState({rules: rules});
   }
 
-  setCurrentRule = (rule) => {
+  setCurrentRule = (rule: any) => {
     this.setState({currentRule: rule})
   }
 
-  ruleAccepted = (rule) => {
+  ruleAccepted = (rule: any) => {
     if (rule.id) {
       Object.assign(this.state.currentRule, rule);
       this.setState({ rules: this.state.rules});
@@ -39,8 +52,8 @@ class Rules extends Component {
     }
   }
 
-  deleteRule(rule) {
-      this.connector.delete(`rule/${rule.id}`);
+  deleteRule(rule: any) {
+      apiConnector.delete(`rule/${rule.id}`);
       const rules = this.state.rules;
       _.remove(rules, el => el.id === rule.id);
       this.setState({rules: rules})

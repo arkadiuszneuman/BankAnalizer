@@ -84,7 +84,7 @@ class HubConnector {
         this.consumeErrorActions()
     }
 
-    public handleCommandResult = async (request: Promise<IEvent>) => {
+    public handleCommandResult = async (request: any) => {
         const response = await request
         
         return new Promise((resolve, reject) => {

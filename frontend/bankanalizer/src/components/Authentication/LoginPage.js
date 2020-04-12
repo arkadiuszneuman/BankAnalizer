@@ -1,12 +1,10 @@
 import React, { Component } from "react"
 import { Redirect } from 'react-router-dom'
-import ApiConnector from '../../helpers/api/ApiConnector'
+import apiConnector from '../../helpers/api/CqrsApiConnector'
 import userManager from '../../helpers/api/UserManager'
 import Input from '../Controls/Input'
 
 export default class LoginPage extends Component {
-  connector = new ApiConnector()
-
   state = {
     username: '',
     password: '',
@@ -21,7 +19,7 @@ export default class LoginPage extends Component {
   login = async (e) => {
     e.preventDefault()
 
-    const user = await this.connector.post("users/authenticate", 
+    const user = await apiConnector.post("users/authenticate", 
       { username: this.state.username, password: this.state.password})
 
     if (user) {

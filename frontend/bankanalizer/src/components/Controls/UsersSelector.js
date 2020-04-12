@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ApiConnector from '../../helpers/api/ApiConnector'
 
 class UsersSelector extends Component {
-    connector = new ApiConnector()
-
     state = {
         users: this.props.users,
         selectedUsers: [],

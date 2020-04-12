@@ -1,27 +1,39 @@
 import React, { Component } from 'react';
-import ApiConnector from '../../../helpers/api/ApiConnector'
+import connector from '../../../helpers/api/CqrsApiConnector'
 import TransactionList from '../../TransactionView/TransactionList'
 import hubConnector from '../../../helpers/api/HubConnector'
 import {
     NavLink
-  } from "react-router-dom";
+  } from "react-router-dom"
 
-class RuleForm extends Component {
-    connector = new ApiConnector()
+declare const $: any
 
+export interface IProps {
+    rule: any,
+    onAccept: Function
+}
+
+interface IState {
+    transactionTypes: Array<any>,
+    transactionColumns: Array<any>,
+    rule: any,
+    fitTransactions: Array<any>
+}
+
+class RuleForm extends Component<IProps, IState> {
     state = {
         transactionTypes: [],
         transactionColumns: [],
         rule: {...this.props.rule},
         fitTransactions: []
-    }
+    } as IState
 
     async componentDidMount() {
-        window.$('.ui.dropdown.clearable').dropdown({ clearable: true })
-        window.$('.ui.dropdown').dropdown()
+        $('.ui.dropdown.clearable').dropdown({ clearable: true })
+        $('.ui.dropdown').dropdown()
 
-        const transactionTypesPromise = this.connector.get("transaction-type")
-        const transactionColumnsPromise = this.connector.get("transaction/transaction-columns")
+        const transactionTypesPromise = connector.get("transaction-type")
+        const transactionColumnsPromise = connector.get("transaction/transaction-columns")
 
         const result = await Promise.all([transactionTypesPromise, transactionColumnsPromise]);
         const transactionTypes = result[0];
@@ -35,7 +47,7 @@ class RuleForm extends Component {
         await this.findTransactions(rule)
     }
 
-    handleChange = async event => {
+    handleChange = async (event: any) => {
         const rule = this.state.rule
         rule[event.target.name] = event.target.value
         this.setState({ rule: rule });
@@ -43,10 +55,10 @@ class RuleForm extends Component {
         await this.findTransactions(rule)
     }
 
-    findTransactions = async (rule) => {
+    findTransactions = async (rule: any) => {
         if (rule.text) {
-            const transactions = await this.connector.post('transaction/find-transactions-from-rule', rule);
-            transactions.forEach(element => {
+            const transactions = await connector.post('transaction/find-transactions-from-rule', rule)
+            transactions.forEach((element: any) => {
                 element.extensions = JSON.parse(element.extensions) ?? ""
             });
             this.setState({fitTransactions: transactions});
@@ -54,7 +66,8 @@ class RuleForm extends Component {
     }
 
     save = async () => {
-        await hubConnector.handleCommandResult(this.connector.post("rule", this.state.rule))
+        await connector.post("rule", this.state.rule)
+        // await hubConnector.handleCommandResult(connector.post("rule", this.state.rule))
 
         if (this.props.onAccept) {
             this.props.onAccept(this.state.rule)
@@ -74,7 +87,7 @@ class RuleForm extends Component {
                     <div className="field">
                         <label>Column</label>
                         <select className="ui fluid dropdown" value={rule.columnId || ''} name="columnId" onChange={this.handleChange}>
-                        {this.state.transactionColumns.map(transactionColumn => 
+                        {this.state.transactionColumns.map((transactionColumn: any) => 
                             <option key={transactionColumn.id} value={transactionColumn.id}>{transactionColumn.name}</option>
                         )}
                         </select>
@@ -99,7 +112,7 @@ class RuleForm extends Component {
                         <label>Transaction type</label>
                         <select className="ui fluid dropdown clearable" value={rule.bankTransactionTypeId || ''} name="bankTransactionTypeId" onChange={this.handleChange}>
                             <option value="">All transactions types</option>
-                        {this.state.transactionTypes.map(transactionType => 
+                        {this.state.transactionTypes.map((transactionType: any) => 
                             <option key={transactionType.id} value={transactionType.id}>{transactionType.name}</option>
                         )}
                         </select>

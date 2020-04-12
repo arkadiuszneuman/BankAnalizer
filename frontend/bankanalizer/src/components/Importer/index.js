@@ -3,8 +3,6 @@ import ApiConnector from '../../helpers/api/ApiConnector'
 import hubConnector from '../../helpers/api/HubConnector'
 
 class Importer extends Component {
-  connector = new ApiConnector()
-
   state = {
     isLoading: false,
   }
@@ -28,7 +26,7 @@ class Importer extends Component {
     const formData = new FormData();
     formData.append('file', file)
 
-    const result = await hubConnector.handleCommandResult(this.connector.uploadFile("transaction/import", formData))
+    await hubConnector.handleCommandResult(this.connector.uploadFile("transaction/import", formData))
     this.setState({isLoading: false})
   }
 
