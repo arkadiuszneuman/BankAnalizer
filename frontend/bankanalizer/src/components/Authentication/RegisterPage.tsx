@@ -1,44 +1,53 @@
 import React, { Component } from "react"
 import { Redirect } from 'react-router-dom'
-import ApiConnector from '../../helpers/api/ApiConnector'
+import {apiConnector} from '../../helpers/BankAnalizer'
 import userManager from '../../helpers/api/UserManager'
 import Input from '../Controls/Input'
 
+interface IUser {
+  firstName: '',
+  lastName: '',
+  username: '',
+  password: '',
+}
 
-export default class RegisterPage extends Component {
-  connector = new ApiConnector()
+interface IState {
+  user: IUser,
+  redirectTo?: string
+}
+
+export default class RegisterPage extends Component<{}, IState> {
 
   state = {
     user: {
       firstName: '',
       lastName: '',
-      username: '',
       password: '',
-    },
-    redirectTo: null
-  }
+      username: ''
+    }
+  } as IState
 
-  handleChange = e => {
+  handleChange = (e: any) => {
     const { name, value } = e.target
-    const user = this.state.user
+    const user = this.state.user as any
     user[name] = value
     this.setState({ user: user })
   }
 
-  onFieldChange = f => {
+  onFieldChange = (f: any) => {
     const { name, value } = f
-    const user = this.state.user
+    const user = this.state.user as any
     user[name] = value
     this.setState({ user: user })
   }
 
-  register = async (e) => {
+  register = async (e: any) => {
     e.preventDefault()
 
     const stateUser = this.state.user
 
-    await this.connector.post("users/register", stateUser)
-    const user = await this.connector.post("users/authenticate", 
+    await apiConnector.post("users/register", stateUser)
+    const user = await apiConnector.post("users/authenticate", 
       { username: stateUser.username, password: stateUser.password})
 
     if (user) {
