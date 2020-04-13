@@ -18,38 +18,49 @@ class HubConnector {
     private executedCommandErrorActions: Array<IEvent> = []
 
     public init = async () => {
-        if (!HubConnector.instance) {
-            HubConnector.instance = this;
+        const user = userManager.getUserFromStorage()
+        if (user) {
+            if (!HubConnector.instance) {
+                HubConnector.instance = this;
 
-            this.hubConnection = new HubConnectionBuilder()
-                .withUrl(this.hubAddress)
-                .withAutomaticReconnect({
-                    nextRetryDelayInMilliseconds(): number | null {
-                        return 1000
-                    }
-                })
-                .build()
+                this.hubConnection = new HubConnectionBuilder()
+                    .withUrl(this.hubAddress)
+                    .withAutomaticReconnect({
+                        nextRetryDelayInMilliseconds(): number | null {
+                            return 1000
+                        }
+                    })
+                    .build()
 
-            await this.connect()
-          }
+                await this.connect()
+            }
+        }
 
-          return HubConnector.instance;
+        return HubConnector.instance;
     }
 
     private async connect() {
-        await this.hubConnection.start()
-        await this.hubConnection.invoke('registerClient', userManager.getUserFromStorage().id)
-        console.log("Connected to hub")
+        const user = userManager.getUserFromStorage()
 
-        this.hubConnection.on('command-completed', (event: IEvent) => {
-            this.executedCommandCompletedActions.push(event)
-            this.consumeCompleteActions()
-        });
+        if (user != null) {
+            await this.hubConnection.start()
+            await this.hubConnection.invoke('registerClient', user.id)
+            console.log("Connected to hub")
 
-        this.hubConnection.on('command-error', (event: IEvent) => {
-            this.executedCommandErrorActions.push(event)
-            this.consumeErrorActions()
-        });
+            this.hubConnection.on('command-completed', (event: IEvent) => {
+                this.executedCommandCompletedActions.push(event)
+                this.consumeCompleteActions()
+            });
+
+            this.hubConnection.on('command-error', (event: IEvent) => {
+                this.executedCommandErrorActions.push(event)
+                this.consumeErrorActions()
+            });
+
+            return true
+        }
+
+        return false
     }
 
     private consumeCompleteActions = () => {

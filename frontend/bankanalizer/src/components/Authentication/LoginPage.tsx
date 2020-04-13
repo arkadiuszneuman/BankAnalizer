@@ -3,20 +3,32 @@ import { Redirect } from 'react-router-dom'
 import apiConnector from '../../helpers/api/CqrsApiConnector'
 import userManager from '../../helpers/api/UserManager'
 import Input from '../Controls/Input'
+import hubConnector from '../../helpers/api/HubConnector'
+import {Location} from 'history'
 
-export default class LoginPage extends Component {
+interface IProps {
+  location: Location
+}
+
+interface IState {
+  username: string,
+  password: string,
+  [key: string]: any,
+  redirectTo?: string
+}
+
+export default class LoginPage extends Component<IProps, IState> {
   state = {
     username: '',
     password: '',
-    redirectTo: null
-  }
+  } as IState
 
-  handleChange = e => {
+  handleChange = (e: any) => {
     const { name, value } = e;
     this.setState({ [name]: value });
   }
 
-  login = async (e) => {
+  login = async (e: any) => {
     e.preventDefault()
 
     const user = await apiConnector.post("users/authenticate", 
@@ -24,7 +36,9 @@ export default class LoginPage extends Component {
 
     if (user) {
       userManager.saveUserInStorage(user)
-      this.setState({ redirectTo: this.props.location.state?.from?.pathname || '' })
+      hubConnector.init()
+      const state = this.props.location.state as any
+      this.setState({ redirectTo: state?.from?.pathname || '' })
     }
   }
 
@@ -38,7 +52,7 @@ export default class LoginPage extends Component {
         <Input name="username" text="Username" onChange={this.handleChange} />
         <Input type="password" name="password" text="Password" onChange={this.handleChange} />
         <button className="ui primary button" onClick={this.login}>Login</button>
-    </form>
+      </form>
     )
   }
 }

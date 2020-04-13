@@ -12,7 +12,7 @@ class CqrsApiConnector {
 
     public get = async (methodName: string, params?: { [id: string] : string }) => {
         const result = await apiConnector.get(methodName, params)
-        return result.response
+        return this.handleCqrsResult(result)
     }
 
     public getFile = (methodName: string, params: { [id: string] : string }) => {
@@ -21,7 +21,7 @@ class CqrsApiConnector {
 
     public put = async (methodName: string) => {
         const result = await apiConnector.put(methodName)
-        return result.response
+        return this.handleCqrsResult(result)
     }
 
     public post = async (methodName: string, body?: any, headers?: { [id: string] : string }) => {
@@ -31,7 +31,7 @@ class CqrsApiConnector {
 
     public delete = async (methodName: string, body?: any) => {
         const result = await apiConnector.post(methodName, body)
-        return result.response
+        return this.handleCqrsResult(result)
     }
 
     public uploadFile =  (methodName: string, file: any, headers: { [id: string] : string }) => {

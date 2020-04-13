@@ -20,7 +20,7 @@ interface IState {
     fitTransactions: Array<any>
 }
 
-class RuleForm extends Component<IProps, IState> {
+export default class RuleForm extends Component<IProps, IState> {
     state = {
         transactionTypes: [],
         transactionColumns: [],
@@ -126,5 +126,3 @@ class RuleForm extends Component<IProps, IState> {
         )
     }
 }
-
-export default RuleForm

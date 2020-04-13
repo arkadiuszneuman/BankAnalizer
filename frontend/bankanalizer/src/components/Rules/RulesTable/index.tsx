@@ -17,7 +17,6 @@ type PathParamsType = {
 }
 
 type PropsType = RouteComponentProps<PathParamsType> & {
-  someString: string,
 }
 
 interface IState {
