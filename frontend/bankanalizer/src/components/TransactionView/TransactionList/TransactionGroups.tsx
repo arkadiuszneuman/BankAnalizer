@@ -1,28 +1,34 @@
 import React, { Component } from 'react';
-import ApiConnector from '../../../helpers/api/ApiConnector'
+import {apiConnector} from '../../../helpers/BankAnalizer'
 import TransactionGroupInput from './TransactionGroupInput'
 
-export default class TransactionGroups extends Component {
-    connector = new ApiConnector()
+interface IProps {
+    transaction: any
+}
 
+interface IState {
+    transaction: any
+}
+
+export default class TransactionGroups extends Component<IProps, IState> {
     state = {
         transaction: this.props.transaction
     }
 
-    addGroup = (group) => {
+    addGroup = (group: any) => {
         const currentTransaction = this.state.transaction
 
-        this.connector.post(`transaction/group`, { bankTransactionId: currentTransaction.transactionId, groupName: group });
+        apiConnector.post(`transaction/group`, { bankTransactionId: currentTransaction.transactionId, groupName: group });
 
         currentTransaction.groups.push({ groupName: group, manualGroup: true })
         this.setState({transaction: currentTransaction})
     }
 
-    removeGroup(group) {
+    removeGroup(group: any) {
         const currentTransaction = this.state.transaction
-        const groupToRemove = currentTransaction.groups.filter(g => g.groupName === group.groupName)[0]
+        const groupToRemove = currentTransaction.groups.filter((g: any) => g.groupName === group.groupName)[0]
 
-        this.connector.delete(`transaction/group`, { bankTransactionId: currentTransaction.transactionId, groupName: groupToRemove.groupName });
+        apiConnector.delete(`transaction/group`, { bankTransactionId: currentTransaction.transactionId, groupName: groupToRemove.groupName });
 
         currentTransaction.groups.splice(currentTransaction.groups.indexOf(groupToRemove), 1)
         this.setState({transaction: currentTransaction})
@@ -34,9 +40,9 @@ export default class TransactionGroups extends Component {
         return (
             <div>
                 {transaction.groups.length > 0 &&
-                    <div className="description">Groups: {transaction.groups.filter(g => !g.manualGroup).map(g => g.groupName).join(", ")}</div>
+                    <div className="description">Groups: {transaction.groups.filter((g: any) => !g.manualGroup).map((g: any) => g.groupName).join(", ")}</div>
                 }
-                {transaction.groups.filter(g => g.manualGroup).map((group, index) =>
+                {transaction.groups.filter((g: any) => g.manualGroup).map((group: any, index: number) =>
                     <div className="ui label" key={index}>
                         {group.groupName}
                         <i className="delete icon" onClick={e => this.removeGroup(group)}></i>
