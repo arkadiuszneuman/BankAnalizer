@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ApiConnector from '../../helpers/api/ApiConnector'
 import hubConnector from '../../helpers/api/HubConnector'
 
 class Importer extends Component {

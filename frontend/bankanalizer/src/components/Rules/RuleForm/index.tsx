@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import connector from '../../../helpers/api/CqrsApiConnector'
 import TransactionList from '../../TransactionView/TransactionList'
-import hubConnector from '../../../helpers/api/HubConnector'
 import {
     NavLink
   } from "react-router-dom"

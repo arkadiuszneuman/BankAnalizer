@@ -45,7 +45,7 @@ class HubConnector {
         const user = userManager.getUserFromStorage()
 
         if (user != null) {
-            if (this.hubConnection.state == HubConnectionState.Disconnected) {
+            if (this.hubConnection.state === HubConnectionState.Disconnected) {
                 await this.hubConnection.start()
             }
             await this.hubConnection.invoke('registerClient', user.id)

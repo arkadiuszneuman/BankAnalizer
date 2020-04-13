@@ -61,7 +61,7 @@ class ApiConnector {
         let query = '?';
         let isFirstQuery = true;
 
-        for (var param in params) {
+        for (const param in params) {
             let paramValue = params[param]
 
             if (paramValue instanceof Array) {

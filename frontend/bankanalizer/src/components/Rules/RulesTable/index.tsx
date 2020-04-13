@@ -24,7 +24,7 @@ interface IState {
   currentRule: any
 }
 
-class Rules extends React.Component<PropsType, IState> {
+class Rules extends Component<PropsType, IState> {
   state = {
     rules: [],
     currentRule: {}
