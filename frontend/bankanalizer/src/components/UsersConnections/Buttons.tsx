@@ -1,9 +1,16 @@
-import React, { Component } from 'react';
-import ApiConnector from "../../helpers/api/ApiConnector";
+import React, { Component } from 'react'
+import {apiConnector} from "../../helpers/BankAnalizer"
 
-class Buttons extends Component {
-    connector = new ApiConnector()
+interface IProps {
+    connection: any,
+    isCurrentUserHost: boolean
+}
 
+interface IState {
+    connection: any
+}
+
+class Buttons extends Component<IProps, IState> {
     state = {
         connection: this.props.connection
     }
@@ -13,7 +20,7 @@ class Buttons extends Component {
         connection.isRequestApproved = true
         this.setState({ connection: connection })
         
-        await this.connector.post('usersconnection/accept', { hostUserIdToAcceptConnection: connection.requestingUserId })
+        await apiConnector.post('usersconnection/accept', { hostUserIdToAcceptConnection: connection.requestingUserId })
     }
 
     render() {

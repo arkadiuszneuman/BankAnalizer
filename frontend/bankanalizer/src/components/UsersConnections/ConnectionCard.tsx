@@ -2,11 +2,22 @@ import React, { Component } from 'react';
 import userManager from '../../helpers/api/UserManager'
 import Buttons from "./Buttons";
 
-export default class ConnectionCard extends Component {
+interface IProps {
+    connection: any
+}
+
+interface IState {
+    user?: any
+    requestedUser: any,
+    isCurrentUserHost: boolean
+}
+
+export default class ConnectionCard extends Component<IProps, IState> {
     state = {
         user: null,
-        requestedUser: {}
-    }
+        requestedUser: {},
+        isCurrentUserHost: false
+    } as IState
 
     componentDidMount = () => {
         const user = userManager.getUserFromStorage()

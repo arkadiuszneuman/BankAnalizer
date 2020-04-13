@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import ApiConnector from '../../helpers/api/ApiConnector'
+import {apiConnector} from '../../helpers/BankAnalizer'
 import ConnectionCard from './ConnectionCard'
 
-export default class UsersConnections extends Component {
-    connector = new ApiConnector()
+interface IState {
+    connections: any[]
+}
+
+export default class UsersConnections extends Component<{}, IState> {
 
     state = {
         connections: []
@@ -14,7 +17,7 @@ export default class UsersConnections extends Component {
     }
 
     loadConnections = async () => {
-        const connections = await this.connector.get('usersconnection', { showAlsoAsRequestedUser: true })
+        const connections = await apiConnector.get('usersconnection', { showAlsoAsRequestedUser: true })
         this.setState({ connections: connections })
     }
    
@@ -24,7 +27,7 @@ export default class UsersConnections extends Component {
         return (
             <div>
                 <div className="ui cards">
-                    {connections.map(connection => 
+                    {connections.map((connection: any) => 
                         <ConnectionCard key={connection.requestedUserId} connection={connection} />
                     )}
                 </div>
