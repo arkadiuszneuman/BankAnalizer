@@ -1,31 +1,33 @@
 import React, { Component } from 'react';
 import GroupsChart from './ChartTypes/GroupsChart'
-import ApiConnector from '../../helpers/api/ApiConnector'
+import {apiConnector} from '../../helpers/BankAnalizer'
 import TransactionList from '../TransactionView/TransactionList'
 import DateTimeRange from '../Controls/DateTimeRange'
 
-export default class ChartsView extends Component {
+interface IState {
+    fitTransactions: string[],
+    dateFrom?: Date,
+    dateTo?: Date
+}
+
+export default class ChartsView extends Component<{}, IState> {
     state = {
-        fitTransactions: [],
-        dateFrom: null,
-        dateTo: null
-    }
+        fitTransactions: []
+    } as IState
 
-    connector = new ApiConnector()
-
-    segmentClicked = async (segment) => {
-        const transactions = await this.connector.get('charts/groups/transactions', { 
+    segmentClicked = async (segment: any) => {
+        const transactions = await apiConnector.get('charts/groups/transactions', { 
             groupName: segment.label, 
             dateFrom: this.state.dateFrom, 
             dateTo: this.state.dateTo
         })
-        transactions.forEach(element => {
+        transactions.forEach((element: any) => {
             element.extensions = JSON.parse(element.extensions) ?? ""
         });
         this.setState({fitTransactions: transactions})
     }
 
-    dateTimeChanged = (dateFrom, dateTo) => {
+    dateTimeChanged = (dateFrom: Date, dateTo: Date) => {
         this.setState({dateFrom: dateFrom, dateTo: dateTo})
     }
     

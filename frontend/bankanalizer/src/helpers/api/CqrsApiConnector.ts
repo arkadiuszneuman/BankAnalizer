@@ -16,7 +16,7 @@ class CqrsApiConnector {
         return result.response
     }
 
-    public get = async (methodName: string, params?: { [id: string] : string }) => {
+    public get = async (methodName: string, params?: { [id: string] : any }) => {
         const result = await apiConnector.get(methodName, params)
         return this.handleCqrsResult(result)
     }
