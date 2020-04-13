@@ -6,7 +6,7 @@ import {
     withRouter,
     RouteComponentProps
   } from "react-router-dom";
-import apiConnector from '../../../helpers/api/CqrsApiConnector'
+import { apiConnector } from '../../../helpers/BankAnalizer'
 import RuleForm from '../RuleForm'
 import uuid from 'uuid/v4'
 import _ from 'lodash'

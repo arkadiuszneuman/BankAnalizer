@@ -1,10 +1,16 @@
 import apiConnector, { IResponse } from './ApiConnector'
 import hubConnector from './HubConnector'
+import toast from '../../components/Controls/Toast'
 
 class CqrsApiConnector {
     private handleCqrsResult = async (result: IResponse) => {
         if (result.status === 202) {
-            return await hubConnector.handleCommandResult(result)
+            try {
+                return await hubConnector.handleCommandResult(result)
+            } catch (err) {
+                toast.showError(err.errorMessage)
+                throw err
+            }
         }
 
         return result.response

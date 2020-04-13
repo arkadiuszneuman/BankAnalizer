@@ -46,7 +46,7 @@ namespace BankAnalizer.Core.SignalR.Cqrs
             }
             catch when (command is Command)
             {
-                await eventsBus.Publish(CommandExceptionEvent.FromCommand(command as Command, "Unknown error"));
+                await eventsBus.Publish(CommandExceptionEvent.FromCommand(command as Command, "Unknown error. Please try again."));
             }
         }
     }

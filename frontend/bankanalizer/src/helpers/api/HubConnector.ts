@@ -1,4 +1,4 @@
-import { HubConnectionBuilder, HubConnection } from '@microsoft/signalr';
+import { HubConnectionBuilder, HubConnection, HubConnectionState } from '@microsoft/signalr';
 import userManager from './UserManager'
 
 interface IEvent {
@@ -32,6 +32,8 @@ class HubConnector {
                     })
                     .build()
 
+                this.hubConnection.onreconnected(() => this.connect())
+
                 await this.connect()
             }
         }
@@ -43,7 +45,9 @@ class HubConnector {
         const user = userManager.getUserFromStorage()
 
         if (user != null) {
-            await this.hubConnection.start()
+            if (this.hubConnection.state == HubConnectionState.Disconnected) {
+                await this.hubConnection.start()
+            }
             await this.hubConnection.invoke('registerClient', user.id)
             console.log("Connected to hub")
 

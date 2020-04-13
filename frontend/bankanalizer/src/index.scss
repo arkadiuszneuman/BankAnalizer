@@ -20,15 +20,15 @@ code {
 
 .container {
   display: flex;
-}
 
-.menu {
-  flex: 0 0 15rem;
-}
+  .menu {
+    flex: 0 0 15rem;
+  }
 
-.content {
-  margin: 15px;
-  flex: 1;
+  .content {
+    margin: 15px;
+    flex: 1;
+  }
 }
 
 /*// Semantic UI has these classes, however they're only applicable to
