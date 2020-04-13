@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 
-export default class TransactionGroupInput extends Component {
+interface IProps {
+    onAddGroup?: (currentGroup: string) => void
+}
+
+interface IState {
+    currentGroup: string
+}
+
+export default class TransactionGroupInput extends Component<IProps, IState> {
     state = {
         currentGroup: ''
     }
 
-    addGroupByEnter = (event) => {
+    addGroupByEnter = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter') {
             this.addGroup()
         }
@@ -18,7 +26,7 @@ export default class TransactionGroupInput extends Component {
             this.props.onAddGroup(currentGroup)
     }
 
-    updateCurrentGroup = (event) => {
+    updateCurrentGroup = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({currentGroup: event.target.value })
     }
 

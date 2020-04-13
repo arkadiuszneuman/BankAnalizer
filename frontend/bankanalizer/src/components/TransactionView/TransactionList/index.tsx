@@ -1,7 +1,12 @@
 import React from 'react'
 import TransactionRow from './TransactionRow'
 
-export default function TransactionList(props) {
+interface IProps {
+    transactions: any[],
+    showGroups?: boolean
+}
+
+export default (props: IProps) => {
     var transactions = props.transactions
     var showGroups = props.showGroups ?? true
     return (

@@ -2,12 +2,17 @@ import React, { Component } from 'react'
 import { NavLink } from "react-router-dom"
 import userManager from '../../helpers/api/UserManager'
 
+declare const $: any
 
-class Menu extends Component {
+interface IProps {
+  static: boolean
+}
+
+class Menu extends Component<IProps, {}> {
   componentDidMount() {
     // window.$('.ui.sidebar').sidebar('setting', 'transition', 'push').sidebar('toggle')
-    window.$('a.sidebar-toggle').click(function () {
-      window.$('#sidebar').sidebar('toggle')
+    $('a.sidebar-toggle').click(function () {
+      $('#sidebar').sidebar('toggle')
     })
   }
 

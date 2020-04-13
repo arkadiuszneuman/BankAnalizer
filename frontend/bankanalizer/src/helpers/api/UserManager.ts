@@ -1,5 +1,5 @@
 class UserManager {
-    saveUserInStorage(user) {
+    saveUserInStorage(user: any) {
         if (user) {
             localStorage.setItem('user', JSON.stringify(user))
         }

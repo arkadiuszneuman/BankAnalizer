@@ -2,8 +2,9 @@ import { HubConnectionBuilder, HubConnection, HubConnectionState } from '@micros
 import userManager from './UserManager'
 
 interface IEvent {
-    id: string
-    object: any
+    commandId: string
+    object?: any
+    errorMessage?: string
 }
 
 class HubConnector {
@@ -69,9 +70,9 @@ class HubConnector {
 
     private consumeCompleteActions = () => {
         this.executedCommandCompletedActions.forEach((event: IEvent) => {
-            const action = this.actions[event.id]
+            const action = this.actions[event.commandId]
             if (action) {
-                delete this.actions[event.id]
+                delete this.actions[event.commandId]
                 this.executedCommandCompletedActions = this.executedCommandCompletedActions.filter(e => e !== event)
                 action(event.object);
             }
@@ -80,9 +81,9 @@ class HubConnector {
 
     private consumeErrorActions = () => {
         this.executedCommandErrorActions.forEach(event => {
-            const action = this.errorActions[event.id]
+            const action = this.errorActions[event.commandId]
             if (action) {
-                delete this.errorActions[event.id]
+                delete this.errorActions[event.commandId]
                 this.executedCommandErrorActions = this.executedCommandErrorActions.filter(e => e !== event)
                 action(event)
             }
@@ -100,14 +101,15 @@ class HubConnector {
     }
 
     public handleCommandResult = async (request: any) => {
-        const response = await request
+        const result = await request
+        const response = result.response as IEvent
         
         return new Promise((resolve, reject) => {
-            this.waitForEventResult(response.id, (object: any) => {
+            this.waitForEventResult(response.commandId, (object: any) => {
                 resolve(object)
             })
 
-            this.waitForEventErrorResult(response.id, (event: any) => {
+            this.waitForEventErrorResult(response.commandId, (event: any) => {
                 reject(event)
             })
         })

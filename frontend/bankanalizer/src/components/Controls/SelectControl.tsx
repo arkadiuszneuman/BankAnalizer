@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
 
-export default class Select extends Component {
+declare const $: any
+
+export interface Option{
+    id: string | number,
+    name: string
+}
+
+interface IProps {
+    options: Option[],
+    onChange?: (value: string) => void
+}
+
+interface IState {
+    value: string
+}
+
+export default class SelectControl extends Component<IProps, IState> {
     state = {
         value: ''
     }
 
     componentDidMount = () => {
-        window.$('.bank-transactions-select').dropdown()
+        $('.bank-transactions-select').dropdown()
     }
 
-    handleChange = event => {
+    handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value
         if (this.props.onChange) {
             this.props.onChange(value)

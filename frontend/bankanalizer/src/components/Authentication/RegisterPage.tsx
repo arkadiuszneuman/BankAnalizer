@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Redirect } from 'react-router-dom'
 import {apiConnector} from '../../helpers/BankAnalizer'
 import userManager from '../../helpers/api/UserManager'
-import Input from '../Controls/Input'
+import Input from '../Controls/InputControl'
 
 interface IUser {
   firstName: '',

@@ -21,7 +21,7 @@ class CqrsApiConnector {
         return this.handleCqrsResult(result)
     }
 
-    public getFile = (methodName: string, params: { [id: string] : string }) => {
+    public getFile = (methodName: string, params?: { [id: string] : string }) => {
         return apiConnector.getFile(methodName, params)
     }
 
@@ -40,8 +40,9 @@ class CqrsApiConnector {
         return this.handleCqrsResult(result)
     }
 
-    public uploadFile =  (methodName: string, file: any, headers: { [id: string] : string }) => {
-        return apiConnector.uploadFile(methodName, file, headers)
+    public uploadFile = async (methodName: string, file: any, headers?: { [id: string] : string }) => {
+        const result = await apiConnector.uploadFile(methodName, file, headers)
+        return this.handleCqrsResult(result)
     }
 }
 

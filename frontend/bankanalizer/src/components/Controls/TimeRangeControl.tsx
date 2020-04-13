@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
-import Select from './Select'
+import Select from './SelectControl'
 import * as fns from 'date-fns'
 
-export default class DateTimeRange extends Component {
+interface IProps {
+    onChange?: (dateFrom: Date, dateTo: Date) => void
+}
+
+export default class TimeRangeControl extends Component<IProps, {}> {
     static getDefaultRangeDate() {
         const currentDate = new Date()
         return {
@@ -15,7 +19,7 @@ export default class DateTimeRange extends Component {
         this.dateChanged('currentMonth')
     }
 
-    dateChanged = (type) => {
+    dateChanged = (type: string) => {
         if (this.props.onChange) {
             const currentDate = new Date()
             switch (type) {

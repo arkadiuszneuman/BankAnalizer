@@ -1,13 +1,25 @@
 import React, { Component } from "react"
 
+interface IProps {
+    name: string,
+    text: string,
+    initValue?: string,
+    type?: string,
+    onChange?: (change: any) => void
+}
 
-export default class RegisterPage extends Component {
+interface IState {
+    value: string,
+    type: string
+}
+
+export default class InputControl extends Component<IProps, IState> {
     state = {
         value: this.props.initValue ?? '',
         type: this.props.type ?? 'text'
     }
 
-    handleChange = e => {
+    handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ value: e.target.value });
         if (this.props.onChange) {
             this.props.onChange({ name: this.props.name, value: e.target.value })

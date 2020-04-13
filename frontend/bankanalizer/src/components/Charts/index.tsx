@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GroupsChart from './ChartTypes/GroupsChart'
 import {apiConnector} from '../../helpers/BankAnalizer'
 import TransactionList from '../TransactionView/TransactionList'
-import DateTimeRange from '../Controls/DateTimeRange'
+import DateTimeRange from '../Controls/DateTimeRangeControl'
 
 interface IState {
     fitTransactions: string[],

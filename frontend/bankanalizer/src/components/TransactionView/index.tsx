@@ -1,30 +1,39 @@
 import React, { Component } from 'react';
 import TransactionList from './TransactionList'
 import apiConnector from '../../helpers/api/CqrsApiConnector'
-import DateTimeRange from '../Controls/DateTimeRange'
+import DateTimeRange from '../Controls/DateTimeRangeControl'
 import HubConnector from '../../helpers/api/HubConnector'
 import Importer from '../Importer'
 import Exporter from '../Exporter'
-import UsersSelector from '../Controls/UsersSelector'
+import UsersSelector, { IUser } from '../Controls/UsersSelectorControl'
 import userManager from '../../helpers/api/UserManager'
 
-export default class TransactionView extends Component {
+interface IState {
+    isInit: boolean,
+    transactions: any[],
+    loadedTransactions: any[],
+    dateFrom?: Date,
+    dateTo?: Date,
+    onlyWithoutGroup: boolean,
+    users: IUser[],
+    selectedUsers: IUser[]
+}
+
+export default class TransactionView extends Component<{}, IState> {
 
     state = {
         isInit: true,
         transactions: [],
         loadedTransactions: [],
-        dateFrom: null,
-        dateTo: null,
         onlyWithoutGroup: false,
         users: [],
-        selectedUsers: null
-    }
+        selectedUsers: []
+    } as IState
 
     componentDidMount = async () => {
         (await HubConnector).hubConnection.on('group-to-transaction-added', event => {
             if (this.state.onlyWithoutGroup) {
-                const transactions = this.state.transactions.filter(t => t.transactionId !== event.bankTransactionId)
+                const transactions = this.state.transactions.filter((t: any) => t.transactionId !== event.bankTransactionId)
                 this.setState({transactions: transactions})
             }
         });
@@ -36,7 +45,7 @@ export default class TransactionView extends Component {
 
     loadUsers = async () => {
         const connections = await apiConnector.get('usersconnection', { onlyApproved: true })
-        const users = connections.map(function(c) {
+        const users = connections.map((c: any) => {
             return {
                 id: c.requestedUserId,
                 firstName: c.requestedUserFirstName,
@@ -57,22 +66,22 @@ export default class TransactionView extends Component {
                 dateTo: this.state.dateTo,
                 users: this.state.selectedUsers.map(u => u.id)
             })
-            transactions.forEach(element => {
+            transactions.forEach((element: any) => {
                 element.extensions = JSON.parse(element.extensions) ?? ""
             });
             this.setState({transactions: transactions, loadedTransactions: transactions})
         }
     }
 
-    toggleOnlyWithoutGroup = event => {
+    toggleOnlyWithoutGroup = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({onlyWithoutGroup: event.target.checked}, async () => await this.loadTransactions())
     }
 
-    dateTimeChanged = (dateFrom, dateTo) => {
+    dateTimeChanged = (dateFrom: Date, dateTo: Date) => {
         this.setState({dateFrom: dateFrom, dateTo: dateTo}, async () => await this.loadTransactions())
     }
 
-    usersChanged = selectedUsers => {
+    usersChanged = (selectedUsers: any) => {
         this.setState({selectedUsers: selectedUsers}, async () => await this.loadTransactions())
     }
 

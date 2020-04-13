@@ -101,7 +101,7 @@ class ApiConnector {
         return await this.executeMethodAndParseResult(methodName + query, 'get')
     }
 
-    public getFile = async (methodName: string, params: { [id: string] : string }) => {
+    public getFile = async (methodName: string, params?: { [id: string] : string }) => {
         let query = this.prepareGetQuery(params)
         let response = await this.executeMethod(methodName + query, 'get')
         return response.blob()
@@ -119,7 +119,7 @@ class ApiConnector {
         return await this.executeMethodAndParseResult(methodName, 'delete', body)
     }
 
-    public uploadFile =  async (methodName: string, file: any, headers: { [id: string] : string }) => {
+    public uploadFile =  async (methodName: string, file: any, headers?: { [id: string] : string }) => {
         const finalHeaders = {
             ...headers
         }
@@ -135,10 +135,12 @@ class ApiConnector {
         }
 
         var bodyAsText = await result.text()
-        if (bodyAsText === '')
-            return null
 
-        return JSON.parse(bodyAsText)
+        return {
+            ok: result.ok,
+            status: result.status,
+            response: bodyAsText === '' ? null : JSON.parse(bodyAsText)
+        }
     }
 }
 

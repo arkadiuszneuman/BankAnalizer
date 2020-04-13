@@ -1,15 +1,36 @@
 import React, { Component } from 'react';
 
-class UsersSelector extends Component {
+declare const $: any
+
+interface IProps {
+    users: IUser[],
+    initSelectedUsers: IUser[],
+
+    onChange?: (selectedUsers: IUser[]) => void
+}
+
+interface IState {
+    users: IUser[],
+    selectedUsers: IUser[],
+    isInit: boolean
+}
+
+export interface IUser {
+    id: string,
+    firstName: string,
+    lastName: string
+}
+
+export default class UsersSelectorControl extends Component<IProps, IState> {
     state = {
         users: this.props.users,
         selectedUsers: [],
         isInit: true
-    }
+    } as IState
 
     componentDidMount = async () => {
-        window.$('.bank-transactions-users-selector').dropdown({
-            onAdd: (id) => {
+        $('.bank-transactions-users-selector').dropdown({
+            onAdd: (id: string) => {
                 if (!this.state.isInit) {
                     const user = this.state.users.filter(u => u.id === id)[0]
                     const selectedUsers = this.state.selectedUsers
@@ -17,7 +38,7 @@ class UsersSelector extends Component {
                     this.handleChange(selectedUsers)
                 }
             },
-            onRemove: (id) => {
+            onRemove: (id: string) => {
                 if (!this.state.isInit) {
                     this.handleChange(this.state.selectedUsers.filter(u => u.id !== id))
                 }
@@ -25,14 +46,14 @@ class UsersSelector extends Component {
         })
     }
 
-    componentDidUpdate = prevProps => {
+    componentDidUpdate = (prevProps: IProps) => {
         if (JSON.stringify(prevProps.users) !== JSON.stringify(this.props.users)) {
             this.setState({ users: this.props.users })
             
             
             setTimeout(() => {
                 this.props.initSelectedUsers.forEach(user => {
-                    window.$('.dropdown').dropdown('set selected', user.id)
+                    $('.dropdown').dropdown('set selected', user.id)
                 })
 
                 this.setState({ isInit: false, selectedUsers: this.props.initSelectedUsers })
@@ -40,7 +61,7 @@ class UsersSelector extends Component {
         }
     }
 
-    handleChange = selectedUsers => {
+    handleChange = (selectedUsers: IUser[]) => {
         this.setState({ selectedUsers: Array.from(selectedUsers) })
 
         if (this.props.onChange) {
@@ -48,7 +69,7 @@ class UsersSelector extends Component {
         }
     }
 
-    getLink = user => {
+    getLink = (user: IUser) => {
         return `https://eu.ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&rounded=true&size=22`
     }
 
@@ -72,5 +93,3 @@ class UsersSelector extends Component {
         );
     }
 }
-
-export default UsersSelector;

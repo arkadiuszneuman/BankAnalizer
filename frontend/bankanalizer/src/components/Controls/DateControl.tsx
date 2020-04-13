@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
 
-export default class Date extends Component {
+declare const $: any
+
+interface IProps {
+    id: string,
+    value: Date,
+    startCalendar?: string,
+    endCalendar?: string,
+    placeholder?: string
+
+    onChange: (date: Date) => void
+}
+
+export default class DateControl extends Component<IProps, {}> {
     componentDidMount() {
-        window.$('#' + this.props.id).calendar({
+        $('#' + this.props.id).calendar({
             type: 'date',
-            startCalendar: window.$(this.props.startCalendar),
-            endCalendar: window.$(this.props.endCalendar),
-            onChange: date => this.handleChange(date),
+            startCalendar: $(this.props.startCalendar),
+            endCalendar: $(this.props.endCalendar),
+            onChange: (date: Date) => this.handleChange(date),
             initialDate: this.props?.value
         })
     }
 
-    handleChange = date => {
+    handleChange = (date: Date) => {
         if (this.props.onChange) {
             this.props.onChange(date)
         }

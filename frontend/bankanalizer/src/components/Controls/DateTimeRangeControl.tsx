@@ -1,31 +1,41 @@
 import React, { Component } from 'react'
-import Date from './Date'
-import Select from './Select'
-import TimeRange from './TimeRange'
+import DateControl from './DateControl'
+import Select from './SelectControl'
+import TimeRange from './TimeRangeControl'
 
-export default class DateTimeRange extends Component {
+interface IProps {
+    onChange: (dateFrom: Date, dateTo: Date) => void
+}
+
+interface IState {
+    currentRangeType: string,
+    dateFrom: Date,
+    dateTo: Date
+}
+
+export default class DateTimeRangeControl extends Component<IProps, IState> {
     state = {
         currentRangeType: 'type',
         dateFrom: new Date(),
         dateTo: new Date()
     }
 
-    rangeChanged = newVal => {
+    rangeChanged = (newVal: string) => {
         this.setState({currentRangeType: newVal})
     }
 
-    timeRangeChanged = (dateFrom, dateTo) => {
+    timeRangeChanged = (dateFrom: Date, dateTo: Date) => {
         this.setState({dateFrom: dateFrom, dateTo: dateTo})
         if (this.props.onChange) {
             this.props.onChange(dateFrom, dateTo)
         }
     }
 
-    startDateChanged = (dateFrom) => {
+    startDateChanged = (dateFrom: Date) => {
         this.timeRangeChanged(dateFrom, this.state.dateTo)
     }
 
-    endDateChanged = (dateTo) => {
+    endDateChanged = (dateTo: Date) => {
         this.timeRangeChanged(this.state.dateFrom, dateTo)
     }
 
@@ -55,7 +65,7 @@ export default class DateTimeRange extends Component {
                             <div className="two fields">
                                 <div className="field">
                                     <label>Start date</label>
-                                    <Date 
+                                    <DateControl 
                                         id="rangestart"
                                         placeholder="Date from" 
                                         endCalendar="#rangeend" 
@@ -64,7 +74,7 @@ export default class DateTimeRange extends Component {
                                 </div>
                                 <div className="field">
                                     <label>End date</label>
-                                    <Date 
+                                    <DateControl 
                                         id="rangeend" 
                                         placeholder="Date to" 
                                         startCalendar="#rangestart" 

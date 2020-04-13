@@ -1,31 +1,28 @@
 import React, { Component } from 'react';
-import hubConnector from '../../helpers/api/HubConnector'
+import {apiConnector} from '../../helpers/BankAnalizer'
 
-class Importer extends Component {
+interface IState {
+  isLoading: boolean
+}
+
+class Importer extends Component<{}, IState> {
   state = {
     isLoading: false,
   }
 
-  import = async () => {
-    this.setState({isLoading: true})
-
-    const result = await this.connector.get("transaction/import");
-    hubConnector.waitForEventResult(result.id, () => {
-      this.setState({isLoading: false})
-    });
-  }
-
-  onChange = e => {
-    if (e.target.files[0])
+  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e?.target?.files && e.target.files[0]) {
       this.fileUpload(e.target.files[0])
+    }
   }
 
-  fileUpload = async file => {
+  fileUpload = async (file: File) => {
     this.setState({isLoading: true})
+
     const formData = new FormData();
     formData.append('file', file)
+    await apiConnector.uploadFile("transaction/import", formData)
 
-    await hubConnector.handleCommandResult(this.connector.uploadFile("transaction/import", formData))
     this.setState({isLoading: false})
   }
 

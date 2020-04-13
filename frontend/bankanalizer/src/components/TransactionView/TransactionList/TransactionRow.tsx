@@ -1,11 +1,16 @@
 import React from 'react'
 import TransactionGroups from './TransactionGroups'
 
-export default function TransactionRow(props) {
+interface IProps {
+    transaction: any,
+    showGroups: boolean
+}
+
+export default (props: IProps) => {
     var transaction = props.transaction
     var showGroups = props.showGroups ?? true
 
-    const parseDate = (unparsedDate) => {
+    const parseDate = (unparsedDate: Date) => {
         const date = new Date(unparsedDate)
         return new Date(date.getFullYear(), date.getMonth() , date.getDate()).toLocaleDateString()
     }

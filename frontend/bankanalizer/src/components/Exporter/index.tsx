@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import apiConnector from '../../helpers/api/CqrsApiConnector'
+import {apiConnector} from '../../helpers/BankAnalizer'
 import download from 'downloadjs'
 
-export default class Exporter extends Component {
+interface IState {
+  isLoading: boolean
+}
+
+export default class Exporter extends Component<{}, IState> {
   state = {
     isLoading: false,
   }
