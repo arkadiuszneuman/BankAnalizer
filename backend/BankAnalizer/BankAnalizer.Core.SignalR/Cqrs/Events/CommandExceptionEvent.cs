@@ -18,10 +18,10 @@ namespace BankAnalizer.Core.SignalR.Cqrs.Events
         }
 
         public static CommandExceptionEvent FromCommand(Command command, Exception exception) =>
-            new CommandExceptionEvent(exception.Message, command.UserId, command.CommandId);
+            FromCommand(command, exception.Message);
 
         public static CommandExceptionEvent FromCommand(Command command, string errorMessage) =>
-            new CommandExceptionEvent(errorMessage, command.UserId, command.UserId);
+            new CommandExceptionEvent(errorMessage, command.UserId, command.CommandId);
 
     }
 }
