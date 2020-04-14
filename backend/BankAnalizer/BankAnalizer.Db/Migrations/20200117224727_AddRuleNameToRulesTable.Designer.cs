@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BankAnalizer.Db.Migrations
 {
-    [DbContext(typeof(PkoContext))]
+    [DbContext(typeof(BankAnalizerContext))]
     [Migration("20200117224727_AddRuleNameToRulesTable")]
     partial class AddRuleNameToRulesTable
     {

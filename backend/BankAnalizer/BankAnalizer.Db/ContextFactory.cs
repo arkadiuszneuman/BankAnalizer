@@ -1,4 +1,6 @@
-﻿namespace BankAnalizer.Db
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace BankAnalizer.Db
 {
     public interface IContextFactory
     {
@@ -7,16 +9,16 @@
 
     public class ContextFactory : IContextFactory
     {
-        private readonly IConnectionFactory connectionFactory;
+        private readonly DbContextOptions<BankAnalizerContext> options;
 
-        public ContextFactory(IConnectionFactory connectionFactory)
+        public ContextFactory(DbContextOptions<BankAnalizerContext> options)
         {
-            this.connectionFactory = connectionFactory;
+            this.options = options;
         }
 
         public IContext GetContext()
         {
-            return new PkoContext(connectionFactory);
+            return new BankAnalizerContext(options);
         }
     }
 }

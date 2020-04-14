@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BankAnalizer.Db.Migrations
 {
-    [DbContext(typeof(PkoContext))]
+    [DbContext(typeof(BankAnalizerContext))]
     [Migration("20200116221642_AddGroupsTable")]
     partial class AddGroupsTable
     {

@@ -1,5 +1,7 @@
 ﻿using BankAnalizer.Db.Config;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
 using System.Data;
 
 namespace BankAnalizer.Db
@@ -7,35 +9,21 @@ namespace BankAnalizer.Db
     public interface IConnectionFactory
     {
         IDbConnection CreateConnection();
-        string CreateConnectionString();
     }
 
     public class ConnectionFactory : IConnectionFactory
     {
-        private readonly SqlServerConfig sqlServerConfig;
+        private readonly DbContextOptions<BankAnalizerContext> options;
 
-        public ConnectionFactory(SqlServerConfig sqlServerConfig)
+        public ConnectionFactory(DbContextOptions<BankAnalizerContext> options)
         {
-            this.sqlServerConfig = sqlServerConfig;
-        }
-
-        public string CreateConnectionString()
-        {
-            var connectionStringBuilder = new SqlConnectionStringBuilder();
-            connectionStringBuilder.UserID = sqlServerConfig.UserId;
-            connectionStringBuilder.Password = sqlServerConfig.Password;
-            connectionStringBuilder.InitialCatalog = sqlServerConfig.Database;
-            connectionStringBuilder.IntegratedSecurity = false;
-            connectionStringBuilder.MultipleActiveResultSets = true;
-            connectionStringBuilder.DataSource = sqlServerConfig.Server;
-
-            return connectionStringBuilder.ConnectionString;
+            this.options = options;
         }
 
         public IDbConnection CreateConnection()
         {
-            var connectionString = CreateConnectionString();
-            return new SqlConnection(connectionString);
+            var extension = options.FindExtension<SqlServerOptionsExtension>();
+            return new SqlConnection(extension.ConnectionString);
         }
     }
 }

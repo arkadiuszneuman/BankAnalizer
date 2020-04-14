@@ -28,10 +28,8 @@ namespace BankAnalizer.Db
         void AttachRange([NotNull] params object[] entities);
     }
 
-    public class PkoContext : DbContext, IContext
+    public class BankAnalizerContext : DbContext, IContext
     {
-        private readonly IConnectionFactory connectionFactory;
-
         public static readonly ILoggerFactory MyLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
@@ -43,34 +41,14 @@ namespace BankAnalizer.Db
         public DbSet<User> Users { get; set; }
         public DbSet<UsersConnection> UsersConnections { get; set; }
 
-        public PkoContext()
+        public BankAnalizerContext(DbContextOptions<BankAnalizerContext> options) : base(options)
         {
-            this.connectionFactory = new ConnectionFactory(new SqlServerConfig
-            {
-                Database = "PkoAnalizer",
-                Password = "1Secure*Password1",
-                UserId = "sa",
-                Server = "localhost"
-            });
-        }
-
-        public PkoContext(IConnectionFactory connectionFactory)
-        {
-            this.connectionFactory = connectionFactory;
         }
 
         public async Task LockTableAsync<T>(T table)
         {
             await Database.ExecuteSqlRawAsync($"SELECT TOP 0 NULL FROM {table.GetType().Name} WITH (TABLOCKX, HOLDLOCK)")
                 .ConfigureAwait(true);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                //.UseLoggerFactory(MyLoggerFactory)
-                //.EnableSensitiveDataLogging()
-                .UseSqlServer(connectionFactory.CreateConnectionString());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

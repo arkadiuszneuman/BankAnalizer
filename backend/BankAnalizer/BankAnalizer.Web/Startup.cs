@@ -4,6 +4,7 @@ using BankAnalizer.Core.Api.CqrsRouting;
 using BankAnalizer.Core.Registration;
 using BankAnalizer.Core.SignalR;
 using BankAnalizer.Core.SignalR.Registration;
+using BankAnalizer.Db;
 using BankAnalizer.Logic;
 using BankAnalizer.Logic.Groups.Commands;
 using BankAnalizer.Logic.Rules.Commands;
@@ -11,6 +12,7 @@ using BankAnalizer.Logic.Users.UsersConnections.Commands;
 using BankAnalizer.Web.StartupConfiguration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,6 +42,8 @@ namespace BankAnalizer.Web
             services.AddControllers();
             services.AddOptions();
             services.AddCoreSignalR();
+            services.AddDbContext<BankAnalizerContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {

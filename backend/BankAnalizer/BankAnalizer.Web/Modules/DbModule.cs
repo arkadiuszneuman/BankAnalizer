@@ -17,7 +17,7 @@ namespace BankAnalizer.Web.Modules
                 .As<IContextFactory>()
                 .SingleInstance();
 
-            builder.RegisterType<PkoContext>()
+            builder.RegisterType<BankAnalizerContext>()
                 .AsSelf();
         }
     }

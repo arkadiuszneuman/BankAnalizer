@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BankAnalizer.Db.Migrations
 {
-    [DbContext(typeof(PkoContext))]
-    partial class PkoContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(BankAnalizerContext))]
+    partial class BankAnalizerContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
