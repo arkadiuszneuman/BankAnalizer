@@ -3,7 +3,6 @@ using BankAnalizer.Core.ExtensionMethods;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -51,9 +50,6 @@ namespace BankAnalizer.Core.Api.CqrsRouting
             {
                 SetPatternValuesToCommand(endpointResult, command);
 
-                var connectionId = context.Request.Headers["connectionId"].FirstOrDefault();
-
-                command.ConnectionId = connectionId;
                 command.UserId = Guid.Parse(userId);
 
                 var bus = context.RequestServices.GetService<ICommandsBus>();
@@ -79,12 +75,10 @@ namespace BankAnalizer.Core.Api.CqrsRouting
 
             static Command GetCommand(CqrsEndpointsBuilder.EndpointResult endpointResult, string request)
             {
-                Command command;
                 if (string.IsNullOrEmpty(request))
-                    command = (Command)Activator.CreateInstance(endpointResult.Type);
-                else
-                    command = (Command)JsonSerializer.Deserialize(request, endpointResult.Type, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-                return command;
+                    return (Command)Activator.CreateInstance(endpointResult.Type);
+
+                return (Command)JsonSerializer.Deserialize(request, endpointResult.Type, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             }
         }
 

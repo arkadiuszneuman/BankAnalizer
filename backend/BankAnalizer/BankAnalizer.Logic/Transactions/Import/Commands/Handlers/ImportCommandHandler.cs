@@ -1,5 +1,6 @@
 ﻿using BankAnalizer.Core.Cqrs.Command;
 using BankAnalizer.Core.Cqrs.Event;
+using BankAnalizer.Logic.CommonEvents;
 using BankAnalizer.Logic.Transactions.Import.Db;
 using BankAnalizer.Logic.Transactions.Import.Events;
 using BankAnalizer.Logic.Transactions.Import.Importers;
@@ -51,7 +52,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Commands.Handlers
 
             Task.WaitAll(transactionSavedEventTasks.ToArray());
 
-            await eventsBus.Publish(new CommandCompletedEvent(command.ConnectionId, command.Id));
+            await eventsBus.Publish(new CommandCompletedEvent(command.UserId, command.Id));
 
             logger.LogInformation("Transactions from file imported");
         }

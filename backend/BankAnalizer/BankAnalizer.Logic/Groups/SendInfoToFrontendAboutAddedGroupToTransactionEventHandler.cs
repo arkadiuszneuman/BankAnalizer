@@ -1,25 +1,25 @@
 ﻿using BankAnalizer.Core.Cqrs.Event;
+using BankAnalizer.Core.SignalR;
 using BankAnalizer.Logic.Groups.Events;
-using BankAnalizer.Logic.Transactions.Import.Hubs;
-using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace BankAnalizer.Logic.Groups
 {
     public class SendInfoToFrontendAboutAddedGroupToTransactionEventHandler : IHandleEvent<GroupToTransactionAddedEvent>
     {
-        private readonly IHubContext<SendSignalRAnswerHub> context;
+        private readonly ISignalrClient signalrClient;
 
-        public SendInfoToFrontendAboutAddedGroupToTransactionEventHandler(IHubContext<SendSignalRAnswerHub> context)
+        public SendInfoToFrontendAboutAddedGroupToTransactionEventHandler(ISignalrClient signalrClient)
         {
-            this.context = context;
+            this.signalrClient = signalrClient;
         }
 
-        public async Task Handle(GroupToTransactionAddedEvent @event)
-        {
-            var registeredClients = SendSignalRAnswerHub.GetRegisteredClients(@event.UserId);
-            await context.Clients.Clients(registeredClients).SendAsync("group-to-transaction-added",
-                new { BankTransactionId = @event.BankTransaction.Id, GroupName = @event.Group.Name });
-        }
+        public Task Handle(GroupToTransactionAddedEvent @event) =>
+            signalrClient.SendNotificationToUserId("group-to-transaction-added", @event.UserId.ToString(),
+                new
+                {
+                    BankTransactionId = @event.BankTransaction.Id,
+                    GroupName = @event.Group.Name
+                });
     }
 }

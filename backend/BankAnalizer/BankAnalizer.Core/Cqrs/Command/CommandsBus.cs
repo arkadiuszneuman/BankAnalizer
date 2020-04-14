@@ -38,7 +38,7 @@ namespace BankAnalizer.Core.Cqrs.Command
                 Task task = (Task)handleMethod.Invoke(handler, new[] { command });
                 await task;
             }
-            catch (BankAnalizerException exception)
+            catch (Exception exception)
             {
                 logger.LogError(exception, exception.Message);
                 throw;

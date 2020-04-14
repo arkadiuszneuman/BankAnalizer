@@ -7,6 +7,5 @@ namespace BankAnalizer.Core.Api
     {
         public Guid CommandId { get; set; } = Guid.NewGuid();
         public Guid UserId { get; set; }
-        public string ConnectionId { get; set; }
     }
 }

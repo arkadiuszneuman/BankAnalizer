@@ -5,11 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Transactions\Import\EventHandlers\**" />
+    <EmbeddedResource Remove="Transactions\Import\EventHandlers\**" />
+    <None Remove="Transactions\Import\EventHandlers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.30" />
     <PackageReference Include="Dapper.SqlBuilder" Version="2.0.30" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.0" />
@@ -18,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BankAnalizer.Core.Api\BankAnalizer.Core.Api.csproj" />
+    <ProjectReference Include="..\BankAnalizer.Core.SignalR\BankAnalizer.Core.SignalR.csproj" />
     <ProjectReference Include="..\BankAnalizer.Core\BankAnalizer.Core.csproj" />
     <ProjectReference Include="..\BankAnalizer.Db\BankAnalizer.Db.csproj" />
   </ItemGroup>

@@ -1,10 +1,12 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BankAnalizer.Core.Api.CqrsRouting;
+using BankAnalizer.Core.Registration;
+using BankAnalizer.Core.SignalR;
+using BankAnalizer.Core.SignalR.Registration;
 using BankAnalizer.Logic;
 using BankAnalizer.Logic.Groups.Commands;
 using BankAnalizer.Logic.Rules.Commands;
-using BankAnalizer.Logic.Transactions.Import.Hubs;
 using BankAnalizer.Logic.Users.UsersConnections.Commands;
 using BankAnalizer.Web.StartupConfiguration;
 using Microsoft.AspNetCore.Builder;
@@ -37,7 +39,7 @@ namespace BankAnalizer.Web
             services.AddAuthenticationWithBearerToken(Configuration);
             services.AddControllers();
             services.AddOptions();
-            services.AddSignalR();
+            services.AddCoreSignalR();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
@@ -51,6 +53,9 @@ namespace BankAnalizer.Web
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterCQRS<IAnalizerLogic>()
+                .RegisterSignalrNonGenericExceptionsHandle();
+
             builder.RegisterAssemblyTypes(typeof(IAnalizerLogic).Assembly)
                 .AsImplementedInterfaces()
                 .AsSelf();
@@ -84,7 +89,7 @@ namespace BankAnalizer.Web
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
-                    endpoints.MapHub<SendSignalRAnswerHub>("/hub");
+                    endpoints.MapHub<UsersHub>("/hub");
                 });
         }
     }

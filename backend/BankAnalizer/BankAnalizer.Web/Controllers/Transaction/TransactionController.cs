@@ -45,12 +45,12 @@ namespace BankAnalizer.Web.Controllers.Transaction
 
         [HttpPost]
         [Route("import")]
-        public async Task<ActionResult> Import([FromHeader]string connectionId, IFormFile file)
+        public async Task<ActionResult> Import(IFormFile file)
         {
             if (file.Length < 1024 * 1024)
             {
                 var text = await ReadStream(file);
-                var command = new ImportCommand(connectionId, GetCurrentUserId(), text);
+                var command = new ImportCommand(GetCurrentUserId(), text);
 
                 _ = bus.SendAsync(command);
                 return Accepted(command);
