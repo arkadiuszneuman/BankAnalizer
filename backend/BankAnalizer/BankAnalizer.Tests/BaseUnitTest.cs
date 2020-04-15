@@ -1,4 +1,4 @@
-﻿using NSubstituteAutoMocker;
+﻿using NSubstituteAutoMocker.Standard;
 
 namespace BankAnalizer.Tests
 {
