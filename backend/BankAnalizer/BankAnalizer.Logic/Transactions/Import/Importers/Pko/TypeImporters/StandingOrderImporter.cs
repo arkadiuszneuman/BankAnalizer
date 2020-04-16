@@ -4,7 +4,7 @@ using BankAnalizer.Logic.Transactions.Import.Models;
 
 namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
-    public class StandingOrderImporter : ITypeImporter
+    public class StandingOrderImporter : IPkoTypeImporter
     {
         public PkoTransaction Import(string[] splittedLine)
         {

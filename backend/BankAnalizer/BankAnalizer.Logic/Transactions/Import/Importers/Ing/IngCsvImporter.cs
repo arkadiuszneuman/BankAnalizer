@@ -1,20 +1,21 @@
-﻿using BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters;
+﻿using BankAnalizer.Logic.Transactions.Import.Importers.Ing.TypeImporters;
+using BankAnalizer.Logic.Transactions.Import.Importers.Pko;
+using BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters;
 using BankAnalizer.Logic.Transactions.Import.Models;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
+namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing
 {
-    public class PkoCsvImporter : IImporter
+    public class IngCsvImporter : IImporter
     {
-        private readonly ILogger<PkoCsvImporter> logger;
-        private readonly IEnumerable<IPkoTypeImporter> typeImporters;
+        private readonly ILogger<IngCsvImporter> logger;
+        private readonly IEnumerable<IIngTypeImporter> typeImporters;
 
-        public PkoCsvImporter(ILogger<PkoCsvImporter> logger,
-            IEnumerable<IPkoTypeImporter> typeImporters)
+        public IngCsvImporter(ILogger<IngCsvImporter> logger,
+            IEnumerable<IIngTypeImporter> typeImporters)
         {
             this.logger = logger;
             this.typeImporters = typeImporters;
@@ -22,18 +23,18 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
 
         public IEnumerable<PkoTransaction> ImportTransactions(string textToImport, int lastOrder)
         {
-            if (!textToImport.StartsWith("\"Data operacji\""))
+            if (!textToImport.StartsWith("\"Lista transakcji\""))
                 return Enumerable.Empty<PkoTransaction>();
 
-            logger.LogInformation("Importing csv by PKO BP importer");
+            logger.LogInformation("Importing csv by ING importer");
 
             return textToImport.Split('\n')
-                .GetAllLinesExceptFirst()
+                .RemoveEverythingBeforeHeaderWithHeaderIncluded()
                 .Reverse()
+                .RemoveEmptyEntries()
                 .Select(line =>
                     line.SplitCsv()
                         .RemoveWhitespacesAndQuotes()
-                        .RemoveEmptyEntries()
                         .ToArray())
                 .Select(Import)
                 .OnlyExistsingTransactions()
@@ -57,9 +58,6 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
                         pkoTransaction = transaction;
                     }
                 }
-
-                if (pkoTransaction == null)
-                    logger.LogWarning($"No importer exists for type {splittedLine.Index(2)}");
             }
 
             return pkoTransaction;
@@ -68,33 +66,35 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
 
     public static class Pipe
     {
-        public static IEnumerable<string> SplitCsv(this string line)
+        public static IEnumerable<string> RemoveEverythingBeforeHeaderWithHeaderIncluded(this IEnumerable<string> lines)
         {
-            return line.Split("\",\"");
+            bool shouldSkip = true;
+            foreach (var line in lines)
+            {
+                if (!shouldSkip)
+                {
+                    yield return line;
+                }
+
+                if (line.StartsWith("\"Data transakcji\""))
+                {
+                    shouldSkip = false;
+                }
+            }
         }
 
-        public static IEnumerable<string> RemoveWhitespacesAndQuotes(this IEnumerable<string> column)
-        {
-            return column
-                .Select(i => i.Trim())
-                .Select(t => t.Trim('"'));
-        }
+        public static IEnumerable<string> RemoveEmptyLines(this IEnumerable<string> lines) =>
+            lines.Where(l => l != string.Empty);
 
-        public static IEnumerable<string> RemoveEmptyEntries(this IEnumerable<string> column)
-        {
-            return column
-                .Where(c => c != string.Empty);
-        }
+        public static IEnumerable<string> SplitCsv(this string line) => line.Split(";");
 
-        public static IEnumerable<PkoTransaction> OnlyExistsingTransactions(this IEnumerable<PkoTransaction> transactions)
-        {
-            return transactions.Where(t => t != null);
-        }
+        public static IEnumerable<string> RemoveWhitespacesAndQuotes(this IEnumerable<string> column) => 
+            column
+                .Select(t => t.Trim('"'))
+                .Select(i => i.Trim());
 
-        public static IEnumerable<string> GetAllLinesExceptFirst(this IEnumerable<string> lines)
-        {
-            return lines.Skip(1);
-        }
+        public static IEnumerable<PkoTransaction> OnlyExistsingTransactions(this IEnumerable<PkoTransaction> transactions) => 
+            transactions.Where(t => t != null);
 
         public static IEnumerable<PkoTransaction> AssignOrder(this IEnumerable<PkoTransaction> transactions, int lastOrder)
         {

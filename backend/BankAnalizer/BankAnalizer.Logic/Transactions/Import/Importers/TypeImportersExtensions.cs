@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
@@ -27,11 +25,12 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 
         public static DateTime ConvertToDate(this string value)
         {
-            if (DateTime.TryParseExact(value, "yyyy-MM-dd", null, DateTimeStyles.None, out var returnValue))
-
-            {
+            DateTime returnValue;
+            if (DateTime.TryParseExact(value, "yyyy-MM-dd", null, DateTimeStyles.None, out returnValue))
                 return returnValue;
-            }
+
+            if (DateTime.TryParseExact(value, "dd.MM.yyyy", null, DateTimeStyles.None, out returnValue))
+                return returnValue;
 
             throw new ImportException($"Cannot convert to DateTime value: {value}");
         }

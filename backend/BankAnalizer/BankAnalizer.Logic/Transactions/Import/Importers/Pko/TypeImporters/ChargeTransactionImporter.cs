@@ -2,7 +2,7 @@
 
 namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
-    public class ChargeTransactionImporter : ITypeImporter
+    public class ChargeTransactionImporter : IPkoTypeImporter
     {
         public PkoTransaction Import(string[] splittedLine)
         {

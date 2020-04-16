@@ -4,7 +4,7 @@ using BankAnalizer.Logic.Transactions.Import.Models;
 
 namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
-    public class ReturnCardPaymentImporter : ITypeImporter
+    public class ReturnCardPaymentImporter : IPkoTypeImporter
     {
         public PkoTransaction Import(string[] splittedLine)
         {

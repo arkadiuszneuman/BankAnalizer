@@ -21,9 +21,13 @@ class Importer extends Component<{}, IState> {
 
     const formData = new FormData();
     formData.append('file', file)
-    await apiConnector.uploadFile("transaction/import", formData)
 
-    this.setState({isLoading: false})
+    try {
+      await apiConnector.uploadFile("transaction/import", formData)
+    }
+    finally {
+      this.setState({isLoading: false})
+    }
   }
 
   render() {

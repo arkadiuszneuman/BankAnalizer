@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
-    public class AccruingInterestImporter : ITypeImporter
+    public class AccruingInterestImporter : IPkoTypeImporter
     {
         public PkoTransaction Import(string[] splittedLine)
         {
