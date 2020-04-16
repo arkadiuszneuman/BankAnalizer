@@ -32,7 +32,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Db
             return (await context.BankTransactions.Where(u => u.User.Id == userId).MaxAsync(t => (int?)t.Order)) ?? 0;
         }
 
-        public async Task<BankTransaction> AddToDatabase(PkoTransaction transaction, Guid userId)
+        public async Task<BankTransaction> AddToDatabase(ImportedBankTransaction transaction, Guid userId)
         {
             BankTransaction databaseTransaction = null;
             var groupDbModel = MapGroup(transaction.TransactionType);
@@ -95,7 +95,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Db
             };
         }
 
-        private BankTransaction MapTransaction(PkoTransaction transaction)
+        private BankTransaction MapTransaction(ImportedBankTransaction transaction)
         {
             return new BankTransaction
             {

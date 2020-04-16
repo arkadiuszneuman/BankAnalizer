@@ -1,5 +1,4 @@
-﻿using AutofacContrib.NSubstitute;
-using BankAnalizer.Core.ExtensionMethods;
+﻿using BankAnalizer.Core.ExtensionMethods;
 using BankAnalizer.Logic.Rules;
 using BankAnalizer.Logic.Rules.ViewModels;
 using FluentAssertions;
@@ -8,13 +7,12 @@ using Xunit;
 
 namespace BankAnalizer.Tests.Logic.Rules
 {
-    public class RuleParserTests
+    public class RuleParserTests : BaseUnitTest<RuleParser>
     {
         [Fact]
         public void Should_parse_contains_rule()
         {
             // arrange
-            var sut = new AutoSubstitute().Resolve<RuleParser>();
             var ruleViewModel = new RuleViewModel
             {
                 Id = Guid.Parse("C61308F9-AB25-4123-9084-BCDA14F2540F"),
@@ -24,7 +22,7 @@ namespace BankAnalizer.Tests.Logic.Rules
             };
 
             //act
-            var result = sut.Parse(ruleViewModel);
+            var result = Sut.Parse(ruleViewModel);
 
             //assert
             result.Should().BeEquivalentTo(new ParsedRule
@@ -44,7 +42,6 @@ namespace BankAnalizer.Tests.Logic.Rules
         public void Should_parse_contains_rule_and_extension_column()
         {
             // arrange
-            var sut = new AutoSubstitute().Resolve<RuleParser>();
             var ruleViewModel = new RuleViewModel
             {
                 BankTransactionTypeId = Guid.NewGuid(),
@@ -52,7 +49,7 @@ namespace BankAnalizer.Tests.Logic.Rules
             };
 
             //act
-            var result = sut.Parse(ruleViewModel);
+            var result = Sut.Parse(ruleViewModel);
 
             //assert
             result.Should().BeEquivalentTo(new ParsedRule
@@ -69,7 +66,6 @@ namespace BankAnalizer.Tests.Logic.Rules
         public void Should_return_null_if_invalid_rule()
         {
             // arrange
-            var sut = new AutoSubstitute().Resolve<RuleParser>();
             var ruleViewModel = new RuleViewModel
             {
                 BankTransactionTypeId = Guid.NewGuid(),
@@ -77,7 +73,7 @@ namespace BankAnalizer.Tests.Logic.Rules
             };
 
             //act
-            var result = sut.Parse(ruleViewModel.AsList());
+            var result = Sut.Parse(ruleViewModel.AsList());
 
             //assert
             result.Should().BeEmpty();

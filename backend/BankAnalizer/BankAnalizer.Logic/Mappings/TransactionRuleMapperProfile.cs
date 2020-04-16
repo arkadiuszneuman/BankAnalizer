@@ -10,7 +10,7 @@ namespace BankAnalizer.Logic.Mappings
     {
         public TransactionRuleMapperProfile()
         {
-            CreateMap<BankTransaction, PkoTransaction>();
+            CreateMap<BankTransaction, ImportedBankTransaction>();
             CreateMap<TransactionGroupsContainer, TransactionViewModel>();
 
             CreateMap<BankTransaction, TransactionViewModel>()

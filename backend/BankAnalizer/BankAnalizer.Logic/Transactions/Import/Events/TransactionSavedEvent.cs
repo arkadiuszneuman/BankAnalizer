@@ -8,10 +8,10 @@ namespace BankAnalizer.Logic.Transactions.Import.Events
     public class TransactionSavedEvent : IEvent
     {
         public Guid UserId { get; }
-        public PkoTransaction Transaction { get; }
+        public ImportedBankTransaction Transaction { get; }
         public BankTransaction DatabaseTransaction { get; }
 
-        public TransactionSavedEvent(Guid userId, PkoTransaction transaction, BankTransaction databaseTransaction)
+        public TransactionSavedEvent(Guid userId, ImportedBankTransaction transaction, BankTransaction databaseTransaction)
         {
             UserId = userId;
             Transaction = transaction;
