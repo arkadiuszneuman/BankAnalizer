@@ -21,7 +21,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "-10.19","PLN","+507.94","Numer telefonu: +48 568 457 587 ","Lokalizacja: Adres: www.skycash.com",
                         "Data i czas operacji: 2019-04-17 17:16:10","Numer referencyjny: 5458568544654","","",""
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2019, 4, 18),
                         TransactionDate = new DateTime(2019, 4, 17),
@@ -43,7 +43,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "Data i czas operacji: 2017-02-19 13:34:32",
                         "Bankomat: ASDAGAWD","Numer referencyjny: 00123102512031203","",""
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2017, 2, 20),
                         TransactionDate = new DateTime(2017, 2, 19),
@@ -66,7 +66,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "Numer referencyjny: 5325346346345345364","",""
 
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2014, 11, 15),
                         TransactionDate = new DateTime(2014, 11, 14),
@@ -88,7 +88,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "Data i czas operacji: 2018-32-23 22:26:51",
                         "Numer referencyjny: 1423125124","","",""
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2018, 12, 06),
                         TransactionDate = new DateTime(2018, 12, 05),
@@ -106,7 +106,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
 
         [Theory]
         [MemberData(nameof(Data))]
-        public void Should_import_web_payment_transactions(string[] splittedLine, PkoTransaction expectedResult)
+        public void Should_import_web_payment_transactions(string[] splittedLine, ImportedBankTransaction expectedResult)
         {
             //act
             var result = Sut.Import(splittedLine);

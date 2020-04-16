@@ -20,10 +20,10 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
             this.typeImporters = typeImporters;
         }
 
-        public IEnumerable<PkoTransaction> ImportTransactions(string textToImport, int lastOrder)
+        public IEnumerable<ImportedBankTransaction> ImportTransactions(string textToImport, int lastOrder)
         {
             if (!textToImport.StartsWith("\"Data operacji\""))
-                return Enumerable.Empty<PkoTransaction>();
+                return Enumerable.Empty<ImportedBankTransaction>();
 
             logger.LogInformation("Importing csv by PKO BP importer");
 
@@ -40,9 +40,9 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
                 .AssignOrder(lastOrder);
         }
 
-        private PkoTransaction Import(string[] splittedLine)
+        private ImportedBankTransaction Import(string[] splittedLine)
         {
-            PkoTransaction pkoTransaction = null;
+            ImportedBankTransaction pkoTransaction = null;
 
             if (splittedLine.Any())
             {
@@ -86,7 +86,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
                 .Where(c => c != string.Empty);
         }
 
-        public static IEnumerable<PkoTransaction> OnlyExistsingTransactions(this IEnumerable<PkoTransaction> transactions)
+        public static IEnumerable<ImportedBankTransaction> OnlyExistsingTransactions(this IEnumerable<ImportedBankTransaction> transactions)
         {
             return transactions.Where(t => t != null);
         }
@@ -96,7 +96,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
             return lines.Skip(1);
         }
 
-        public static IEnumerable<PkoTransaction> AssignOrder(this IEnumerable<PkoTransaction> transactions, int lastOrder)
+        public static IEnumerable<ImportedBankTransaction> AssignOrder(this IEnumerable<ImportedBankTransaction> transactions, int lastOrder)
         {
             var transactionsCreated = transactions.ToList();
             foreach (var transaction in transactionsCreated)

@@ -21,7 +21,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                 "Numer karty: 123456******7589", "", "" });
 
             //assert
-            result.Should().BeEquivalentTo(new PkoTransaction
+            result.Should().BeEquivalentTo(new ImportedBankTransaction
             {
                 OperationDate = new DateTime(2019, 9, 19),
                 TransactionDate = new DateTime(2019, 9, 17),

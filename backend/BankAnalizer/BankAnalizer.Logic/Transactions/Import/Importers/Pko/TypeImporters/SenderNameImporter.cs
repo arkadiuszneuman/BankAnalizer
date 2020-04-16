@@ -8,13 +8,13 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
     public class SenderNameImporter : IPkoTypeImporter
     {
-        public PkoTransaction Import(string[] splittedLine)
+        public ImportedBankTransaction Import(string[] splittedLine)
         {
             var supportedTypes = new[] { "Wpłata gotówkowa w kasie" };
             var type = splittedLine.Index(2);
             if (supportedTypes.Contains(type))
             {
-                return new PkoTransaction
+                return new ImportedBankTransaction
                 {
                     OperationDate = splittedLine.Index(0).ConvertToDate(),
                     TransactionDate = splittedLine.Index(1).ConvertToDate(),

@@ -23,7 +23,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
             });
 
             //assert
-            result.Should().BeEquivalentTo(new PkoTransaction
+            result.Should().BeEquivalentTo(new ImportedBankTransaction
             {
                 OperationDate = new DateTime(2018, 3, 23),
                 TransactionDate = new DateTime(2018, 3, 24),

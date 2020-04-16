@@ -7,14 +7,14 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
     public class AccruingInterestImporter : IPkoTypeImporter
     {
-        public PkoTransaction Import(string[] splittedLine)
+        public ImportedBankTransaction Import(string[] splittedLine)
         {
             var supportedTypes = new[] { "Naliczenie odsetek", "Opłata za użytkowanie karty", "Prowizja",
                 "Opłata składki ubezpieczeniowej", "Uznanie", "Podatek od odsetek" };
             var type = splittedLine.Index(2);
             if (supportedTypes.Contains(type))
             {
-                return new PkoTransaction
+                return new ImportedBankTransaction
                 {
                     OperationDate = splittedLine.Index(0).ConvertToDate(),
                     TransactionDate = splittedLine.Index(1).ConvertToDate(),

@@ -64,9 +64,7 @@ namespace BankAnalizer.Web.Controllers.Transaction
         private async Task<string> ReadStream(IFormFile file)
         {
             using var reader = new StreamReader(file.OpenReadStream(), Encoding.GetEncoding(1250));
-            var result = await reader.ReadToEndAsync();
-
-            return result;
+            return await reader.ReadToEndAsync();
         }
 
         [HttpGet]

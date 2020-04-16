@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BankAnalizer.Logic.Transactions.Import.Models
 {
-    public class PkoTransaction
+    public class ImportedBankTransaction
     {
         public DateTime OperationDate { get; set; }
         public DateTime TransactionDate { get; set; }

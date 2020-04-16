@@ -4,12 +4,12 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
     public class ChargeTransactionImporter : IPkoTypeImporter
     {
-        public PkoTransaction Import(string[] splittedLine)
+        public ImportedBankTransaction Import(string[] splittedLine)
         {
             var type = splittedLine.Index(2);
             if (type == "Obciążenie" || type == "Opłata")
             {
-                return new PkoTransaction
+                return new ImportedBankTransaction
                 {
                     OperationDate = splittedLine.Index(0).ConvertToDate(),
                     TransactionDate = splittedLine.Index(1).ConvertToDate(),

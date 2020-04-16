@@ -16,31 +16,42 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing.TypeImporters
             this.logger = logger;
         }
 
-        public PkoTransaction Import(string[] splittedLine)
+        public ImportedBankTransaction Import(string[] splittedLine)
         {
-            if (splittedLine.Length < 7)
+            if (!IsValid(splittedLine))
                 return null;
-
-            var transactionType = ConvertTransactionType(splittedLine.Index(6));
-            if (transactionType == null)
-            {
-                logger.LogWarning("Unhandled type {type}", splittedLine.Index(6));
-                return null;
-            }
-
-            if (string.IsNullOrEmpty(splittedLine.Index(1)))
-                return null;
-
-            return new PkoTransaction
+            
+            return new ImportedBankTransaction
             {
                 TransactionDate = splittedLine.Index(0).ConvertToDate(),
                 OperationDate = splittedLine.Index(1).ConvertToDate(),
-                TransactionType = transactionType.Value.ToString(),
+                TransactionType = ConvertTransactionType(splittedLine.Index(6)).Value.ToString(),
                 Amount = splittedLine.Index(8).ConvertToDecimal(),
                 Currency = splittedLine.Index(9),
                 Title = splittedLine.Index(3),
                 Extensions = GetExtensions(splittedLine).ToJson()
             };
+        }
+
+        private bool IsValid(string[] splittedLine)
+        {
+            if (splittedLine.Length < 7)
+                return false;
+
+            if (string.IsNullOrEmpty(splittedLine.Index(6)))
+                return false;
+
+            if (string.IsNullOrEmpty(splittedLine.Index(1)))
+                return false;
+
+            var transactionType = ConvertTransactionType(splittedLine.Index(6));
+            if (transactionType == null)
+            {
+                logger.LogWarning("Unhandled type {type}", splittedLine.Index(6));
+                return false;
+            }
+
+            return true;
         }
 
         private static object GetExtensions(string[] splittedLine)

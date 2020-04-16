@@ -21,7 +21,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "-32.12","PLN","+321.87","Rachunek odbiorcy: 44 5555 7777 1111 3333 6666 7777",
                         "Nazwa odbiorcy: NAME SURNAME","Tytuł: PRZELEW NA TELEFON OD: 48930293023 DO: 48950495023","","","",""
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2019, 3, 25),
                         TransactionDate = new DateTime(2019, 3, 26),
@@ -44,7 +44,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "Tytuł: PIŁKA OD: 48384959485 DO: 48594859483","Referencje własne zleceniodawcy: 123123123","","",""
 
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2018, 2, 12),
                         TransactionDate = new DateTime(2018, 2, 11),
@@ -63,7 +63,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
 
         [Theory]
         [MemberData(nameof(Data))]
-        public void Should_import_web_payment_transactions(string[] splittedLine, PkoTransaction expectedResult)
+        public void Should_import_web_payment_transactions(string[] splittedLine, ImportedBankTransaction expectedResult)
         {
             //act
             var result = Sut.Import(splittedLine);

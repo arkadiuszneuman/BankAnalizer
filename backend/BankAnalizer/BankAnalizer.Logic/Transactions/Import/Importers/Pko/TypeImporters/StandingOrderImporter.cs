@@ -6,7 +6,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
     public class StandingOrderImporter : IPkoTypeImporter
     {
-        public PkoTransaction Import(string[] splittedLine)
+        public ImportedBankTransaction Import(string[] splittedLine)
         {
             var type = splittedLine.Index(2);
             if (type == "Zlecenie stałe")
@@ -14,7 +14,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
                 var isAddressExists = splittedLine.Index(8).Contains("Adres odbiorcy:");
                 var titleIndex = isAddressExists ? 9 : 8;
 
-                return new PkoTransaction
+                return new ImportedBankTransaction
                 {
                     OperationDate = splittedLine.Index(0).ConvertToDate(),
                     TransactionDate = splittedLine.Index(1).ConvertToDate(),

@@ -15,7 +15,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 
         public static decimal ConvertToDecimal(this string value)
         {
-            if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var returnValue))
+            if (decimal.TryParse(value.Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out var returnValue))
             {
                 return returnValue;
             }

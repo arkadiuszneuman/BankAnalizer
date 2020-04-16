@@ -20,7 +20,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "2019-04-13","2019-04-12","Wpłata gotówkowa w kasie","+234.32","PLN","+2564.00",
                         "Nazwa nadawcy: NAME SURNAME","Adres nadawcy: - -","Tytuł: WPŁATA WŁASNA","","","",""
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2019, 04, 13),
                         TransactionDate = new DateTime(2019, 04, 12),
@@ -39,7 +39,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
 
         [Theory]
         [MemberData(nameof(Data))]
-        public void Should_import_accruing_interest_transactions(string[] splittedLine, PkoTransaction expectedResult)
+        public void Should_import_accruing_interest_transactions(string[] splittedLine, ImportedBankTransaction expectedResult)
         {
             //act
             var result = Sut.Import(splittedLine);

@@ -8,14 +8,14 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
     public class TransferToPhoneOutgoingImporter : IPkoTypeImporter
     {
-        public PkoTransaction Import(string[] splittedLine)
+        public ImportedBankTransaction Import(string[] splittedLine)
         {
             var supportedTypes = new[] { "Przelew na telefon wychodzący zew.",
                 "Przelew na telefon wychodzący wew." };
             var type = splittedLine.Index(2);
             if (supportedTypes.Contains(type))
             {
-                return new PkoTransaction
+                return new ImportedBankTransaction
                 {
                     OperationDate = splittedLine.Index(0).ConvertToDate(),
                     TransactionDate = splittedLine.Index(1).ConvertToDate(),

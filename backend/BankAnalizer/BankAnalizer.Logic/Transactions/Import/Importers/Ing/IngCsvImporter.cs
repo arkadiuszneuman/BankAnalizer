@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing
 {
@@ -21,10 +22,10 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing
             this.typeImporters = typeImporters;
         }
 
-        public IEnumerable<PkoTransaction> ImportTransactions(string textToImport, int lastOrder)
+        public IEnumerable<ImportedBankTransaction> ImportTransactions(string textToImport, int lastOrder)
         {
             if (!textToImport.StartsWith("\"Lista transakcji\""))
-                return Enumerable.Empty<PkoTransaction>();
+                return Enumerable.Empty<ImportedBankTransaction>();
 
             logger.LogInformation("Importing csv by ING importer");
 
@@ -36,36 +37,43 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing
                     line.SplitCsv()
                         .RemoveWhitespacesAndQuotes()
                         .ToArray())
-                .Select(Import)
+                .ImportBy(typeImporters)
                 .OnlyExistsingTransactions()
+                .OrderBy(o => o.TransactionDate)
                 .AssignOrder(lastOrder);
-        }
-
-        private PkoTransaction Import(string[] splittedLine)
-        {
-            PkoTransaction pkoTransaction = null;
-
-            if (splittedLine.Any())
-            {
-                foreach (var typeImporter in typeImporters)
-                {
-                    var transaction = typeImporter.Import(splittedLine);
-                    if (transaction != null)
-                    {
-                        if (pkoTransaction != null)
-                            throw new ImportException($"Too many importers for type {splittedLine.Index(2)}");
-
-                        pkoTransaction = transaction;
-                    }
-                }
-            }
-
-            return pkoTransaction;
         }
     }
 
     public static class Pipe
     {
+        public static IEnumerable<ImportedBankTransaction> ImportBy(this IEnumerable<string[]> lines, IEnumerable<IIngTypeImporter> typeImporters)
+        {
+            var list = new List<ImportedBankTransaction>(lines.Count());
+            Parallel.ForEach(lines, splittedLine =>
+            {
+                ImportedBankTransaction importedTransaction = null;
+
+                if (splittedLine.Any())
+                {
+                    foreach (var typeImporter in typeImporters)
+                    {
+                        var transaction = typeImporter.Import(splittedLine);
+                        if (transaction != null)
+                        {
+                            if (importedTransaction != null)
+                                throw new ImportException($"Too many importers for type {splittedLine.Index(2)}");
+
+                            importedTransaction = transaction;
+                        }
+                    }
+                }
+
+                list.Add(importedTransaction);
+            });
+
+            return list;
+        }
+
         public static IEnumerable<string> RemoveEverythingBeforeHeaderWithHeaderIncluded(this IEnumerable<string> lines)
         {
             bool shouldSkip = true;
@@ -93,10 +101,10 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing
                 .Select(t => t.Trim('"'))
                 .Select(i => i.Trim());
 
-        public static IEnumerable<PkoTransaction> OnlyExistsingTransactions(this IEnumerable<PkoTransaction> transactions) => 
+        public static IEnumerable<ImportedBankTransaction> OnlyExistsingTransactions(this IEnumerable<ImportedBankTransaction> transactions) => 
             transactions.Where(t => t != null);
 
-        public static IEnumerable<PkoTransaction> AssignOrder(this IEnumerable<PkoTransaction> transactions, int lastOrder)
+        public static IEnumerable<ImportedBankTransaction> AssignOrder(this IEnumerable<ImportedBankTransaction> transactions, int lastOrder)
         {
             var transactionsCreated = transactions.ToList();
             foreach (var transaction in transactionsCreated)

@@ -4,6 +4,6 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 {
     public interface IPkoTypeImporter
     {
-        public PkoTransaction Import(string[] splittedLine);
+        public ImportedBankTransaction Import(string[] splittedLine);
     }
 }

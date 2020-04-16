@@ -22,7 +22,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "Nazwa nadawcy: SENDER NAME","Adres nadawcy: Street 4A/23 43-532 City",
                         "Tytuł: Some title","","",""
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2019, 9, 5),
                         TransactionDate = new DateTime(2019, 9, 6),
@@ -43,7 +43,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "2019-03-17","2019-03-16","Przelew na telefon przychodz. wew.","+12.32","PLN","+123.42","Rachunek nadawcy: 33 4444 2222 4444 2222 1111 2088","Nazwa nadawcy: NAME SURNAME","Adres nadawcy: SOME ADDRESS 445/34","Tytuł: PRZELEW NA TELEFON OD: 48394504932 DO: 48745493943","Referencje własne zleceniodawcy: 1231241123","",""
 
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2019, 3, 17),
                         TransactionDate = new DateTime(2019, 3, 16),
@@ -63,7 +63,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
 
         [Theory]
         [MemberData(nameof(Data))]
-        public void Should_import_valid_transfer_to_account_transactions(string[] splittedLine, PkoTransaction expectedResult)
+        public void Should_import_valid_transfer_to_account_transactions(string[] splittedLine, ImportedBankTransaction expectedResult)
         {
             //act
             var result = Sut.Import(splittedLine);

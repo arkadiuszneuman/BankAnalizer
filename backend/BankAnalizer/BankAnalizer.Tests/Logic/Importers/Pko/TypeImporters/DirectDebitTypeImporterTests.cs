@@ -22,7 +22,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "Adres odbiorcy: SOME RECIPIENT ADDRESS",
                         "Tytuł: SOME TITLE","","",""
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2019, 3, 23),
                         TransactionDate = new DateTime(2019, 3, 24),
@@ -48,7 +48,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
                         "Okres płatności: 0"
 
                     },
-                    new PkoTransaction
+                    new ImportedBankTransaction
                     {
                         OperationDate = new DateTime(2016, 12, 23),
                         TransactionDate = new DateTime(2016, 12, 22),
@@ -68,7 +68,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
 
         [Theory]
         [MemberData(nameof(Data))]
-        public void Should_import_web_payment_transactions(string[] splittedLine, PkoTransaction expectedResult)
+        public void Should_import_web_payment_transactions(string[] splittedLine, ImportedBankTransaction expectedResult)
         {
             //act
             var result = Sut.Import(splittedLine);
