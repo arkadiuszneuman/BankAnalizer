@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   mssql:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
@@ -10,3 +10,21 @@ services:
       - MSSQL_PID=Express
     container_name: mssql
     restart: unless-stopped
+
+  bankanalizer-backend:
+    container_name: bankanalizer-backend
+    build:
+      context: ./backend/BankAnalizer
+      dockerfile: Dockerfile.prod
+    ports:
+      - '4444:80'
+
+  bankanalizer-frontend:
+    container_name: bankanalizer-frontend
+    build:
+      context: ./frontend/bankanalizer
+      dockerfile: Dockerfile.prod
+    ports:
+      - '3333:80'
+    environment:
+      - API_URL=http://localhost:4444/
