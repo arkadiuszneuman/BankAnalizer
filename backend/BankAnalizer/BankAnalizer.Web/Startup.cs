@@ -100,6 +100,11 @@ namespace BankAnalizer.Web
                     endpoints.MapControllers();
                     endpoints.MapHub<UsersHub>("/hub");
                 });
+
+            using (var context = new BankAnalizerContext(app.ApplicationServices.GetRequiredService<DbContextOptions<BankAnalizerContext>>()))
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }
