@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Linq;
 
 namespace BankAnalizer.Web
 {
@@ -44,11 +45,16 @@ namespace BankAnalizer.Web
             services.AddCoreSignalR();
             services.AddDbContext<BankAnalizerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
+                var origins = Configuration.GetSection("AllowedCorsOrigins")
+                    .AsEnumerable()
+                    .Select(e => e.Value)
+                    .Where(e => e != null);
+                
                 builder
-                    .WithOrigins("http://localhost:3000", "https://localhost:3000")
+                    .WithOrigins(origins.ToArray())
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
@@ -67,7 +73,6 @@ namespace BankAnalizer.Web
             builder.RegisterAssemblyModules(this.GetType().Assembly);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
