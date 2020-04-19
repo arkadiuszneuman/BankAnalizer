@@ -11,7 +11,7 @@ class HubConnector {
     private static instance: HubConnector
     public hubConnection!: HubConnection;
 
-    private hubAddress = "https://localhost:5001/hub/"
+    private hubAddress = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL) + 'hub/'
     private actions: { [id: string] : Function } = {}
     private errorActions: { [id: string] : Function } = {}
 

@@ -26,5 +26,3 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - '3333:80'
-    environment:
-      - API_URL=http://localhost:4444/
