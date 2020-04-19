@@ -1,5 +1,7 @@
 import userManager from '../api/UserManager'
 
+declare const _env_ : any
+
 export interface IResponse {
     ok: boolean,
     status: number,
@@ -7,7 +9,12 @@ export interface IResponse {
 }
 
 class ApiConnector {
-    private apiAddress = "https://localhost:5001/api/"
+    private apiAddress = (process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL) + 'api/'
+
+    constructor() {
+        console.log("Api address: " + this.apiAddress)
+    }
+    
 
     private executeMethod =  async (methodName: string, methodType: string, body?: any, headers?: any ) => {
         let finalHeaders = {
