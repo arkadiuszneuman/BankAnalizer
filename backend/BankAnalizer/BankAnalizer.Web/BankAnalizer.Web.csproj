@@ -32,10 +32,4 @@
     <ProjectReference Include="..\BankAnalizer.Logic\BankAnalizer.Logic.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="pko_history.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
