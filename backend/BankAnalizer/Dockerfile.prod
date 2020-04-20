@@ -6,6 +6,7 @@ RUN dotnet publish BankAnalizer.Web -c release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build /app/out .
-ENV ASPNETCORE_URLS http://*:80
+ENV ASPNETCORE_URLS http://*:4444
 ENV ASPNETCORE_ENVIRONMENT docker
+EXPOSE 4444
 ENTRYPOINT dotnet BankAnalizer.Web.dll

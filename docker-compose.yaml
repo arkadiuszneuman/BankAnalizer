@@ -10,14 +10,20 @@ services:
       - MSSQL_PID=Express
     container_name: mssql
     restart: unless-stopped
+    networks: 
+      - bankanalizer_network
 
-  bankanalizer-backend:
-    container_name: bankanalizer-backend
+  bankanalizerbackend:
+    container_name: bankanalizerbackend
     build:
       context: ./backend/BankAnalizer
       dockerfile: Dockerfile.prod
     ports:
-      - '4444:80'
+      - '4444:4444'
+    expose:
+      - '4444'
+    networks: 
+      - bankanalizer_network
 
   bankanalizer-frontend:
     container_name: bankanalizer-frontend
@@ -26,3 +32,15 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - '3333:80'
+    links:
+      - bankanalizerbackend
+    depends_on: 
+      - bankanalizerbackend
+    expose:
+      - '3333'
+    networks: 
+      - bankanalizer_network
+
+networks:
+  bankanalizer_network:
+    driver: bridge
