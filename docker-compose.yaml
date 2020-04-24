@@ -10,6 +10,8 @@ services:
       - MSSQL_PID=Express
     container_name: mssql
     restart: unless-stopped
+    volumes:
+      - mssql:/var/opt/mssql
     networks: 
       - bankanalizer_network
 
@@ -38,3 +40,6 @@ services:
 networks:
   bankanalizer_network:
     driver: bridge
+
+volumes:
+  mssql:
