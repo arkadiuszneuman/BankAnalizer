@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TransactionList from './TransactionList'
 import apiConnector from '../../helpers/api/CqrsApiConnector'
 import DateTimeRange from '../Controls/DateTimeRangeControl'
-import HubConnector from '../../helpers/api/HubConnector'
+import hubConnector from '../../helpers/api/HubConnector'
 import Importer from '../Importer'
 import Exporter from '../Exporter'
 import UsersSelector, { IUser } from '../Controls/UsersSelectorControl'
@@ -31,7 +31,8 @@ export default class TransactionView extends Component<{}, IState> {
     } as IState
 
     componentDidMount = async () => {
-        (await HubConnector).hubConnection.on('group-to-transaction-added', event => {
+        await hubConnector.init()
+        hubConnector.hubConnection.on('group-to-transaction-added', event => {
             if (this.state.onlyWithoutGroup) {
                 const transactions = this.state.transactions.filter((t: any) => t.transactionId !== event.bankTransactionId)
                 this.setState({transactions: transactions})
