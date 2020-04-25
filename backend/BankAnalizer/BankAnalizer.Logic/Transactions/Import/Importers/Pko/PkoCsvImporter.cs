@@ -61,7 +61,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
                     }
                     catch (InvalidImportRowException exception)
                     {
-                        logger.LogError(exception.Message, exception);
+                        logger.LogWarning(exception.Message, exception);
                     }
                 }
 
