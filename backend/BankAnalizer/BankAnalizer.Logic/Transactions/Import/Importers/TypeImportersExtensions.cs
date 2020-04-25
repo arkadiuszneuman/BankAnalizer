@@ -8,7 +8,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
         public static string Index(this string[] lines, int index)
         {
             if (index >= lines.Length)
-                throw new ImportException($"Invalid index {index}. Max index: {lines.Length - 1}. Lines: {string.Join(Environment.NewLine, lines)}");
+                throw new InvalidImportRowException($"Invalid index {index}. Max index: {lines.Length - 1}. Lines: {string.Join(Environment.NewLine, lines)}");
 
             return lines[index];
         }
@@ -16,11 +16,9 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
         public static decimal ConvertToDecimal(this string value)
         {
             if (decimal.TryParse(value.Replace(',','.'), NumberStyles.Any, CultureInfo.InvariantCulture, out var returnValue))
-            {
                 return returnValue;
-            }
 
-            throw new ImportException($"Cannot convert to decimal value: {value}");
+            throw new InvalidImportRowException($"Cannot convert to decimal value: {value}");
         }
 
         public static DateTime ConvertToDate(this string value)
@@ -32,7 +30,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
             if (DateTime.TryParseExact(value, "dd.MM.yyyy", null, DateTimeStyles.None, out returnValue))
                 return returnValue;
 
-            throw new ImportException($"Cannot convert to DateTime value: {value}");
+            throw new InvalidImportRowException($"Cannot convert to DateTime value: {value}");
         }
     }
 }

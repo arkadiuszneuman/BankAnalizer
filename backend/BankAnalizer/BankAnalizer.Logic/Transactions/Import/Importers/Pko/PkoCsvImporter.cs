@@ -48,13 +48,20 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
             {
                 foreach (var typeImporter in typeImporters)
                 {
-                    var transaction = typeImporter.Import(splittedLine);
-                    if (transaction != null)
+                    try
                     {
-                        if (pkoTransaction != null)
-                            throw new ImportException($"Too many importers for type {splittedLine.Index(2)}");
+                        var transaction = typeImporter.Import(splittedLine);
+                        if (transaction != null)
+                        {
+                            if (pkoTransaction != null)
+                                throw new ImportException($"Too many importers for type {splittedLine.Index(2)}");
 
-                        pkoTransaction = transaction;
+                            pkoTransaction = transaction;
+                        }
+                    }
+                    catch (InvalidImportRowException exception)
+                    {
+                        logger.LogError(exception.Message, exception);
                     }
                 }
 
