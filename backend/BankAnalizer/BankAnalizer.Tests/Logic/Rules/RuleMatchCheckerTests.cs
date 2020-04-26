@@ -1,7 +1,6 @@
 ﻿using BankAnalizer.Core.ExtensionMethods;
 using BankAnalizer.Db.Models;
 using BankAnalizer.Logic.Rules;
-using BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters.Extensions;
 using FluentAssertions;
 using Xunit;
 
@@ -22,7 +21,7 @@ namespace BankAnalizer.Tests.Logic.Rules
             };
             var transaction = new BankTransaction
             {
-                Extensions = new LocationExtension
+                Extensions = new
                 {
                     Location = "Some test value"
                 }.ToJson()

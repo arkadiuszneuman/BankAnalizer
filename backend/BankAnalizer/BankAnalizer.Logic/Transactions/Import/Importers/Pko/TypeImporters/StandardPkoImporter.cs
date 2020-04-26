@@ -9,6 +9,10 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
     {
         public ImportedBankTransaction Import(string[] splittedLine)
         {
+            var extensions = GetExtensions(splittedLine).ToJson();
+            if (extensions == "{}")
+                extensions = null;
+
             return new ImportedBankTransaction
             {
                 OperationDate = splittedLine.Index(0).ConvertToDate(),
@@ -17,7 +21,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
                 Amount = splittedLine.Index(3).ConvertToDecimal(),
                 Currency = splittedLine.Index(4),
                 Title = GetTitle(splittedLine),
-                Extensions = GetExtensions(splittedLine).ToJson()
+                Extensions = extensions
             };
         }
 
@@ -25,7 +29,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
         {
             var line = splittedLine.FirstOrDefault(l => l.StartsWith("Tytuł:"));
             if (line != null)
-                return line.RemoveSubstring("Title:").Trim();
+                return line.RemoveSubstring("Tytuł:").Trim();
 
             return splittedLine.Index(2).Trim();
         }

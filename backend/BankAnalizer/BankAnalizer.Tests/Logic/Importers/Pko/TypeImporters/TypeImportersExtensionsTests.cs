@@ -20,7 +20,7 @@ namespace BankAnalizer.Tests.Logic.Importers.Pko.TypeImporters
             Action action = () => lines.Index(index);
 
             //assert
-            action.Should().ThrowExactly<ImportException>();
+            action.Should().ThrowExactly<InvalidImportRowException>();
         }
 
         [Fact]
