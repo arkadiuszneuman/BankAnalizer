@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace BankAnalizer.Logic.Rules.Commands.Handlers.CommandHandlers
+namespace BankAnalizer.Logic.Rules.Commands.Handlers
 {
     public class DeleteRuleCommandHandler : ICommandHandler<DeleteRuleCommand>
     {

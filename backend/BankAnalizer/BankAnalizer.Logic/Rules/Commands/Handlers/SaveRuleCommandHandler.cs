@@ -4,13 +4,14 @@ using BankAnalizer.Core.Cqrs.Command;
 using BankAnalizer.Core.Cqrs.Event;
 using BankAnalizer.Db;
 using BankAnalizer.Db.Models;
+using BankAnalizer.Logic.CommonEvents;
 using BankAnalizer.Logic.Rules.Events;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace BankAnalizer.Logic.Rules.Commands.Handlers.CommandHandlers
+namespace BankAnalizer.Logic.Rules.Commands.Handlers
 {
     public class SaveRuleCommandHandler : ICommandHandler<SaveRuleCommand>
     {
@@ -59,6 +60,8 @@ namespace BankAnalizer.Logic.Rules.Commands.Handlers.CommandHandlers
 
                 scope.Complete();
             }
+
+            await eventsBus.Publish(new CommandCompletedEvent(command));
         }
     }
 }

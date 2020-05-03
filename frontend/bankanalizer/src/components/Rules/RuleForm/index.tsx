@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import connector from '../../../helpers/api/CqrsApiConnector'
+import {apiConnector} from '../../../helpers/BankAnalizer'
 import TransactionList from '../../TransactionView/TransactionList'
 import {
     NavLink
@@ -31,8 +31,8 @@ export default class RuleForm extends Component<IProps, IState> {
         $('.ui.dropdown.clearable').dropdown({ clearable: true })
         $('.ui.dropdown').dropdown()
 
-        const transactionTypesPromise = connector.get("transaction-type")
-        const transactionColumnsPromise = connector.get("transaction/transaction-columns")
+        const transactionTypesPromise = apiConnector.get("transaction-type")
+        const transactionColumnsPromise = apiConnector.get("transaction/transaction-columns")
 
         const result = await Promise.all([transactionTypesPromise, transactionColumnsPromise]);
         const transactionTypes = result[0];
@@ -56,7 +56,7 @@ export default class RuleForm extends Component<IProps, IState> {
 
     findTransactions = async (rule: any) => {
         if (rule.text) {
-            const transactions = await connector.post('transaction/find-transactions-from-rule', rule)
+            const transactions = await apiConnector.post('transaction/find-transactions-from-rule', rule)
             transactions.forEach((element: any) => {
                 element.extensions = JSON.parse(element.extensions) ?? ""
             });
@@ -65,8 +65,7 @@ export default class RuleForm extends Component<IProps, IState> {
     }
 
     save = async () => {
-        await connector.post("rule", this.state.rule)
-        // await hubConnector.handleCommandResult(connector.post("rule", this.state.rule))
+        apiConnector.post("rule", this.state.rule)
 
         if (this.props.onAccept) {
             this.props.onAccept(this.state.rule)

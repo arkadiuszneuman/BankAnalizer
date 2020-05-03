@@ -34,7 +34,9 @@ namespace BankAnalizer.Logic.Groups.Db
         public async Task<Group> GetGroupByNameAndRuleId(string groupName, Guid ruleId, Guid userId)
         {
             using var context = contextFactory.GetContext();
-            return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName && b.Rule.Id == ruleId && b.User.Id == userId);
+            return await context.Groups
+                .Include(c => c.User)
+                .SingleOrDefaultAsync(b => b.Name == groupName && b.Rule.Id == ruleId && b.User.Id == userId);
         }
 
         public async Task<User> GetUser(Guid userId)
@@ -46,7 +48,9 @@ namespace BankAnalizer.Logic.Groups.Db
         public async Task<Group> GetGroupByName(string groupName, Guid userId)
         {
             using var context = contextFactory.GetContext();
-            return await context.Groups.SingleOrDefaultAsync(b => b.Name == groupName && b.User.Id == userId);
+            return await context.Groups
+                .Include(u => u.User)
+                .SingleOrDefaultAsync(b => b.Name == groupName && b.User.Id == userId);
         }
 
         public async Task AddBankTransactionToGroup(BankTransaction bankTransaction, Group group)

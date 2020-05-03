@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Z.EntityFramework.Plus;
 
-namespace BankAnalizer.Logic.Rules.Commands.Handlers.CommandHandlers
+namespace BankAnalizer.Logic.Rules.Commands.Handlers
 {
     public class DeleteTransactionsAndGroupsAssignedToRuleCommandHandler : ICommandHandler<DeleteTransactionsAndGroupsAssignedToRuleCommand>
     {

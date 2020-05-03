@@ -36,7 +36,7 @@ class CqrsApiConnector {
     }
 
     public delete = async (methodName: string, body?: any) => {
-        const result = await apiConnector.post(methodName, body)
+        const result = await apiConnector.delete(methodName, body)
         return this.handleCqrsResult(result)
     }
 
