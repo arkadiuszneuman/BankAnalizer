@@ -58,13 +58,7 @@ namespace BankAnalizer.Db
 
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new BankTransactionConfiguration());
-            modelBuilder.ApplyConfiguration(new BankTransactionTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new RuleConfiguration());
-            modelBuilder.ApplyConfiguration(new GroupConfiguration());
-            modelBuilder.ApplyConfiguration(new BankTransactionGroupConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new UsersConnectionConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
     }
 }
