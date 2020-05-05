@@ -50,7 +50,7 @@ namespace BankAnalizer.Logic.Groups.Db
             using var context = contextFactory.GetContext();
             return await context.Groups
                 .Include(u => u.User)
-                .SingleOrDefaultAsync(b => b.Name == groupName && b.User.Id == userId);
+                .SingleOrDefaultAsync(b => b.Name == groupName && b.User.Id == userId && b.RuleId == null);
         }
 
         public async Task AddBankTransactionToGroup(BankTransaction bankTransaction, Group group)
