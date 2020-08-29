@@ -18,7 +18,7 @@ namespace BankAnalizer.Logic.Users.UsersConnections.Commands.Handlers
 
         public async Task Handle(RequestUserConnectionCommand command)
         {
-            using var context = contextFactory.GetContext();
+            await using var context = contextFactory.GetContext();
             var requestedUser = await context.Users.SingleOrDefaultAsync(u => u.Username == command.RequestedUsername);
 
             await Validate(command, context, requestedUser);

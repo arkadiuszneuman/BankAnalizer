@@ -22,8 +22,8 @@ export default class UsersConnections extends Component<{}, IState> {
         this.setState({ connections: connections })
     }
 
-    sendInvitation = (userToSendInvitation: string) => {
-        console.log(userToSendInvitation)
+    sendInvitation = async (userToSendInvitation: string) => {
+        await apiConnector.post("usersconnection", { requestedUsername: userToSendInvitation })
     }
 
     render() {
