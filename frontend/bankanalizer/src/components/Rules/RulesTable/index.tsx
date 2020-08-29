@@ -8,7 +8,7 @@ import {
   } from "react-router-dom";
 import { apiConnector } from '../../../helpers/BankAnalizer'
 import RuleForm from '../RuleForm'
-import uuid from 'uuid/v4'
+import { v4 } from 'uuid';
 import _ from 'lodash'
 
 type PathParamsType = {
@@ -45,7 +45,7 @@ class Rules extends Component<PropsType, IState> {
       this.setState({ rules: this.state.rules});
     } else {
       const rules = this.state.rules;
-      rule.id = uuid()
+      rule.id = v4()
       rules.unshift(rule)
       this.setState({rules: rules})
     }
