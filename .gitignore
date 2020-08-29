@@ -1,2 +1,4 @@
 backend/PkoAnalizer/PkoAnalizer/pko_history.csv
 backend/PkoAnalizer/PkoAnalizer/appsettings.Secrets.json
+backend/BankAnalizer/.idea/
+frontend/bankanalizer/.vscode/
