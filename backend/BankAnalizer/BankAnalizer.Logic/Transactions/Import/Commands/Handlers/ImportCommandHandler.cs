@@ -34,7 +34,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Commands.Handlers
             logger.LogInformation("Importing transactions from file");
 
             var lastOrder = await bankTransactionAccess.GetLastTransactionOrder(command.UserId);
-            var transactions = importers.SelectMany(i => i.ImportTransactions(command.FileText, lastOrder).ToList()).ToList();
+            var transactions = importers.SelectMany(i => i.ImportTransactions(command.TransactionsFile, lastOrder).ToList()).ToList();
 
             var transactionSavedEventTasks = new List<Task>();
 

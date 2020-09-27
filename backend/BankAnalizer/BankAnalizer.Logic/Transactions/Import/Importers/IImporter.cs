@@ -5,6 +5,6 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers
 {
     public interface IImporter
     {
-        IEnumerable<ImportedBankTransaction> ImportTransactions(string textToImport, int lastOrder);
+        IEnumerable<ImportedBankTransaction> ImportTransactions(TransactionsFile transactionsFile, int lastOrder);
     }
 }

@@ -20,14 +20,16 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko
             this.typeImporters = typeImporters;
         }
 
-        public IEnumerable<ImportedBankTransaction> ImportTransactions(string textToImport, int lastOrder)
+        public IEnumerable<ImportedBankTransaction> ImportTransactions(TransactionsFile transactionsFile, int lastOrder)
         {
-            if (!textToImport.StartsWith("\"Data operacji\""))
+            var fileText = transactionsFile.ReadFromWindows1250Encoding();
+            
+            if (!fileText.StartsWith("\"Data operacji\""))
                 return Enumerable.Empty<ImportedBankTransaction>();
 
             logger.LogInformation("Importing csv by PKO BP importer");
 
-            return textToImport.Split('\n')
+            return fileText.Split('\n')
                 .GetAllLinesExceptFirst()
                 .Reverse()
                 .Select(line =>

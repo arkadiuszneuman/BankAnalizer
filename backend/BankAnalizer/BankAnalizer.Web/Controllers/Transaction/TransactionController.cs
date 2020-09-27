@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using BankAnalizer.Logic.Transactions.Import.Models;
 
 namespace BankAnalizer.Web.Controllers.Transaction
 {
@@ -49,8 +50,8 @@ namespace BankAnalizer.Web.Controllers.Transaction
         {
             if (file.Length < 1024 * 1024)
             {
-                var text = await ReadStream(file);
-                var command = new ImportCommand(GetCurrentUserId(), text);
+                var transactionsFile = await ReadStream(file);
+                var command = new ImportCommand(GetCurrentUserId(), transactionsFile);
 
                 _ = bus.SendAsync(command);
                 return Accepted(command);
@@ -61,10 +62,10 @@ namespace BankAnalizer.Web.Controllers.Transaction
             }
         }
 
-        private async Task<string> ReadStream(IFormFile file)
+        private async Task<TransactionsFile> ReadStream(IFormFile file)
         {
-            using var reader = new StreamReader(file.OpenReadStream(), Encoding.GetEncoding(1250));
-            return await reader.ReadToEndAsync();
+            await using var stream = file.OpenReadStream();
+            return await TransactionsFile.CreateFromStream(stream);
         }
 
         [HttpGet]

@@ -22,14 +22,16 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing
             this.typeImporters = typeImporters;
         }
 
-        public IEnumerable<ImportedBankTransaction> ImportTransactions(string textToImport, int lastOrder)
+        public IEnumerable<ImportedBankTransaction> ImportTransactions(TransactionsFile transactionsFile, int lastOrder)
         {
-            if (!textToImport.StartsWith("\"Lista transakcji\""))
+            var fileText = transactionsFile.ReadFromWindows1250Encoding();
+            
+            if (!fileText.StartsWith("\"Lista transakcji\""))
                 return Enumerable.Empty<ImportedBankTransaction>();
 
             logger.LogInformation("Importing csv by ING importer");
 
-            return textToImport.Split('\n')
+            return fileText.Split('\n')
                 .RemoveEverythingBeforeHeaderWithHeaderIncluded()
                 .Reverse()
                 .RemoveEmptyEntries()

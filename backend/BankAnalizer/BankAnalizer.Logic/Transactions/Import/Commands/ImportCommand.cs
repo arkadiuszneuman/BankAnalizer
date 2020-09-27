@@ -1,5 +1,6 @@
 ﻿using BankAnalizer.Core.Cqrs.Command;
 using System;
+using BankAnalizer.Logic.Transactions.Import.Models;
 
 namespace BankAnalizer.Logic.Transactions.Import.Commands
 {
@@ -7,12 +8,12 @@ namespace BankAnalizer.Logic.Transactions.Import.Commands
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public Guid UserId { get; }
-        public string FileText { get; }
+        public TransactionsFile TransactionsFile { get; }
 
-        public ImportCommand(Guid userId, string file)
+        public ImportCommand(Guid userId, TransactionsFile transactionsFile)
         {
             UserId = userId;
-            FileText = file;
+            TransactionsFile = transactionsFile;
         }
     }
 }
