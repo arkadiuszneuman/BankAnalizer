@@ -1,10 +1,10 @@
-﻿using BankAnalizer.Db;
-using BankAnalizer.Db.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using BankAnalizer.Db;
+using BankAnalizer.Db.Models;
+using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 
 namespace BankAnalizer.Logic.Groups.Db
@@ -27,7 +27,7 @@ namespace BankAnalizer.Logic.Groups.Db
         public async Task AddBankTransactionGroup(BankTransactionGroup bankTransactionGroup)
         {
             await using var context = contextFactory.GetContext();
-            context.BankTransactionGroups.Add(bankTransactionGroup);
+            await context.BankTransactionGroups.AddAsync(bankTransactionGroup);
             await context.SaveChangesAsync();
         }
 
@@ -57,11 +57,11 @@ namespace BankAnalizer.Logic.Groups.Db
         {
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             await using var context = contextFactory.GetContext();
-            context.AttachRange(bankTransaction, @group, @group.User);
+            context.AttachRange(bankTransaction, group, group.User);
             await context.AddAsync(new BankTransactionGroup
             {
                 BankTransaction = bankTransaction,
-                Group = @group
+                Group = group
             });
 
             await context.SaveChangesAsync();
