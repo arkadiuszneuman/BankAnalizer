@@ -36,8 +36,6 @@ namespace BankAnalizer.Logic.Transactions.Import.Commands.Handlers
             var lastOrder = await bankTransactionAccess.GetLastTransactionOrder(command.UserId);
             var transactions = importers.SelectMany(i => i.ImportTransactions(command.TransactionsFile, lastOrder).ToList()).ToList();
 
-            var transactionSavedEventTasks = new List<Task>();
-
             foreach (var transaction in transactions)
             {
                 transaction.Order = ++lastOrder;
@@ -45,12 +43,10 @@ namespace BankAnalizer.Logic.Transactions.Import.Commands.Handlers
                 var databaseTransaction = await bankTransactionAccess.AddToDatabase(transaction, command.UserId);
 
                 if (databaseTransaction != null)
-                    transactionSavedEventTasks.Add(eventsBus.Publish(new TransactionSavedEvent(command.UserId, transaction, databaseTransaction)));
+                    await eventsBus.Publish(new TransactionSavedEvent(command.UserId, transaction, databaseTransaction));
                 else
                     --lastOrder;
             }
-
-            Task.WaitAll(transactionSavedEventTasks.ToArray());
 
             await eventsBus.Publish(new CommandCompletedEvent(command.UserId, command.Id));
 
