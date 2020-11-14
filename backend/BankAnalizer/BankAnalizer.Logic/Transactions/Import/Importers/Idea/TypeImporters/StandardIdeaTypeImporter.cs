@@ -11,6 +11,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Idea.TypeImporters
         {
             return new ImportedBankTransaction
             {
+                BankName = "Idea Bank",
                 TransactionDate = string.IsNullOrEmpty(splittedLine.Index(0))
                     ? splittedLine.Index(1).ConvertToDate()
                     : splittedLine.Index(0).ConvertToDate(),

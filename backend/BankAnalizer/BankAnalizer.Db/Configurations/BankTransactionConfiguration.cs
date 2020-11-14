@@ -10,7 +10,7 @@ namespace BankAnalizer.Db.Configurations
         {
             builder.Property(p => p.Currency)
                 .IsRequired();
-
+            
             builder.Property(x => x.OperationDate)
                 .HasColumnType("Date");
 

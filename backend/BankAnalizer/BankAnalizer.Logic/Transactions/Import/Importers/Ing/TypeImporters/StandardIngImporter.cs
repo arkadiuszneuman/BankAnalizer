@@ -23,6 +23,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Ing.TypeImporters
             
             return new ImportedBankTransaction
             {
+                BankName = "ING",
                 TransactionDate = splittedLine.Index(0).ConvertToDate(),
                 OperationDate = splittedLine.Index(1).ConvertToDate(),
                 TransactionType = ConvertTransactionType(splittedLine.Index(6)).Value.ToString(),

@@ -17,6 +17,7 @@ namespace BankAnalizer.Db.Models
         public string Extensions { get; set; }
 
         public BankTransactionType BankTransactionType { get; set; }
+        public Bank Bank { get; set; }
         public ICollection<BankTransactionGroup> BankTransactionGroups { get; set; }
     }
 }

@@ -36,6 +36,11 @@ namespace BankAnalizer.Logic.Transactions.Import.Db
         {
             BankTransaction databaseTransaction = null;
             var groupDbModel = MapGroup(transaction.TransactionType);
+            var bankDbModel = new Bank
+            {
+                Id = Guid.NewGuid(),
+                Name = transaction.BankName
+            };
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -43,13 +48,17 @@ namespace BankAnalizer.Logic.Transactions.Import.Db
                 var user = await userService.GetById(userId);
                 context.Attach(user);
 
-                var existingGroup = context.BankTransactionTypes.SingleOrDefault(t => t.Name == groupDbModel.Name && t.User.Id == userId);
+                var existingGroup = await context.BankTransactionTypes.SingleOrDefaultAsync(t => t.Name == groupDbModel.Name && t.User.Id == userId);
                 var group = existingGroup ?? groupDbModel;
                 group.User = user;
+
+                var existingBank = await context.Banks.SingleOrDefaultAsync(b => b.Name == transaction.BankName);
+                var bank = existingBank ?? bankDbModel;
 
                 databaseTransaction = MapTransaction(transaction);
                 databaseTransaction.BankTransactionType = group;
                 databaseTransaction.User = user;
+                databaseTransaction.Bank = bank;
 
                 var existingTransaction = await ExistingTransaction(context, databaseTransaction, existingGroup, userId);
                 if (existingTransaction == null)
@@ -82,7 +91,9 @@ namespace BankAnalizer.Logic.Transactions.Import.Db
                 t.OperationDate == groupTransaction.OperationDate &&
                 t.Title == groupTransaction.Title &&
                 t.TransactionDate == groupTransaction.TransactionDate &&
-                t.User.Id == userId)
+                t.User.Id == userId &&
+                t.BankTransactionType.Id == groupTransaction.BankTransactionType.Id &&
+                t.Bank.Id == groupTransaction.Bank.Id)
                 .SingleOrDefaultAsync();
         }
 

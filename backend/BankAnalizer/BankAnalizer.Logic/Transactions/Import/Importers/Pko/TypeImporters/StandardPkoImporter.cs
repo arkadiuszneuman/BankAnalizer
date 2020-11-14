@@ -15,6 +15,7 @@ namespace BankAnalizer.Logic.Transactions.Import.Importers.Pko.TypeImporters
 
             return new ImportedBankTransaction
             {
+                BankName = "PKO BP",
                 OperationDate = splittedLine.Index(0).ConvertToDate(),
                 TransactionDate = splittedLine.Index(1).ConvertToDate(),
                 TransactionType = splittedLine.Index(2),

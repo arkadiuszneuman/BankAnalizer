@@ -20,6 +20,7 @@ namespace BankAnalizer.Db
         DbSet<BankTransactionGroup> BankTransactionGroups { get; set; }
         DbSet<User> Users { get; set; }
         DbSet<UsersConnection> UsersConnections { get; set; }
+        DbSet<Bank> Banks { get; set; }
 
         Task LockTableAsync<T>(T table);
         ValueTask<EntityEntry> AddAsync([NotNull] object entity, CancellationToken cancellationToken = default);
@@ -30,9 +31,10 @@ namespace BankAnalizer.Db
 
     public class BankAnalizerContext : DbContext, IContext
     {
-        public static readonly ILoggerFactory MyLoggerFactory
-            = LoggerFactory.Create(builder => { builder.AddConsole(); });
+        // public static readonly ILoggerFactory MyLoggerFactory
+        //     = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
+        public DbSet<Bank> Banks { get; set; }
         public DbSet<BankTransaction> BankTransactions { get; set; }
         public DbSet<BankTransactionType> BankTransactionTypes { get; set; }
         public DbSet<Rule> Rules { get; set; }
@@ -40,7 +42,7 @@ namespace BankAnalizer.Db
         public DbSet<BankTransactionGroup> BankTransactionGroups { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UsersConnection> UsersConnections { get; set; }
-
+        
         public BankAnalizerContext(DbContextOptions<BankAnalizerContext> options) : base(options)
         {
         }

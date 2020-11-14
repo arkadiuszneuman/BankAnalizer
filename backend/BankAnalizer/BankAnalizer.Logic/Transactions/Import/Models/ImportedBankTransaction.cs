@@ -12,5 +12,6 @@ namespace BankAnalizer.Logic.Transactions.Import.Models
         public string Title { get; set; }
         public string Extensions { get; set; }
         public int Order { get; set; }
+        public string BankName { get; set; }
     }
 }
