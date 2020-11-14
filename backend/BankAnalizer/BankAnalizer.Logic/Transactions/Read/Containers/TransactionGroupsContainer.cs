@@ -12,5 +12,6 @@ namespace BankAnalizer.Logic.Transactions.Read.Containers
         public decimal Amount { get; set; }
         public Guid? RuleId { get; set; }
         public DateTime TransactionDate { get; set; }
+        public string BankName { get; set; }
     }
 }

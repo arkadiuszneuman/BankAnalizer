@@ -22,6 +22,7 @@ export default (props: IProps) => {
                 <div className="header">{transaction.name}</div>
                 <div className="description">{transaction.amount} zł</div>
                 <div className="description">{transaction.type}</div>
+                <div className="description">{transaction.bankName}</div>
                 <div className="description">{parseDate(transaction.transactionDate)}</div>
                 {showGroups && <TransactionGroups transaction={transaction} /> }
                 <div className="list">
