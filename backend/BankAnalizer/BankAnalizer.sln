@@ -24,6 +24,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankAnalizer.Core.Api", "Ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankAnalizer.Core.SignalR", "BankAnalizer.Core.SignalR\BankAnalizer.Core.SignalR.csproj", "{E8ED5406-7916-4983-819E-E14255C82154}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{59EDCF18-1A9E-4B9B-AE87-17E65151E9C9}"
+ProjectSection(SolutionItems) = preProject
+	Scripts\remove_all_transactions.sql = Scripts\remove_all_transactions.sql
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
