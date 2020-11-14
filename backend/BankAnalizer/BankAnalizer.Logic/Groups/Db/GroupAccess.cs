@@ -57,6 +57,10 @@ namespace BankAnalizer.Logic.Groups.Db
         {
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             await using var context = contextFactory.GetContext();
+
+            if (await context.BankTransactionGroups.AnyAsync(b => b.GroupId == group.Id && b.BankTransactionId == bankTransaction.Id))
+                return;
+            
             context.AttachRange(bankTransaction, group, group.User);
             await context.AddAsync(new BankTransactionGroup
             {
