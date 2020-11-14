@@ -19,6 +19,7 @@ namespace BankAnalizer.Logic.Transactions.Read.ViewModels
 
         public Guid TransactionId { get; set; }
         public string Name { get; set; }
+        public string BankName { get; set; }
         public string Type { get; set; }
         public string Extensions { get; set; }
         public decimal Amount { get; set; }
